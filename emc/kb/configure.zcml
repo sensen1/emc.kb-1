@@ -5,7 +5,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="emc.kb">
 
-  <five:registerPackage package="." initialize=".initialize" />
+
 
   <genericsetup:registerProfile
       name="default"

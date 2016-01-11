@@ -5,7 +5,7 @@ version = '1.0'
 
 setup(name='emc.kb',
       version=version,
-      description="a knowleage base for EMC project"",
+      description="a knowleage base for EMC project",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from
@@ -25,14 +25,18 @@ setup(name='emc.kb',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'SQLAlchemy',
           # -*- Extra requirements: -*-
       ],
+      
+      extras_require={
+          'test': ['plone.app.testing',]
+          },         
       entry_points="""
       # -*- Entry points: -*-
 
       [z3c.autoinclude.plugin]
       target = plone
       """,
-      setup_requires=["PasteScript"],
-      paster_plugins=["ZopeSkel"],
+
       )
