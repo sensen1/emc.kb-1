@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+  <metal:content-core define-macro="main">
+		<div class="zoneHead">
+         <div class="zoneHeadLeft">
+			<span class="zoneHeadLeftTitle" i18n:translate="hotQA">hotQA</span>...
+			<span tal:content="python:view.fetchdatedisplay()">2011/11/26</span>
+			</div>
+         <div class="zoneHeadRight" tal:define="currentNum python:view.currentDateNum()">
+				<select onchange="window.location.href=this.value;">
+					<option value="@@hotanswer" i18n:translate="Last seven days" tal:attributes="selected python: currentNum==7 and 'selected' or ''">Last seven days</option>
+					<option value="@@hotanswer?timelimit=30" i18n:translate="Last thirty days" tal:attributes="selected python: currentNum==30 and 'selected'  or ''">Last thirty days</option>
+					<option value="@@hotanswer?timelimit=0" i18n:translate="All Popular" tal:attributes="selected python: currentNum==0 and 'selected'  or ''">All Popular</option>
+				</select>
+			</div>
+		</div>
+		<div tal:condition="python:view.haveHotAnswer">
+			<div class="qbox hrtop" tal:repeat="hotanswer python:view.fetchHotAnswer()">
+				<div tal:omit-tag="" tal:define="answerobj python:hotanswer.getObject()">
+					<div class="boxTitle">
+						<a tal:attributes="href python:hotanswer.getURL()" tal:content="python:view.fetchParentQuestion(hotanswer)">this a title</a>
+					</div>
+					<div class="boxBody">
+						<div class="boxBodyLeft">
+							<span tal:content="hotanswer/voteNum">51</span>
+						</div>
+						<div class="boxTitle" tal:define="authorinfo python:view.GetAuthorInfoAnswer(hotanswer)">
+								<a tal:attributes="href authorinfo/homepage">
+       							<span class="username" tal:content="authorinfo/username">username</span>
+       						</a>
+								<span tal:condition="authorinfo/description">，
+       							<span class="description" tal:content="authorinfo/description">description</span>
+       							<span class="littleAvatar" tal:content=" structure authorinfo/portrait"></span>
+								</span>
+       					</div>
+						<div class="content" tal:define="plone_view context/@@plone;
+																text hotanswer/content;
+																acontent python:text"
+								tal:content="structure acontent">answer content
+						</div>
+							<div class="more">
+								<a tal:attributes="href python:hotanswer.getURL()" i18n:translate="Full display">Full display</a>
+							</div>
+					</div>
+				</div>
+			</div>
+    	</div>
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

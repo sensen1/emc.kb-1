@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+    <metal:content-core define-macro="main" 
+			tal:define="b_size 	python:20;
+                       b_orphan python:1;
+                       b_start  request/b_start | python:0;
+                       content  python:view.fetchMentionwo(start=b_start, size=b_size+b_orphan);">
+
+	<div id="zoneHead">
+		<div class="zoneHeadLeft">
+			<img src="++resource++eisoo.topic/at_Icon.png" /><span class="highlight" i18n:translate="Mention Me">Mention Me</span>
+		</div>
+	</div>
+<tal:block condition="content"
+           define="Batch python:modules['Products.CMFPlone'].Batch;
+                   batch python:Batch(content, b_size, int(b_start), orphan=int(b_orphan));">
+	<div tal:repeat="mentionwo batch">
+		<div class="qbox hrtop" tal:condition="python:int(mentionwo.getObject().state)==3">
+			<span class="linkcolor" tal:define="user python:view.mentionwoAnsweruser(mentionwo.getObject().answerid)">
+				<a tal:attributes="href user/homepage" tal:content="user/username" />&nbsp;
+			</span>
+			<span i18n:translate="agree your question">agree your question</span>
+			<a tal:attributes="href python:view.mentionwoQuesiton(mentionwo.getObject().questionid)[0].getURL()"
+			 tal:content="python:view.mentionwoQuesiton(mentionwo.getObject().questionid)[0].Title">Title</a><span i18n:translate="of the answer">of the answer</span>
+			 <span tal:content="python:mentionwo.created.strftime('%Y-%m-%d')+' '+str(mentionwo.created.hour())+':'+str(mentionwo.created.minute())"></span>
+		</div>
+		<div class="qbox hrtop" tal:condition="python:(int(mentionwo.getObject().state)==2) or (int(mentionwo.getObject().state)==1)">
+			<div class="" tal:define="user python:view.mentionwoAnsweruser(mentionwo.getObject().answerid)">
+				<span class="linkcolor"  tal:content="user/username">
+
+				</span>
+				<span i18n:translate="answer question">answer question</span>
+				<a tal:attributes="href python:view.mentionwoQuesiton(mentionwo.getObject().questionid)[0].getURL()"
+			 	tal:content="python:view.mentionwoQuesiton(mentionwo.getObject().questionid)[0].Title">Title</a>
+			 	<span tal:content="python:mentionwo.created.strftime('%Y-%m-%d')+' '+str(mentionwo.created.hour())+':'+str(mentionwo.created.minute())"></span>
+			</div>
+			<div class="boxBody" tal:define="answerid python:mentionwo.getObject().answerid; answer python:view.mentionwoAnswer(answerid)">
+				<div class="boxBodyLeft"><span tal:content="answer/voteNum">12</span></div>
+				<div class="boxBodyRight">
+					<div tal:define="con answer/content" tal:content="structure python:con">answer content</div>
+					<div tal:define="follow python:view.mentionwofollowedquestion(mentionwo.getObject().questionid)">
+						<div tal:define="questionid python:mentionwo.getObject().questionid">
+							<span class="fire-question-follow" tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;';id python: 'fire-question-follow-'+questionid+'-'+answerid">
+								<a href="#" tal:attributes="class string:kssattr-questionid-${questionid} \ kssattr-answerid-${answerid}" i18n:translate="followed">followed</a>
+							</span>
+							<span class="fire-question-unfollow" tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;';id python: 'fire-question-unfollow-'+questionid+'-'+answerid">
+								<a href="#" tal:attributes="class string:kssattr-questionid-${questionid} \ kssattr-answerid-${answerid}" i18n:translate="unfollowed">unfollowed</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div metal:use-macro="context/batch_macros/macros/navigation" />
+</tal:block>
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

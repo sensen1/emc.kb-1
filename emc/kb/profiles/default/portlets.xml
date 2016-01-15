@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!-- This file is used to register new types of portlets. It can also
+     be used to register completely new column types. See CMFPlone's version
+     of this file for more information.
+  -->
+<portlets
+	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	i18n:domain="plone">
+
+    <portlet 
+       addview="emc.userportlet"
+       title="User Portlet"
+       description="user information portlet"
+	   i18n:attributes="title;description"
+       />
+	 
+	 <portlet 
+       addview="emc.questionportlet"
+       title="related question"
+       description="related question information portlet"
+	   i18n:attributes="title;description"
+       /> 
+
+	 <portlet 
+       addview="emc.relatedinformation"
+       title="related information"
+       description="related  information portlet"
+	   i18n:attributes="title;description"
+       /> 
+	   
+</portlets>

@@ -1,0 +1,161 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+	<metal:content-core define-macro="main">
+		<div class="questionBox" tal:define="topics python:view.fetchRelatedTopics(context);
+								tnum python:len(topics)">
+			<div class="relatetopic add_obj_button" tal:condition="tnum">
+				<ul class="floatTab">
+				 	<li tal:repeat="topic topics">
+				 		<div class="topicTabLeft"></div>
+				 		<div class="topicTabBody"><a tal:attributes="href python:topic.absolute_url();
+			                         title python:topic.title"
+			         tal:content="python:topic.title">title</a></div>
+				 		<div class="topicTabRight"></div>
+					</li>
+				</ul>
+				<a tal:attributes="href python:context.absolute_url() + '/edit'">
+					<span class="edit" i18n:translate="edit">edit</span>
+				</a>
+			</div>
+		
+		<span id="showtitle" tal:content="context/title"/>
+		<a href="javascript:void(0)" onclick="outdisplaytitle()">
+			<span id="edittitle" class="edit" i18n:translate="edit">edit</span>
+		</a>
+		<div id="modifytitle" tal:attributes="modifytitle string:${context/absolute_url}/@@modify-title">
+			<form id="modifytitleform" style=" display:none;">
+				<textarea tal:content="context/title"/>
+				<button name="ok" i18n:translate="ok">确定</button>
+				<button name="cancel" i18n:translate="cancel">取消</button>
+			</form>
+		</div>
+
+		<span id="showdesc" tal:content="context/description"/>
+		<a href="javascript:void(0)" onclick="outdisplaydesc()">
+			<span id="editdesc" class="edit" i18n:translate="edit">edit</span>
+		</a>
+		<div id="modifydesc" tal:attributes="modifydesc string:${context/absolute_url}/@@modify-description">
+			<form id="modifydescform" style=" display:none;">
+				<textarea tal:content="context/description"/>
+				<button name="ok" i18n:translate="ok">确定</button>
+				<button name="cancel" i18n:translate="cancel">取消</button>
+			</form>
+		</div>	
+
+			<div class="questionOperate">
+				<tal:block tal:define="commnetnum python:view.getcommentnum()">
+					<a href="#" tal:condition="python:commnetnum > 0" tal:attributes="href python:context.absolute_url() +'#form-widgets-text' ">
+						<span  tal:content="commnetnum">1</span><span i18n:translate="num comment">num comment</span>
+					</a>
+					<a href="#" tal:condition="python:commnetnum < 1" tal:attributes="href python:context.absolute_url() +'#form-widgets-text' " i18n:translate="add comment">add comment</a>
+				</tal:block>
+				<span class="spp"><a href="" i18n:translate="update List">update List</a></span>
+				
+				<span id="question-follow-box" tal:define="follow python:view.isFollowed()">
+					<span id="fire-question-follow" tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;'">
+						<img src="++resource++eisoo.topic/plus.png" />&nbsp;<a href="#" i18n:translate="follow question">follow question</a>
+					</span>
+					<span id="fire-question-unfollow" tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;'">
+						<img src="++resource++eisoo.topic/subtract.png" />&nbsp;<a href="#" i18n:translate="unfollowed">unfollowed</a>
+					</span>
+				</span>			
+			</div>
+						
+		</div>	
+		<div>
+			<span i18n:translate="n_answer">
+				<span tal:content="python:view.answerNum" i18n:name="answernum">10</span>answer		
+			</span>
+			<span class="spp">
+				<a tal:attributes="href python:context.absolute_url() + '/++add++emc.kb.contents.answer'"
+				  i18n:translate="add an answer">add an answer</a>
+			</span>
+		</div>
+		
+		<div class="qbox hrtop" tal:repeat="answer python:view.fetchAllAnswers()">
+			<div tal:omit-tag="" tal:define="answerid answer/id">
+			<div class="vote">
+			<div class="voteup" title="agree answer"  i18n:attributes="title">
+				<div class="click_answer-agree"> 
+					<a href="#" tal:attributes="class string:kssattr-answerid-${answerid}"></a>
+				</div>
+			</div>
+			<div class="votedown" title="not agree answer"  i18n:attributes="title">
+				 <div class="click_answer-unagree">
+				 	  <a href="#" tal:attributes="class string:kssattr-answerid-${answerid}"></a>
+				</div>
+			</div>
+			</div>
+       	<div class="boxTitle" tal:define="authorinfo python:view.GetAuthorInfoAnswer(answerid)">
+       		<a tal:attributes="href authorinfo/homepage">
+       		<span class="username" tal:content="authorinfo/username">username</span>
+       		</a><span tal:condition="authorinfo/description">，</span>
+       		<span class="description" tal:content="authorinfo/description">description</span>
+       		<span class="littleAvatar" tal:content=" structure authorinfo/portrait"></span>
+       	</div>
+			 <div class="answervote">
+			 	<span tal:attributes="id python:answerid" i18n:translate="n_votes_label">
+			 		<span tal:content="structure answer/voteNum" i18n:name="voteNum">voteNum</span>votes
+				</span>
+				<span tal:condition="python:not view.fetchvotelist(answerid,3)">
+					<span tal:attributes="id python: 'votelist-'+answerid" />
+				</span>
+				<span tal:condition="python:view.fetchvotelist(answerid,3)">
+					<span i18n:translate="vote from">vote from</span>
+				 	<span class="answervotershide" tal:attributes="id python: 'votelist-'+answerid">
+				 		<span tal:repeat="vs python:view.fetchvotelist(answerid,3)" tal:content="vs">votes</span>
+						<a href="javascript:void(0)" tal:condition="python:answer.voteNum>3" onclick="voteShowAll(this)" i18n:translate="more ...">more ...</a> 
+				 	</span>
+					<span style="display:none;" class="answervotersall" tal:attributes="id python: 'morelist-'+answerid">
+						<span tal:repeat="vs python:view.fetchvotelist(answerid,'all')" tal:content="vs">votes</span>
+						<a href="javascript:void(0)" onclick="voteHide(this)" i18n:translate="Click Hide"> Click Hide</a> 
+					</span>
+				</span>
+			 </div>
+	        <div class="answercontent" tal:define="con python:answer.content" tal:content="structure python:con">content</div>
+	        <div class="answercreated" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
+	        
+	        <a tal:attributes="href python:answer.getURL()"><span tal:content="python:toLocalizedTime(answer.created)">2010-12-12</span></a>
+
+	        <tal:block tal:define="commnetnum python:view.getcommentnum(answer)">
+				<a href="#" tal:condition="python:commnetnum > 0" href="#">
+					<span  tal:content="commnetnum"></span><span i18n:translate="num comment">num comment</span>
+				</a>
+				<a href="#" tal:condition="python:commnetnum < 1" href="#" i18n:translate="add comment">add comment</a>
+			</tal:block>
+			
+	        <tal:block tal:define="answerid answer/id;favorite python:view.isfavorited(answer)">
+					<div class="favorite_answer-favorite" tal:attributes="style python: favorite and 'display:none;;' or 'display:inline;;';id python: 'favorite_answer-favorite-'+answerid">
+						<a tal:attributes="href string:${context/absolute_url}/${view/__name__};class string:kssattr-answerid-${answerid}" i18n:translate="like" >like</a>
+					</div>
+					<div class="favorite_answer-unfavorite" tal:attributes="style python: favorite and 'display:inline;;' or 'display:none;;';id python: 'favorite_answer-unfavorite-'+answerid">
+						<a tal:attributes="href string:${context/absolute_url}/${view/__name__};class string:kssattr-answerid-${answerid}" i18n:translate="unlike" >unlike</a>
+					</div>
+			</tal:block>
+	        </div>
+		</div>
+		</div>
+		<div class="qbox hrtop" tal:define="myinfo python:view.GetUserInfo()">
+			<div class="questionTitle"><span style="color:#555555; font-size:16px;" i18n:translate="add an answer">add an answer</span></div>
+			<div class="boxTitle">
+				 <span class="description" tal:content="myinfo/username">adam</span>
+				 <span tal:condition="myinfo/description">,</span>
+			  	 <span class="signature" tal:content="myinfo/description">adam's sign</span>
+			  	 <span class="littleAvatar" tal:content=" structure myinfo/portrait"></span>
+		    </div>	
+		</div>
+		<div tal:content="structure context/@@view/plone.addanswer" />
+		<div tal:content="structure context/@@view/plone.comments" />
+	</metal:content-core>
+</metal:main>
+
+</body>
+</html>

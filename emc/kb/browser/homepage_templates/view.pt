@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main" tal:define="pview context/@@plone;">
+		<ul id="add_link">
+			<li class="add_obj_button"><a tal:attributes="href python:view.getTopicFolder() + '/++add++emc.kb.topic'" i18n:translate="">add topic</a>
+			</li>
+			<li class="add_obj_button"><a style=" margin-left:15px;" tal:attributes="href python:view.getQuestionFolder() + '/++add++emc.kb.question'" i18n:translate="">add question</a>
+			</li>
+		</ul>  
+	    <div class="myFocus">
+           <div class="zoneHeader">
+              <span class="littleTitle" i18n:translate="My focus">My focus</span>........
+				(<a i18n:translate="n_question_label" tal:attributes="href python:pview.navigationRootUrl()+'/@@questionfollowed'">
+				<span i18n:name="fnum" tal:content="python:view.IfollowedQuestionNum()">2</span>question</a><font color="#2B78E4">&nbsp;•&nbsp;</font>
+				<a i18n:translate="n_topic_label" tal:attributes="href python:pview.navigationRootUrl()+'/@@topicfollowed'">
+				<span i18n:name="tnum" tal:content="python:view.IfollowedTopicNum()">7</span>topic</a>)				
+            </div>
+            <div class="zoneContent">
+                <div class="zoneContentLeft" i18n:translate="Question">Question</div>
+                <div class="zoneContentRight">
+                    <ul class="qalist">
+                    	<li tal:repeat="question python:view.fetchIfollowedQuestions()">
+                    		<a tal:attributes="href python:question.getURL();title= question/Title">
+                    			<span tal:content="python:question.Title">question title</span>
+                    		</a>
+                    	</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="zoneContent">
+                <div class="zoneContentLeft" i18n:translate="topic">topic</div>  
+				  <div class="zoneContentRight">              
+	                <ul class="floatTab">
+						<li tal:repeat="topic python:view.fetchIfollowedTopics()">
+							<div class="floatTabLeft"></div>
+							<div class="floatTabBody">
+								<a tal:attributes="href python:topic.getURL();title= topic/Title">
+	                				<span tal:content="python:topic.Title">topic title</span>
+	                			</a>
+							</div>
+							<div class="floatTabRight"></div>
+						</li>
+	                </ul>
+					</div>             
+            </div>
+        </div>
+	    <div class="bodyHR"></div>
+	    <div class="myQA">
+            <div class="zoneHeader">
+				<span class="littleTitle" i18n:translate="My QA">My QA</span>........
+				（<a tal:attributes="href python:pview.navigationRootUrl()+'/@@myquestion'"><span tal:content="python:view.myQuestionNum()"/><span i18n:translate="question"/></a><font color="#2B78E4">&nbsp;•&nbsp;</font>
+				<a tal:attributes="href python:pview.navigationRootUrl()+'/@@myanswer'"><span tal:content="python:view.myAnswerNum()"/><span i18n:translate="answer"/></a>）
+            </div>
+            <div class="zoneContent">
+                <div class="zoneContentLeft" i18n:translate="question">question</div>
+				  <div class="zoneContentRight">
+	                <ul class="qalist">
+	                    <li tal:repeat="question python:view.fetchMyQustions()">
+	                        <a tal:attributes="href python:question.getURL();title= question/Title">
+	                        	<span tal:content="python:question.Title">question title</span>
+	                        </a>
+	                    </li>
+	                </ul>
+				  </div>
+            </div>
+            <div class="zoneContent">
+                <div class="zoneContentLeft" i18n:translate="answer">answer</div>
+                <div class="zoneContentRight">
+                    <ul class="qalist">
+						<li tal:repeat="myanswer python:view.fetchMyAnswers()">
+						<tal:block tal:define="question python:view.fetchParentQuestion(myanswer)">
+                        	<div><a tal:attributes="href python:myanswer.getURL()"><span tal:content="question/Title">question title</span></a></div>
+							<div class="myAnswer">
+							<div class="agreeNum" tal:content="python:myanswer.voteNum">1</div>
+							<div class="answerCon" tal:define="con python:myanswer.content" tal:content="structure python:con">answer content</div>
+							</div>
+							<div class="AOperate" tal:define="answerTime python:view.friendlydatetime(myanswer)">
+								<a  tal:attributes="href python:myanswer.getURL()">
+								<span class="answerTime" tal:content="answerTime">2 hours ago</span>
+								</a>
+							</div>
+						</tal:block>
+						</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+	   	<div class="bodyHR"></div>
+		<div class="hotQA">
+            <div class="zoneHeader">
+                <span class="littleTitle" i18n:translate="Hot QA">Hot QA</span>
+                ........（<a tal:attributes="href python:pview.navigationRootUrl()+'/@@hotanswer'" i18n:translate="more">more</a>）
+            </div>
+            <div class="zoneContent">
+            	  <div class="zoneContentLeft"></div>
+                <div class="zoneContentRight">
+                    <ul class="qalist">
+							<li tal:repeat="hotqa python:view.hotQandA(num=3)">
+								<div class="myAnswer" tal:define="hquestion python:view.fetchParentQuestion(hotqa)">
+<!--                        		<a tal:attributes="href python:hquestion.absolute_url();title= hquestion/Title"> -->
+                               
+                               <span class="agreeNum" tal:content="python:hotqa.voteNum">1</span>
+                               <a tal:attributes="href python:hotqa.getURL();title= hotqa/Title">
+                            	<span tal:content="hquestion/Title">hquestion title</span><br />
+ 
+                            	</a>
+                            </div>
+							</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		<div class="bodyHR"></div>
+		<div class="hotTopic">
+            <div class="zoneHeader">
+                <span class="littleTitle" i18n:translate="Hot topic">Hot topic</span>
+                ........（<a tal:attributes="href python:pview.navigationRootUrl()+'/@@hottopic'" i18n:translate="more">more</a>）
+            </div>
+            <div class="zoneContent">
+            	  <div class="zoneContentLeft"></div>
+                <div class="zoneContentRight">
+                    <ul class="floatTab">
+							<li tal:repeat="hottopic python:view.hotTopics()">
+								<div class="floatTabLeft"></div>
+								<div class="floatTabBody">
+									<a tal:attributes="href python:hottopic.getURL();title= hottopic/Title">
+	                    				<span tal:content="python:hottopic.Title">topic title</span>
+	                    			</a>
+								</div>
+								<div class="floatTabRight"></div>
+							</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+		
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

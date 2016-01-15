@@ -1,0 +1,20 @@
+<dl class="portlet portletRelatedQuestion"
+	i18n:domain="emc.kb">
+	<div class="portletHeader">
+		<span i18n:translate="">related question</span>
+	</div>  
+	<ul class="portletItem">
+		<li tal:repeat="relatedquetion view/relatedquestions">
+			<a tal:attributes="href relatedquetion/url;
+                               title relatedquetion/title;">
+                <tal:title content="relatedquetion/title">
+                    Title
+                </tal:title>
+            </a>
+		</li>
+	</ul>
+	<dd class="portletFooter">
+		<span class="portletBottomLeft" ></span>
+		<span class="portletBottomRight"></span>
+	</dd>
+</dl>

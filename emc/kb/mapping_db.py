@@ -8,7 +8,7 @@ from zope import schema
 from zope.interface import Interface,implements
 
 from emc.kb import ORMBase
-from emc.kb import MessageFactory as _
+from emc.kb import _
 
 class IMarket_number(Interface):
     """编号number 记录表

@@ -1,11 +1,29 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:grok="http://namespaces.zope.org/grok"    
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="emc.kb">
 
+  <includeDependencies package="." />
+  
+  <include package=".behaviors" />  
 
+  <include package=".portlets" />
+
+  <include package=".browser" />
+  
+
+  
+
+ 
+  <!-- Grok the package to initialise schema interfaces and content classes -->
+
+  <grok:grok package="." />  
+
+  
+  <i18n:registerTranslations directory="locales" />
 
   <genericsetup:registerProfile
       name="default"
@@ -14,6 +32,9 @@
       description="Installs the emc.kb package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <!-- -*- extra stuff goes here -*- -->
-  
+  <!-- -*- extra stuff goes here -*-  -->
+   <adapter factory=".contents.answer.voteNum" name="voteNum" />
+   <adapter factory=".contents.answer.content" name="content" />              
+   <adapter factory=".contents.answer.totalNum" name="totalNum" /> 
+   <adapter factory=".contents.topic.followernum" name="followernum" /> 
 </configure>

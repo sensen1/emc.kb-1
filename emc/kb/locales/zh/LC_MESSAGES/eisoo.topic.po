@@ -1,0 +1,763 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2012-05-05 07:39+0000\n"
+"PO-Revision-Date: 2012-02-25 07:37+0800\n"
+"Last-Translator: panlei <pan.lei@eisoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ./Ifollowed_templates/questionfollowed.pt:60
+#: ./myquestionanswer_templates/myquestion.pt:58
+msgid ".etc"
+msgstr "等等"
+
+#: ./interfaces.py:56
+msgid "A score from 1-100"
+msgstr "一个从1到100的评分"
+
+#: ./browser/addanswer.py:42
+msgid "Add an answer"
+msgstr "添加答案"
+
+#: ./portlets/questionportlet.py:152
+msgid "Add related question portlet"
+msgstr "添加相关问题的面板"
+
+msgid "All"
+msgstr "所有"
+
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:19
+msgid "All Favorites"
+msgstr "所有收藏"
+
+#: ./hotanswer_templates/hotanswer.pt:21
+msgid "All Popular"
+msgstr "所有热门"
+
+#: ./answer_templates/view.pt:91
+#: ./question_templates/view.pt:119
+msgid "Click Hide"
+msgstr "点击隐藏"
+
+#. Default: "文档库"
+#: ./portlets/userportlet.pt:47
+msgid "Document Library"
+msgstr "文档库"
+
+#: ./portlets/questionportlet.py:163
+msgid "Edit recent related question"
+msgstr "编辑最近相关的问题"
+
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:43
+#: ./hotanswer_templates/hotanswer.pt:50
+msgid "Full display"
+msgstr "显示全部"
+
+#. Default: "热门问答"
+#: ./browser/homepage_templates/view.pt:99
+#: ./portlets/userportlet.pt:43
+msgid "Hot QA"
+msgstr "热门问答"
+
+#: ./browser/homepage_templates/view.pt:124
+msgid "Hot topic"
+msgstr "热门话题"
+
+#: ./hotanswer_templates/hotanswer.pt:19
+msgid "Last seven days"
+msgstr "最近7天"
+
+#: ./hotanswer_templates/hotanswer.pt:20
+msgid "Last thirty days"
+msgstr "最近30天"
+
+#: ./browser/personalhomepage_templates/view.pt:15
+msgid "Latest News"
+msgstr "最新动态"
+
+#: ./portlets/questionportlet.py:33
+msgid "Maximum number of related question to show"
+msgstr "显示的最大问题的数目"
+
+#: ./mentionwofolder_templates/view.pt:19
+msgid "Mention Me"
+msgstr "提到我的"
+
+#. Default: "提到我的"
+#: ./portlets/userportlet.pt:28
+msgid "Mention me"
+msgstr "提到我的"
+
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:16
+msgid "My Favorites"
+msgstr "我的收藏"
+
+#. Default: "我的主页"
+#: ./portlets/userportlet.pt:25
+msgid "My HomePage"
+msgstr "我的主页"
+
+#. Default: "我的问答"
+#: ./browser/homepage_templates/view.pt:58
+#: ./portlets/userportlet.pt:42
+msgid "My QA"
+msgstr "我的问答"
+
+#. Default: "我的收藏"
+#: ./portlets/userportlet.pt:31
+msgid "My favorite"
+msgstr "我的收藏"
+
+#. Default: "我的关注"
+#: ./browser/homepage_templates/view.pt:20
+#: ./portlets/userportlet.pt:41
+msgid "My focus"
+msgstr "我的关注"
+
+#: ./profiles/default/types/emc.kb.feed.xml
+msgid "My followed message"
+msgstr "我关注的信息"
+
+#: ./portlets/questionportlet.py:32
+msgid "Number of related question to display"
+msgstr "显示的相关问题的数目"
+
+#. Default: "问答平台"
+#: ./portlets/userportlet.pt:37
+msgid "QA workplace"
+msgstr "问答平台"
+
+#: ./browser/homepage_templates/view.pt:27
+msgid "Question"
+msgstr "问题"
+
+#: ./Ifollowed_templates/questionfollowed.pt:58
+#: ./myquestionanswer_templates/myquestion.pt:56
+msgid "Relate to"
+msgstr "关联到"
+
+#: ./portlets/relatedinformation.py:35
+msgid "Related Information"
+msgstr "相关的信息"
+
+#: ./topic_templates/view.pt:58
+msgid "There is no question."
+msgstr "没有问题"
+
+#. Default: "<!--There is no result.-->"
+#: ./search_templates/view.pt:19
+msgid "There is no result."
+msgstr "没有结果"
+
+#: ./portlets/questionportlet.py:153
+msgid "This portlet displays related question."
+msgstr "显示相关问题的面板"
+
+#: ./browser/personalhomepage_templates/view.pt:54
+msgid "This quesiton got an answer"
+msgstr "这个问题获取一个答案"
+
+#. Default: "This question was added to topic ${topicname}"
+#: ./browser/personalhomepage_templates/view.pt:44
+msgid "This question was added to topic_n"
+msgstr "这个问题被添加到话题${topicname}"
+
+#. Default: "话题广场"
+#: ./portlets/userportlet.pt:44
+msgid "Topic square"
+msgstr "话题广场"
+
+#: ./portlets/userportlet.py:33
+msgid "User portlet"
+msgstr "用户面板"
+
+#: ./browser/personalhomepage_templates/view.pt:21
+msgid "You don't have any information."
+msgstr "你还没有任何信息"
+
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:22
+msgid "You don't have favorite answer."
+msgstr "你还没有收藏答案"
+
+#: ./browser/follow_kss.py:224
+msgid "You have click agreed answer"
+msgstr "你已经点击赞同"
+
+#: ./browser/follow_kss.py:291
+msgid "You have just only one chance to vote."
+msgstr "你只有一次投票机会"
+
+#: ./browser/follow_kss.py:278
+msgid "You have just only one chance to vote. "
+msgstr "你只有一次投票机会"
+
+#: ./myquestionanswer_templates/myanswer.pt:24
+msgid "You have not submit any answer."
+msgstr "你还没有提交任何答案"
+
+#: ./myquestionanswer_templates/myquestion.pt:23
+msgid "You have not submit any question."
+msgstr "你还没有提交任何问题"
+
+#: ./Ifollowed_templates/questionfollowed.pt:26
+msgid "You haven't followed any question."
+msgstr "你还没有关注任何问题"
+
+#: ./Ifollowed_templates/topicfollowed.pt:27
+msgid "You haven't followed any topic."
+msgstr "你还没有关注任何话题"
+
+#. Default: "a month ago"
+#: ./browser/homepage.py:44
+#: ./myquestionanswer.py:58
+msgid "a month ago"
+msgstr "一月前"
+
+#. Default: "a week ago"
+#: ./browser/homepage.py:40
+#: ./myquestionanswer.py:54
+msgid "a week ago"
+msgstr "一周前"
+
+msgid "a_mounth_ago_date"
+msgstr "${year}年${month}月${day}日"
+
+msgid "a_week_ago_date"
+msgstr "${year}年${month}月${day}日"
+
+#: ./browser/personalhomepage_templates/view.pt:17
+msgid "about${count}updates,click for reading"
+msgstr "大约${count}更新，点击查看"
+
+#: ./question_templates/view.pt:78
+msgid "add an answer"
+msgstr "添加答案"
+
+#: ./answer_templates/view.pt:104
+#: ./question_templates/view.pt:58
+msgid "add comment"
+msgstr "添加评论"
+
+#: ./browser/homepage_templates/view.pt:15
+msgid "add question"
+msgstr "添加问题"
+
+#: ./browser/homepage_templates/view.pt:13
+msgid "add topic"
+msgstr "添加话题"
+
+#. Default: "Answer"
+#: ./browser/addanswer.py:57
+msgid "add_answer_button"
+msgstr "回答"
+
+#: ./question.py:79
+msgid "affiliated topics"
+msgstr "关联的话题"
+
+#: ./question.py:80
+msgid "affiliated topics(optional)"
+msgstr "相关话题（可选）"
+
+#. Default: ${year}年${month}月${day}日
+msgid "ago_date"
+msgstr "${year}年${month}月${day}日"
+
+#: ./answer_templates/view.pt:58
+#: ./browser/follow_kss.py:259
+#: ./question_templates/view.pt:86
+msgid "agree answer"
+msgstr "赞同"
+
+#: ./mentionwofolder_templates/view.pt:30
+msgid "agree your question"
+msgstr "赞同你的问题"
+
+#. Default: "all day"
+#: ./hotanswer.py:24
+msgid "all day"
+msgstr "所有"
+
+#: ./topic_templates/view.pt:39
+msgid "all questions"
+msgstr "所有问题"
+
+msgid "all_day"
+msgstr "所有"
+
+#. Default: "answer•"
+#: ./browser/homepage_templates/view.pt:60
+#: ./myquestionanswer_templates/myquestion.pt:32
+#: ./profiles/default/types/emc.kb.answer.xml
+msgid "answer"
+msgstr "答案"
+
+#: ./answer.py:48
+#: ./interfaces.py:116
+msgid "answer id"
+msgstr "答案标识符"
+
+#: ./mentionwofolder_templates/view.pt:40
+msgid "answer question"
+msgstr "回答问题"
+
+#: ./portlets/userportlet.pt:36
+msgid "ask"
+msgstr "提问"
+
+#. Default: "取消"
+#: ./question_templates/view.pt:37
+#: ./topic_templates/view.pt:31
+msgid "cancel"
+msgstr ""
+
+#: ./portlets/userportlet.pt:8
+msgid "click for edit"
+msgstr "编辑"
+
+#: ./question.py:73
+msgid "content of additional,Please keep to 300 characters"
+msgstr "问题补充，请保持在300字符以内。"
+
+#: ./mentionwo.py:46
+msgid "content of answeruser"
+msgstr "回答者内容"
+
+#: ./mentionwo.py:50
+#: ./topic.py:70
+msgid "content of discription"
+msgstr "内容描述"
+
+#: ./question.py:91
+#: ./topic.py:97
+msgid "content of followernum"
+msgstr "内容关注的票数"
+
+#: ./topic.py:66
+msgid "content of name"
+msgstr "内容标题"
+
+#: ./topic.py:88
+msgid "content of relatedquestion"
+msgstr "内容的相关问题"
+
+#: ./answer.py:52
+#: ./interfaces.py:120
+msgid "content of the answer"
+msgstr "内容的答案"
+
+#: ./topic.py:106
+msgid "content of topicscore"
+msgstr "content of topicscore"
+
+#. Default: "days ago"
+#: ./browser/homepage.py:36
+#: ./myquestionanswer.py:50
+msgid "days ago"
+msgstr "天前"
+
+#. Default: "部门"
+#: ./portlets/userportlet.pt:16
+msgid "department"
+msgstr "部门"
+
+#. Default: "取消收藏"
+#: ./answer_templates/view.pt:52
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:50
+msgid "dislike"
+msgstr "取消收藏"
+
+#. Default: "display all answer(total: ${answerNum})"
+#: ./answer_templates/view.pt:113
+msgid "display all answer"
+msgstr "显示所有答案(共: ${answerNum}条)"
+
+#: ./question_templates/view.pt:25
+#: ./topic_templates/view.pt:25
+msgid "edit"
+msgstr "编辑"
+
+#: ./browser/follow_kss.py:180
+msgid "favorite answer"
+msgstr "收藏答案"
+
+#: ./profiles/default/types/emc.kb.feed.xml
+msgid "feed"
+msgstr "信息"
+
+#: ./feed.py:31
+msgid "feed message type"
+msgstr "信息类型"
+
+#: ./profiles/default/types/emc.kb.feedsfolder.xml
+msgid "feedsfolder"
+msgstr "信息文件夹"
+
+#: ./profiles/default/types/emc.kb.feedsfolder.xml
+msgid "feedsfolder for personal followed messages"
+msgstr "个人信息文件夹"
+
+#: ./question_templates/view.pt:64
+msgid "follow question"
+msgstr "关注问题"
+
+#: ./Ifollowed_templates/questionfollowed.pt:49
+#: ./browser/follow_kss.py:65
+#: ./browser/personalhomepage_templates/view.pt:59
+msgid "follow this question"
+msgstr "关注问题"
+
+#: ./Ifollowed_templates/topicfollowed.pt:55
+#: ./browser/follow_kss.py:130
+#: ./topic_templates/view.pt:50
+msgid "follow this topic"
+msgstr "关注话题"
+
+#: ./mentionwofolder_templates/view.pt:52
+#: ./myquestionanswer_templates/myanswer.pt:54
+#: ./search_templates/view.pt:52
+msgid "followed"
+msgstr "关注"
+
+#: ./hotanswer_templates/hotanswer.pt:14
+msgid "hotQA"
+msgstr "热门问答"
+
+#: ./hottopic_templates/hottopic.pt:14
+msgid "hottopic"
+msgstr "热门话题"
+
+#. Default: "hours ago"
+#: ./browser/homepage.py:32
+#: ./myquestionanswer.py:46
+msgid "hours ago"
+msgstr "小时前"
+
+#. Default: "just now"
+#: ./browser/homepage.py:24
+#: ./myquestionanswer.py:38
+msgid "just now"
+msgstr "刚刚"
+
+#. Default: "收藏"
+#: ./answer_templates/view.pt:49
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:47
+#: ./question_templates/view.pt:137
+msgid "like"
+msgstr "收藏"
+
+#: ./profiles/default/types/emc.kb.mentionwofolder.xml
+msgid "mention me folder"
+msgstr "提到我的文件夹"
+
+#: ./profiles/default/types/emc.kb.mentionwo.xml
+msgid "mentionwo"
+msgstr "提到我的"
+
+#: ./mentionwo.py:42
+msgid "mentionwo answerid"
+msgstr "提到我的答案标识符"
+
+#: ./mentionwo.py:45
+msgid "mentionwo answeruser"
+msgstr "提到我的回答者"
+
+#: ./mentionwo.py:49
+msgid "mentionwo discription"
+msgstr "提到我的描述"
+
+#: ./mentionwo.py:33
+#: ./mentionwofolder.py:35
+msgid "mentionwo id"
+msgstr "提到我的标识符"
+
+#: ./mentionwo.py:39
+msgid "mentionwo question"
+msgstr "提到我的问题"
+
+#: ./profiles/default/types/emc.kb.mentionwofolder.xml
+msgid "mentionwofolder"
+msgstr "提到我的"
+
+#: ./profiles/default/types/emc.kb.mentionwo.xml
+msgid "metion me infomation"
+msgstr "提到我的信息"
+
+#. Default: "minutes ago"
+#: ./browser/homepage.py:28
+#: ./myquestionanswer.py:42
+msgid "minutes ago"
+msgstr "分钟前"
+
+#: ./Ifollowed_templates/questionfollowed.pt:65
+#: ./Ifollowed_templates/topicfollowed.pt:70
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:56
+msgid "more"
+msgstr "更多"
+
+#: ./answer_templates/view.pt:87
+#: ./question_templates/view.pt:115
+msgid "more ..."
+msgstr "更多"
+
+#: ./myquestionanswer_templates/myanswer.pt:19
+#: ./myquestionanswer_templates/myquestion.pt:17
+msgid "my answer"
+msgstr "我的答案"
+
+#: ./myquestionanswer_templates/myanswer.pt:16
+#: ./myquestionanswer_templates/myquestion.pt:14
+msgid "my questions"
+msgstr "我的问题"
+
+#. Default: "${answernum}answer"
+#: ./Ifollowed_templates/questionfollowed.pt:35
+#: ./browser/personalhomepage_templates/view.pt:56
+#: ./question_templates/view.pt:75
+msgid "n_answer"
+msgstr "${answernum}答案"
+
+#. Default: "${answernum}answer"
+#: ./topic_templates/view.pt:73
+msgid "n_answer_num"
+msgstr "${answernum}个答案"
+
+#. Default: "(${fnum}favorites in total)"
+#: ./browser/favoritefolder_templates/myfavoritefolder.pt:17
+msgid "n_favorite_label"
+msgstr "${fnum}收藏"
+
+#. Default: "${count} people followed the question"
+#: ./portlets/relatedinformation.pt:12
+msgid "n_follow_number"
+msgstr "${count}个人关注"
+
+#. Default: "${fnum}question"
+#: ./browser/homepage_templates/view.pt:22
+msgid "n_question_label"
+msgstr "${fnum}问题"
+
+#. Default: "${tnum}topic"
+#: ./browser/homepage_templates/view.pt:24
+msgid "n_topic_label"
+msgstr "${tnum}话题"
+
+#. Default: "${voteNum}vote"
+#: ./answer_templates/view.pt:79
+msgid "n_vote"
+msgstr "${voteNum}票"
+
+#. Default: "${voteNum}votes"
+#: ./question_templates/view.pt:106
+msgid "n_votes_label"
+msgstr "${voteNum}票"
+
+#: ./portlets/userportlet.py:82
+msgid "non signature"
+msgstr "添加个性签名"
+
+#: ./answer_templates/view.pt:63
+#: ./question_templates/view.pt:91
+msgid "not agree answer"
+msgstr "不赞同"
+
+#: ./browser/follow_kss.py:203
+msgid "not favorite answer"
+msgstr "取消收藏答案"
+
+#: ./portlets/userportlet.py:74
+msgid "not fill department"
+msgstr "没有部门信息"
+
+#: ./portlets/userportlet.py:67
+msgid "not fill position"
+msgstr "没有职位信息"
+
+#. Default: "<span>${DYNAMIC_CONTENT}</span>num comment"
+#: ./answer_templates/view.pt:102
+#: ./question_templates/view.pt:56
+msgid "num comment"
+msgstr "条评论"
+
+#: ./mentionwofolder_templates/view.pt:32
+msgid "of the answer"
+msgstr "中的答案"
+
+#. Default: "确定"
+#: ./question_templates/view.pt:36
+#: ./topic_templates/view.pt:30
+msgid "ok"
+msgstr ""
+
+#. Default: "职位"
+#: ./portlets/userportlet.pt:14
+msgid "position"
+msgstr "职位"
+
+#: ./browser/homepage_templates/view.pt:59
+#: ./profiles/default/types/emc.kb.question.xml
+msgid "question"
+msgstr "问题"
+
+#: ./question.py:72
+msgid "question additional"
+msgstr "问题的补充"
+
+#: ./profiles/default/types/emc.kb.questionfolder.xml
+msgid "question folder"
+msgstr "问题夹"
+
+#: ./question.py:90
+msgid "question followernum"
+msgstr "问题关注数目"
+
+#: ./feed.py:28
+#: ./question.py:68
+msgid "question id"
+msgstr "问题标识符"
+
+#: ./portlets/relatedinformation.pt:3
+msgid "question status"
+msgstr "问题状态"
+
+#: ./profiles/default/types/emc.kb.questionfolder.xml
+msgid "questionfolder"
+msgstr "问题夹"
+
+#: ./questionfolder.py:38
+msgid "questionfolder id"
+msgstr "问题夹标识符"
+
+#. Default: "questions I followed ) ${qnum})"
+#: ./Ifollowed_templates/questionfollowed.pt:15
+#: ./Ifollowed_templates/topicfollowed.pt:17
+msgid "questions I followed"
+msgstr "我关注的问题(${qnum})"
+
+#: ./portlets/questionportlet.pt:4
+#: ./portlets/questionportlet.py:43
+msgid "related question"
+msgstr "相关问题"
+
+#: ./mentionwo.py:36
+msgid "state"
+msgstr "状态"
+
+#: ./question.py:111
+msgid "the max-length of the description is 300"
+msgstr "问题补充的最大长度为300个字符"
+
+#: ./topic_templates/view.pt:69
+msgid "this question is added to"
+msgstr "这个问题被添加到"
+
+#: ./browser/homepage_templates/view.pt:39
+#: ./profiles/default/types/emc.kb.topic.xml
+#: ./topic_templates/view.pt:71
+msgid "topic"
+msgstr "话题"
+
+#: ./topic.py:69
+msgid "topic discription"
+msgstr "话题描述"
+
+#: ./profiles/default/types/emc.kb.topicfolder.xml
+msgid "topic folder"
+msgstr "话题夹"
+
+#: ./topic.py:96
+msgid "topic followernum"
+msgstr "话题关注数目"
+
+#: ./topic.py:62
+msgid "topic id"
+msgstr "话题标识符"
+
+#: ./topic.py:65
+msgid "topic name"
+msgstr "话题名称"
+
+#: ./topic.py:73
+msgid "topic picture"
+msgstr "话题图片"
+
+#: ./topic.py:87
+msgid "topic relatedquestion"
+msgstr "话题的相关问题"
+
+#: ./topic.py:105
+msgid "topic topicscore"
+msgstr "话题评分"
+
+#. Default: "topic ${topic} added an answer"
+#: ./browser/personalhomepage_templates/view.pt:49
+msgid "topic_n_added_an_answer"
+msgstr "话题${topic}被添加一个答案"
+
+#: ./profiles/default/types/emc.kb.topicfolder.xml
+msgid "topicfolder"
+msgstr "话题夹"
+
+#: ./topicfolder.py:40
+msgid "topicfolder id"
+msgstr "话题夹标识符"
+
+#. Default: "topics I followed ( ${num})"
+#: ./Ifollowed_templates/questionfollowed.pt:20
+#: ./Ifollowed_templates/topicfollowed.pt:23
+msgid "topics I followed"
+msgstr "我关注的话题(${num})"
+
+#: ./Ifollowed_templates/questionfollowed.pt:61
+#: ./myquestionanswer_templates/myquestion.pt:59
+msgid "topics."
+msgstr "话题。"
+
+#: ./answer.py:60
+#: ./interfaces.py:128
+msgid "totalNum"
+msgstr "总票数"
+
+#: ./Ifollowed_templates/questionfollowed.pt:53
+#: ./browser/follow_kss.py:105
+#: ./browser/personalhomepage_templates/view.pt:63
+msgid "unfollow this question"
+msgstr "取消关注"
+
+#: ./Ifollowed_templates/topicfollowed.pt:59
+#: ./browser/follow_kss.py:155
+msgid "unfollow this topic"
+msgstr "取消关注"
+
+#: ./mentionwofolder_templates/view.pt:55
+#: ./myquestionanswer_templates/myanswer.pt:58
+#: ./question_templates/view.pt:67
+msgid "unfollowed"
+msgstr "取消关注"
+
+#: ./question_templates/view.pt:140
+msgid "unlike"
+msgstr "取消关注"
+
+#: ./question_templates/view.pt:60
+msgid "update List"
+msgstr "更新列表"
+
+#: ./answer_templates/view.pt:84
+#: ./question_templates/view.pt:112
+msgid "vote from"
+msgstr "来自"
+
+#: ./answer.py:56
+#: ./interfaces.py:124
+msgid "voteNum"
+msgstr "票数"
+

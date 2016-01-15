@@ -1,0 +1,38 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="emc.topic">
+
+    <!-- Ensure Plone's portlets ZCML has already been processed; without
+         this, we may get a permission lookup error
+      -->
+    <include package="plone.app.portlets" />
+
+    <plone:portlet
+        name="emc.userportlet"
+        interface=".userportlet.IuserportletProvider"
+        assignment=".userportlet.Assignment"
+        renderer=".userportlet.Renderer"
+        addview=".userportlet.AddForm"
+  
+        />
+
+	 <plone:portlet
+        name="emc.questionportlet"
+        interface=".questionportlet.IQuestionPortlet"
+        assignment=".questionportlet.Assignment"
+        renderer=".questionportlet.Renderer"
+        addview=".questionportlet.AddForm"
+  
+        />
+
+     <plone:portlet
+        name="emc.relatedinformation"
+        interface=".relatedinformation.IRelatedInformation"
+        assignment=".relatedinformation.Assignment"
+        renderer=".relatedinformation.Renderer"
+        addview=".relatedinformation.AddForm"
+  
+        />
+
+</configure>

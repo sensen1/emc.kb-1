@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+		<div class="zoneHead">
+			<div class="zoneHeadLeft">
+				<img src="++resource++eisoo.topic/latest.png" />&nbsp;
+				<span class="highlight" i18n:translate="Latest News">Latest News</span>				
+				<span style=" margin-left:70px;">
+					<a href="#" i18n:translate="" class="orange">about<span tal:content="python:view.feedsNum" i18n:name="count">15</span>updates,click for reading</a>
+				</span>
+			</div>
+		</div>
+		<div class="noexist" tal:condition="python:not(view.havefeeds)" i18n:translate="You don't have any information.">
+			You don't have any information.
+		</div>
+		<div tal:condition="view/havefeeds">
+			<div class="qbox hrtop" tal:repeat="feedbrain python:view.fetchAllFollowedNewThings()">
+				<div tal:define="question python:view.fetchQobjByid(feedbrain)">
+					<div tal:condition="question" 
+					     tal:define="relatetopics python:view.fetchRlatedTopic(question);
+					       questionid question/id;
+									   answernum python:view.fetchAnswerNumByQuestion(question);
+									   answer python:view.fetchnewestAnswerByQuestion(question);
+									   type python:view.fetchFeedType(feedbrain);
+									   qauthor python:view.fetchAuthorInfo(question)">
+		   	
+						<div class="boxTitle">
+							<a tal:attributes="href python:question.getURL()">
+								<span tal:content="python:question.Title">question title</span>
+							</a>						
+							<span class="littleAvatar" tal:content=" structure qauthor/portrait"></span>						 
+						</div>					
+						<div>
+							<div tal:omit-tag="" tal:condition="python:type==1" i18n:translate="This question was added to topic_n">
+									This question was added to topic
+									<span i18n:name="topicname" tal:repeat="relatetopic python:relatetopics[:3]"><a tal:attributes="href python:relatetopic.absolute_url()"  tal:content="relatetopic/Title">topicname</a></span>
+							</div>
+							
+							<div tal:omit-tag="" tal:condition="python:type==2" i18n:translate="topic_n_added_an_answer">
+								topic	
+								<span i18n:name="topic" tal:repeat="relatetopic python:relatetopics[:3]"><a  tal:attributes="href python:relatetopic.absolute_url()"	  tal:content="relatetopic/Title">topicname</a></span>
+								added an answer				
+							</div>
+																	
+							<div tal:omit-tag="" tal:condition="python:type==3">
+								<span i18n:translate="This quesiton got an answer">This quesiton got an answer</span>
+							</div>
+							<div tal:omit-tag=""  tal:condition="answernum" i18n:translate="n_answer"><span tal:content="answernum">0</span>answer</div>				
+							<tal:block tal:define="follow python:view.isFollowed(question)">
+								<span class="fire-question-follow" tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;';id python: 'fire-question-follow-'+questionid">
+									<a 	href="#" tal:attributes="class string:kssattr-questionid-${questionid}" 
+									i18n:translate="follow this question">follow this question</a>
+								</span>
+								<span class="fire-question-unfollow" tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;';id python: 'fire-question-unfollow-'+questionid"> 
+									<a href="#" tal:attributes="class string:kssattr-questionid-${questionid}" 
+									i18n:translate="unfollow this question">unfollow this question</a>
+								</span>
+							</tal:block>
+						</div>
+						<div class="boxBody"  tal:condition="answer">
+							<div class="boxBodyLeft" >
+								<span tal:content="answer/voteNum">15</span>
+							</div>
+							<div class="boxBodyRight">
+								<div>
+									<span class="linkcolor" tal:content="answer/Creator">nima</span>
+									<span class="description" tal:content="answer/Description">Description</span>
+							<div tal:define="aauthor python:view.fetchAuthorInfo(answer)">
+								<span class="littleAvatar" tal:content=" structure aauthor/portrait"></span>
+							</div> 
+								</div>
+								<div tal:define="con python:answer.content" tal:content="structure python:con">
+									answer content
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

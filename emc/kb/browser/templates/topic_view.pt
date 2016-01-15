@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+	<metal:content-core define-macro="main">	
+	<div class="qbox">
+		<div class="boxTopicBody">
+			<div class="boxBodyLeft" tal:condition="python:view.isTopicpicAvalable()">
+				<img tal:replace="structure context/@@images/topicpic/thumb" />
+			</div>
+			<div class="boxBodyLeft" tal:condition="python:not(view.isTopicpicAvalable())">
+				<img src="++resource++eisoo.topic/topicdefault.gif" />
+			</div>
+			<div class="boxBodyRight">
+				<div tal:content="context/Title">topic title</div>
+				
+				<span class="boxBodyContent" id="showdisc" tal:content="context/discription"/>
+				<a href="javascript:void(0)" onclick="outdisplaydisc()">
+					<span id="editdisc" class="edit" i18n:translate="edit">edit</span>
+				</a>
+				<div id="modifydisc" tal:attributes="modifydisc string:${context/absolute_url}/@@modify-discription">
+					<form id="modifydiscform" style=" display:none;">
+						<textarea tal:content="context/discription"/>
+						<button name="ok" i18n:translate="ok">确定</button>
+						<button name="cancel" i18n:translate="cancel">取消</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="zoneHeadLeft">
+		<span class="highlight" i18n:translate="all questions">all questions</span>&nbsp;
+	<!--<span class="spp">|</span>
+		<a tal:attributes="href python:context.absolute_url()+'/@@bestanswer';">
+		<span class="highlight" i18n:translate="best answer">best answer</span>&nbsp;</a>
+		<span class="spp">|</span>
+		<a tal:attributes="href python:context.absolute_url()+'/@@waitanswer';">
+		<span class="highlight" i18n:translate="wait answer">wait answer</span>&nbsp;</a>-->
+	</div>
+	<div class="zoneHeadRight">
+		<span id="topic-follow-box" tal:define="follow python:view.isFollowed()">
+			<span id="fire-topic-follow" tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;'">
+				<a href="#"><img src="++resource++eisoo.topic/plus.png" />&nbsp;<span i18n:translate="follow this topic" >follow this topic</span></a>
+			</span>
+			<span id="fire-topic-unfollow" tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;'">
+				<a href="#"><img src="++resource++eisoo.topic/subtract.png" />&nbsp;<span i18n:translate="unfollowed" >unfollowed</span></a>
+			</span>
+		</span>
+	</div>
+	<div id="ajaxdisplay" tal:define="content  python:view.fetchAllRelatedQuestion(0,3)" tal:attributes="data-ajax-target string:${context/absolute_url}/@@topicmore">
+			<div class="noexist" tal:condition="not:content" i18n:translate="There is no question.">
+				There is no question.
+			</div>
+    		<tal:block condition="content">
+			<div class="qbox hrtop" tal:repeat="question content">
+				<div tal:omit-tag="" tal:define="qview nocall:question/@@view">
+					<div class="boxTitle">
+						<a tal:attributes="href python:question.absolute_url()" tal:content="python:question.title"></a>
+					</div>
+					<div class="answerbox" tal:define="answers python:qview.fetchAllAnswers()">
+						<div class="boxFoot">						 
+						 	<span i18n:translate="this question is added to">this question is added to</span>
+							<span class="linkcolor" tal:content="context/Title"></span>
+							<span i18n:translate="topic">topic</span>•
+							<span i18n:translate="n_answer_num">
+								<span tal:content="python:len(answers)" i18n:name="answernum">25</span>answer
+							</span>•
+							
+							<span class="linkcolor" tal:define="follow python:view.questionIsFollowed(question);questionid python:(question.id).replace('.','_')">
+								<span tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;'; id python: 'question-follow-'+questionid; question-follow string:${context/absolute_url}/@@ajax-followtq">
+									<a class="followtqjq" href="#" i18n:translate="follow this question">follow this question</a>
+									<input style="display:none;" type="text" tal:attributes="value questionid" />
+								</span>
+								<span tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;'; id python: 'question-unfollow-'+questionid; question-unfollow string:${context/absolute_url}/@@ajax-unfollowtq">
+									<a class="unfollowtqjq" href="#" i18n:translate="unfollow this question">unfollow this question</a>
+									<input style="display:none;" type="text" tal:attributes="value questionid" />
+								</span>
+							</span>
+							
+						</div>
+						<div tal:omit-tag="" tal:condition="python:(len(answers) >0)">
+							<div class="boxBody"  tal:define="firstanswer python:answers[0]">
+								<div class="boxBodyLeft"><span tal:content="python:firstanswer.voteNum">12</span></div>								
+								<div class="boxBodyRight">
+									<div class="content" tal:define="con python:firstanswer.content" tal:content="structure python:con" />
+								</div>				
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	  		<a id="ajaxmore-link" tal:condition="python:view.TopicQuestionNum()>3" href="javascript:void(0)"><div id="ajaxmore" i18n:translate="more">more</div></a> 
+        </tal:block>    
+	</div>
+	</metal:content-core>
+</metal:main>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="content-core">
+	<metal:content-core define-macro="content-core">	
+		<div class="questionBox" tal:define="question python:view.parentQuestion">
+			<div tal:define="qobj python:question;
+			                 qview nocall:qobj/@@view;
+			                 toplists python:qview.fetchRelatedTopics(qobj)">
+				<ul tal:condition="python:len(toplists)" class="floatTab" 
+					tal:repeat="topic toplists">
+				 	<li><div class="topicTabLeft"></div>
+				 		<div class="topicTabBody" style=" font-size:16px;">
+				 			<a tal:attributes="href python:topic.absolute_url()" 
+				 			tal:content="python:topic.title">related topic</a>
+						</div>
+				 		<div class="topicTabRight"></div>
+				 	</li>					
+				</ul>
+			</div>
+			
+			<div class="questionTitle add_obj_button">
+				<span tal:content="question/Title">question title</span>
+				
+<!--				
+				<a tal:attributes="href python:context.absolute_url() + '/edit'" 
+				  i18n:translate="edit">edit</a>
+-->				
+				
+			</div>
+			<div class="questionDescription">
+				<span tal:content="question/description">question description</span>
+				
+<!--	fix to ajajx edit			
+				<a href="#">
+					<span class="edit" i18n:translate="edit">edit</span>
+				</a>
+-->				
+				
+			</div>
+			<div tal:define="favorite python:view.isfavorited()">
+				<div id="favorite_answer-favorite" tal:attributes="style python: favorite and 'display:none;;' or 'display:block;;'">
+					<a href="#" i18n:translate="like" >like</a>
+				</div>
+				<div id="favorite_answer-unfavorite" tal:attributes="style python: favorite and 'display:block;;' or 'display:none;;'">
+					<a href="#" i18n:translate="dislike" >dislike</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="qbox hrtop">
+			<div class="voteup" title="agree answer" i18n:attributes="title">
+				<div class="click_answer-agree" tal:define="answerid context/id">
+					<a href="#" tal:attributes="class string:kssattr-answerid-${answerid}"></a>
+				</div>
+			</div>
+			<div class="votedown" title="not agree answer" i18n:attributes="title">
+				<div class="click_answer-unagree" tal:define="answerid context/id">
+					<a href="#" tal:attributes="class string:kssattr-answerid-${answerid}"></a>
+				</div>
+			</div>
+			
+       	<div class="boxTitle" tal:define="answerid context/id; creatorinfo python:view.GetCreatorInfo(answerid)">
+       		<a class="authorname" tal:attributes="href creatorinfo/homepage">
+       			<span class="username" tal:content="creatorinfo/username">username</span>
+       		</a>，
+       		<span class="description" tal:content="creatorinfo/description">description</span>
+       		<span class="littleAvatar" tal:content=" structure creatorinfo/portrait"></span>
+       	</div>
+   
+			<div class="answervote" tal:define="answerid context/id">
+				<span tal:attributes="id answerid" i18n:translate="n_vote">
+					<span tal:content="context/voteNum" i18n:name="voteNum">10</span>vote</span>
+				<span tal:condition="python:not view.fetchvotelist(3)">
+					<span tal:attributes="id python: 'votelist-' + answerid" />
+				</span>
+				<span tal:condition="python:view.fetchvotelist(3)">
+					<span i18n:translate="vote from">vote from</span>
+	         	 	<span class="answervotershide" tal:define="voters python:view.fetchvotelist(3);" tal:attributes="id python: 'votelist-'+answerid">
+	         	 		<span tal:repeat="voter voters" tal:content="voter">user</span>
+						<a href="javascript:void(0)" tal:condition="python:context.voteNum>3" onclick="voteShowAll(this)" i18n:translate="more ...">more ...</a>
+				   </span>
+				   <span class="answervotersall" tal:define="voters python:view.fetchvotelist(all);" tal:attributes="id python: 'morelist-'+answerid" style="display:none;">
+	         	 		<span tal:repeat="voter voters" tal:content="voter">user</span>
+						<a href="javascript:void(0)" onclick="voteHide(this)" i18n:translate="Click Hide"> Click Hide</a>
+				   </span>
+				</span>
+       	</div>
+			 
+	        <div class="answercontent" 
+	        tal:define="con context/content" tal:content="structure python:view.transfer2text(con)">content</div>
+	        <div class="answercrenated">
+	       	 <a  href="javascript:void(0)"><span tal:content="view/answerdate">2010-12-12</span></a>
+				 <tal:block tal:define="commnetnum python:view.getcommentnum()">
+					<a href="#" tal:condition="python:commnetnum > 0" tal:attributes="href python:context.absolute_url() +'#form-widgets-text' ">
+						<span tal:content="commnetnum">1</span><span i18n:translate="num comment">num comment</span>
+					</a>
+					<a href="#" tal:condition="python:commnetnum < 1" tal:attributes="href python:context.absolute_url() +'#form-widgets-text' " i18n:translate="add comment">add comment</a>
+				</tal:block>
+			 </div>
+			 <div tal:content="structure context/@@view/plone.comments" />
+		</div>
+		
+		<div class="qbox hrtop">
+			<a tal:attributes="href python:view.parenturl" 
+				i18n:translate="display all answer">display all answer(total:
+			<span i18n:name="answerNum" tal:content="view/answerNum"></span>)
+			</a>
+		</div>
+		
+		<!--
+		<div id="click_answer-agree">
+			<a href="#" i18n:translate="agree">agree</a>
+		</div>
+		<div id="click_answer-unagree">
+			<a href="#" i18n:translate="disagree">disagree</a>
+		</div>
+		-->
+	</metal:content-core>
+</metal:main>
+
+</body>
+</html>
+

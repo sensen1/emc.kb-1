@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="emc.kb">
+<body>
+
+<metal:main fill-slot="main">
+  <metal:main define-macro="main">
+		<div id="zoneHead">
+			<div class="zoneHeadLeft">
+				<a tal:attributes="href python:context.absolute_url()+'/@@questionfollowed';">
+					<span class="orange">
+						<span i18n:translate="questions I followed">questions I followed )
+						<span i18n:name="qnum" tal:content="view/questionsnum">25</span>)
+					</span>
+				</a>
+				<span class="spp">|</span>
+				<span>
+					<span i18n:translate="topics I followed">topics I followed (
+					<span i18n:name="num" tal:content="view/topicsnum">53</span>)</span>
+			</div>
+		</div>  
+		<div id="ajaxdisplay" tal:define="content python:view.fetchtopicsIfollowed(0,2)" tal:attributes="data-ajax-target string:${context/absolute_url}/@@topicfollowedmore">
+			<div class="noexist" tal:condition="not:content" i18n:translate="You haven't followed any topic.">
+				You haven't followed any topic.
+			</div>		
+			<tal:block condition="content">			
+			    <div class="qbox hrbottom" tal:repeat="topic content">
+					<div class="boxTopicBody">
+						<div tal:condition="python:view.isTopicpicAvalable(topic)" class="boxBodyLeft" tal:define="topicc python:topic.getObject()">
+							<a tal:attributes="href topic/getURL"><img tal:replace="structure topicc/@@images/topicpic/thumb" /></a>
+						</div>
+						<div tal:condition="python:not(view.isTopicpicAvalable(topic))" class="boxBodyLeft">
+							<a tal:attributes="href topic/getURL"><img src="++resource++eisoo.topic/topicdefault.gif" /></a>
+						</div>
+						<div class="boxBodyRight">
+							<div tal:define="topicid topic/id">
+								<a tal:attributes="href topic/getURL" tal:content="topic/Title" />
+
+								<tal:block tal:define="follow python:view.isFollowed(topic)">
+									<span tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;'; id python: 'topic-follow-'+topicid; topic-follow string:${context/absolute_url}/@@ajax-followtopic">
+										<a class="followtjq" href="#" i18n:translate="follow this topic">follow this topic</a>
+										<input type="hidden" tal:attributes="value topicid" />
+									</span>
+									<span tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;'; id python: 'topic-unfollow-'+topicid; topic-unfollow string:${context/absolute_url}/@@ajax-unfollowtopic">
+										<a class="unfollowtjq" href="#" i18n:translate="unfollow this topic">unfollow this topic</a>
+										<input type="hidden" tal:attributes="value topicid" />
+									</span>
+								</tal:block>
+								
+							</div>
+							<div class="boxBodyContent" tal:content="topic/Description"></div>
+							<!--<div class="boxBodyFoot"><a href="#" i18n:translate="edit">edit</a></div>-->
+						</div>
+					</div>
+			    </div>					
+				<a id="ajaxmore-link" tal:condition="python:view.topicsnum>2" href="javascript:void(0)"><div id="ajaxmore" i18n:translate="more">more</div></a>
+			</tal:block>
+       </div>
+  </metal:main>
+</metal:main>
+
+</body>
+</html>

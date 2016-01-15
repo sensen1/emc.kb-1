@@ -1,0 +1,3 @@
+<tal:block>
+	<div tal:replace="structure view/form/render" />
+</tal:block>

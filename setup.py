@@ -22,16 +22,23 @@ setup(name='emc.kb',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['emc'],
       include_package_data=True,
-      zip_safe=False,
+      zip_safe=False,     
       install_requires=[
           'setuptools',
+          'MySQL-python',
           'SQLAlchemy',
+          'plone.app.dexterity',
+          'plone.namedfile [blobs]',
+          'plone.app.registry',
+          'plone.app.z3cform',
+          'plone.app.relationfield',
+          'z3c.caching',
+          'zope.annotation',                              
           # -*- Extra requirements: -*-
       ],
-      
-      extras_require={
+       extras_require={
           'test': ['plone.app.testing',]
-          },         
+      },         
       entry_points="""
       # -*- Entry points: -*-
 

@@ -5,10 +5,10 @@ from zope import schema
 from zope.interface import implements
 
 from eisoo.operation import operation_session
-from eisoo.market.mapping_db import AreaMarketlogs
-from eisoo.market.interfaces import IAreaMarketlogsLocator
+from emc.kb.mapping_db import AreaMarketlogs
+from emc.kb.interfaces import IAreaMarketlogsLocator
 
-from eisoo.market import MessageFactory as _
+from emc.kb import MessageFactory as _
 
 class AreaMarketlogsLocator(grok.GlobalUtility):
     implements(IAreaMarketlogsLocator)

@@ -1,0 +1,55 @@
+
+<dl class="portlet portletPromotions" i18n:domain="emc.kb">
+    <dd class="userinformation" tal:define="pview context/@@plone; thisURL python:pview.getCurrentUrl();">
+    	<div id="myInfo">
+        	<div id="infoBox">
+            	<div id="avatarAndInfo">
+                	<div id="myAvatar">
+                		<a tal:attributes="href python:pview.navigationRootUrl()+'/@@personal-information'" title="click for edit" i18n:attributes="title">
+                			<img tal:replace="structure python:view.getPortrait()" />
+						</a>
+					</div>
+                    <div id="detailInfo">
+                    		<div class="detailInfo-username" tal:content="python:view.getUsername()">吴军锋</div>
+                        <div class="detailInfo-title" i18n:translate="position">职位</div>
+                        <div tal:content="python:view.getPosition()">产品设计师</div>
+                        <div class="detailInfo-title"  i18n:translate="department">部门</div>
+                        <div tal:content="python:view.getDepartment()">产品设计师</div>
+                    </div>
+                </div>
+                <div id="signature">
+                	<p tal:content="python:view.getSignature()">（add sign）</p>
+                </div>
+            </div>
+            <div tal:attributes="class python: thisURL==str(view.getHomepage()+'/feedsfolder') and 'infoTab_on' or 'infoTab'">
+				<a id="myHome" tal:attributes="href python:view.getHomepage()+'/feedsfolder'" i18n:translate="My HomePage">我的主页</a>
+			</div>
+            <div tal:attributes="class python: thisURL==str(view.getHomepage()+'/mentionwofolder') and 'infoTab_on' or 'infoTab'">
+				<a id="mentioned" tal:attributes="href python:view.getHomepage()+'/mentionwofolder'" i18n:translate="Mention me">提到我的</a>
+			</div>
+            <div tal:attributes="class python: (str('@@myfavoritefolder') in(thisURL)) and 'infoTab_on' or 'infoTab'">
+            	<a id="myFavorite" tal:attributes="href python:pview.navigationRootUrl()+'/@@myfavoritefolder'" i18n:translate="My favorite">我的收藏</a>
+			 </div>
+        </div>
+        <div class="myList">
+        	<div tal:attributes="class python: (str('@@homepage') in(thisURL)) and 'infoTab_on' or 'infoTab'">
+        		<span class="add_obj_button"><a id="userportlet-ask" tal:attributes="href python:view.getQuestionFolder()+'/++add++emc.kb.question'" i18n:translate="ask">ask</a></span>
+				<a id="homepage" tal:attributes="href python:pview.navigationRootUrl()+'/@@homepage'" i18n:translate="QA workplace">问答平台</a>
+				
+			</div>
+            <ul id="qadetail">
+            	<li tal:attributes="class python: ((str('@@questionfollowed') in(thisURL)) or (str('@@topicfollowed') in(thisURL))) and 'infoTab_on' or 'infoTab'"><a tal:attributes="href python:pview.navigationRootUrl()+'/@@questionfollowed'" i18n:translate="My focus">我的关注</a></li>
+            	<li tal:attributes="class python: ((str('@@myquestion') in(thisURL)) or (str('@@myanswer') in(thisURL))) and 'infoTab_on' or 'infoTab'"><a tal:attributes="href python:pview.navigationRootUrl()+'/@@myquestion'" i18n:translate="My QA">我的问答</a></li>
+            	<li tal:attributes="class python: (str('@@hotanswer') in(thisURL)) and 'infoTab_on' or 'infoTab'"><a tal:attributes="href python:pview.navigationRootUrl()+'/@@hotanswer'" i18n:translate="Hot QA">热门问答</a></li>
+            	<li tal:attributes="class python: (str('@@hottopic') in(thisURL)) and 'infoTab_on' or 'infoTab'"><a tal:attributes="href python:pview.navigationRootUrl()+'/@@hottopic'" i18n:translate="Topic square">话题广场</a></li>
+            </ul>
+	        <div class="infoTab">
+	        	<a id="docLibrary" href="javascript:void(0)" i18n:translate="Document Library">文档库</a>
+	        </div>
+        </div>
+	</dd>
+	<dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
