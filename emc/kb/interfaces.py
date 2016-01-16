@@ -128,3 +128,14 @@ class Iaddanswer(Interface):
             title=_(u"totalNum"),
             default=0,
         )
+    
+# db insterface
+class IModelLocator (Interface):
+    """medel table add row"""
+    
+    def addModel(self):
+        "add a model data"
+        
+    def queryModel(self):
+        "query model by search condition"    
+    

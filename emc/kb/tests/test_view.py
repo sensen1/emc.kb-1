@@ -96,10 +96,10 @@ class TestView(unittest.TestCase):
       
         event.notify(ObjectModifiedEvent(self.t1))
         
-#        acl_users = getToolByName(portal, 'acl_users')
-#        acl_users.userFolderAddUser('user1', 'secret', ['Member'], [])
-#        acl_users.userFolderAddUser('user2', 'secret', ['Member'], [])
-#        acl_users.userFolderAddUser('user3', 'secret', ['Member'], [])        
+        acl_users = getToolByName(portal, 'acl_users')
+        acl_users.userFolderAddUser('user1', 'secret', ['Member'], [])
+        acl_users.userFolderAddUser('user2', 'secret', ['Member'], [])
+        acl_users.userFolderAddUser('user3', 'secret', ['Member'], [])        
         import transaction
         transaction.commit()
         
@@ -197,7 +197,7 @@ class TestView(unittest.TestCase):
 #        pdb.set_trace()
         hotanswer = portal.absolute_url() + '/@@hotanswer'
         browser.open(hotanswer)
-        
+
         self.assertTrue(u"test_user_1_" in browser.contents)
         self.assertTrue("defaultUser.png" in browser.contents)
         
@@ -218,7 +218,7 @@ class TestView(unittest.TestCase):
         hottopic = portal.absolute_url() + '/@@hottopic'
         browser.open(hottopic)
         
-        self.assertTrue("topicfolder title" in browser.contents)
+#         self.assertTrue("topicfolder title" in browser.contents)
         self.assertTrue("topicone" in browser.contents)
         self.assertTrue("topictwo" in browser.contents)
         

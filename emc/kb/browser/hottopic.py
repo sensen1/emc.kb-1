@@ -6,7 +6,6 @@ from emc.kb.contents.topicfolder import Itopicfolder
 from emc.kb.contents.topic import Itopic
 from emc.kb.utility import topicdate
 
-
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from AccessControl.SecurityManagement import getSecurityManager
 from Products.CMFCore.utils import getToolByName

@@ -9,12 +9,12 @@
 
 <metal:main fill-slot="main">
   <metal:content-core define-macro="main">
-		<div class="zoneHead">
-         <div class="zoneHeadLeft">
+		<div class="row zoneHead">
+         <div class="col-md-3 zoneHeadLeft">
 			<span class="zoneHeadLeftTitle" i18n:translate="hotQA">hotQA</span>...
 			<span tal:content="python:view.fetchdatedisplay()">2011/11/26</span>
 			</div>
-         <div class="zoneHeadRight" tal:define="currentNum python:view.currentDateNum()">
+         <div class="col-md-9 zoneHeadRight" tal:define="currentNum python:view.currentDateNum()">
 				<select onchange="window.location.href=this.value;">
 					<option value="@@hotanswer" i18n:translate="Last seven days" tal:attributes="selected python: currentNum==7 and 'selected' or ''">Last seven days</option>
 					<option value="@@hotanswer?timelimit=30" i18n:translate="Last thirty days" tal:attributes="selected python: currentNum==30 and 'selected'  or ''">Last thirty days</option>
@@ -23,39 +23,51 @@
 			</div>
 		</div>
 		<div tal:condition="python:view.haveHotAnswer">
-			<div class="qbox hrtop" tal:repeat="hotanswer python:view.fetchHotAnswer()">
+			<div class="row qbox hrtop" tal:repeat="hotanswer python:view.fetchHotAnswer()">
 				<div tal:omit-tag="" tal:define="answerobj python:hotanswer.getObject()">
-					<div class="boxTitle">
-						<a tal:attributes="href python:hotanswer.getURL()" tal:content="python:view.fetchParentQuestion(hotanswer)">this a title</a>
+					<div class="col-md-12 boxTitle">
+						<a tal:attributes="href python:hotanswer.getURL()" 
+							tal:content="python:view.fetchParentQuestion(hotanswer)">this a title</a>
 					</div>
-					<div class="boxBody">
-						<div class="boxBodyLeft">
+					<div class="col-md-12 boxBody">
+						<div class="row">
+						<div class="col-md-1 boxBodyLeft">
 							<span tal:content="hotanswer/voteNum">51</span>
 						</div>
-						<div class="boxTitle" tal:define="authorinfo python:view.GetAuthorInfoAnswer(hotanswer)">
+						<div class="col-md-11 boxTitle" 
+							tal:define="authorinfo python:view.GetAuthorInfoAnswer(hotanswer)">
 								<a tal:attributes="href authorinfo/homepage">
-       							<span class="username" tal:content="authorinfo/username">username</span>
+       							<span class="username" 
+       								tal:content="authorinfo/username">username</span>
        						</a>
 								<span tal:condition="authorinfo/description">，
-       							<span class="description" tal:content="authorinfo/description">description</span>
-       							<span class="littleAvatar" tal:content=" structure authorinfo/portrait"></span>
+       							<span class="description" 
+       								tal:content="authorinfo/description">description</span>
+       							<span class="littleAvatar" 
+       								tal:content=" structure authorinfo/portrait"></span>
 								</span>
        					</div>
-						<div class="content" tal:define="plone_view context/@@plone;
+       					</div>
+       					<div class="row">
+						<div class="col-md-12 content" 
+							tal:define="plone_view context/@@plone;
 																text hotanswer/content;
 																acontent python:text"
 								tal:content="structure acontent">answer content
 						</div>
-							<div class="more">
-								<a tal:attributes="href python:hotanswer.getURL()" i18n:translate="Full display">Full display</a>
-							</div>
+						</div>
+						<div class="row">
+						<div class="col-md-1 col-offset-11 more">
+								<a tal:attributes="href python:hotanswer.getURL()" 
+									i18n:translate="Full display">Full display</a>
+						</div>
+						</div>
 					</div>
 				</div>
 			</div>
     	</div>
   </metal:content-core>
 </metal:main>
-
 </body>
 </html>
 

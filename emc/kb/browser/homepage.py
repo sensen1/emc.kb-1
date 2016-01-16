@@ -157,6 +157,7 @@ class View(grok.View):
             return myanswers[:size]
     
     def fetchParentQuestion(self,myanswers):
+        "获取answer brain 的父问题对象"
         obj = myanswers.getObject()
         parentQuestion = obj.getParentNode()
         return parentQuestion
@@ -201,6 +202,7 @@ class View(grok.View):
                              'sort_on':'topicscore'})
     
     def getQuestionFolder(self):
+        "获取系统首个问题文件夹url"
         context = aq_inner(self.context)
         qfc = getToolByName(context, 'portal_catalog')
         questionfolder = qfc({'object_provides': Iquestionfolder.__identifier__})
@@ -211,6 +213,7 @@ class View(grok.View):
         return qfpath
     
     def getTopicFolder(self):
+        "获取系统首个问题文件夹url"
         context = aq_inner(self.context)
         tfc = getToolByName(context, 'portal_catalog')
         topicfolder = tfc({'object_provides': Itopicfolder.__identifier__})
@@ -221,7 +224,7 @@ class View(grok.View):
         return tfpath
     
     def friendlydatetime(self,answercatalog):
-        """根据创建时间，返回一个类似于：
+        """根据brain 创建时间，返回一个类似于：
         3天前，
         2小时前,...
         的友好时间显示        

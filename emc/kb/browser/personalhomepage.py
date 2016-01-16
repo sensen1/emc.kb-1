@@ -15,8 +15,10 @@ from zope.intid import IntIds
 from zope.intid.interfaces import IIntIds
 from zc.relation.interfaces import ICatalog
 
+grok.templatedir('templates')
 class View(grok.View):
     grok.context(Ifeedsfolder)
+    grok.template('personalhomepage_view') 
     grok.require('zope2.View')
     grok.name('view')
     def update(self):
@@ -129,5 +131,4 @@ class View(grok.View):
             return []
         else:
             newest = answerlist[0]
-
         return newest

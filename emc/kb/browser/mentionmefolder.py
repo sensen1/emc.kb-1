@@ -18,14 +18,9 @@ class Imentionmefolderview(Interface):
         触发时间，问题标题，如果是回答，需要回答内容及回答的赞成数，如果是修改，
         需要修改理由，需要分页，返回为catalog类型 """
         
-    """
-    Description of the Example Type
-    """
+
     def ImentionmeQuesiont(self,questionid):
         """返回指定问题基本信息返回catalog类型"""
-    """
-    Description of the Example Type
-    """
     
     def ImentionmeAnswer(self,answerid):
         """返回指定答案基本信息返回dict类型,title,voteNum"""

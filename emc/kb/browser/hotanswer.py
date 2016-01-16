@@ -92,7 +92,7 @@ class hotanswer(grok.View):
         translation_service = getToolByName(self.context,'translation_service')
         weekagotoday = translation_service.translate(
                                                   'a_week_ago_date',
-                                                  domain='eisoo.topic',
+                                                  domain='emc.kb',
                                                   mapping={'year': weekago.year,'month':weekago.month,
                                                            'day':weekago.day},
                                                   context=self.context,
@@ -105,7 +105,7 @@ class hotanswer(grok.View):
         translation_service = getToolByName(self.context,'translation_service')
         monthagotoday = translation_service.translate(
                                                   'a_mounth_ago_date',
-                                                  domain='eisoo.topic',
+                                                  domain='emc.kb',
                                                   mapping={'year': monthago.year,'month':monthago.month,
                                                            'day':monthago.day},
                                                   context=self.context,
@@ -171,7 +171,7 @@ class hotanswer(grok.View):
         translation_service = getToolByName(self.context,'translation_service')
         agotoday = translation_service.translate(
                                                   'ago_date',
-                                                  domain='eisoo.topic',
+                                                  domain='emc.kb',
                                                   mapping={'year': ago.year,'month':ago.month,
                                                            'day':ago.day},
                                                   context=self.context,
@@ -192,8 +192,12 @@ class hotanswer(grok.View):
         userobject=pm.getMemberById(answerobject.Creator())
         username = userobject.getProperty('fullname')
         authorinfo = {}
-        authorinfo['username'] = username
-        authorinfo['homepage'] = pm.getHomeUrl(userobject.getId()) + '/feedsfolder'
-        authorinfo['description'] = userobject.getProperty('description')
-        authorinfo['portrait'] = userobject.getPersonalPortrait(userobject.getId())
+        try:
+            authorinfo['username'] = username
+            authorinfo['homepage'] = pm.getHomeUrl(userobject.getId()) + '/feedsfolder'
+            authorinfo['description'] = userobject.getProperty('description')
+            authorinfo['portrait'] = userobject.getPersonalPortrait(userobject.getId())
+        except:
+            authorinfo = {"username":'testuser',"homepage":'http://test.com',"description":'testuser',
+                          "portrait":'defaultUser.png'}
         return authorinfo

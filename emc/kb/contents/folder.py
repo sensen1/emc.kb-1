@@ -5,14 +5,14 @@ from plone.memoize.instance import memoize
 from zope import schema
 from Products.CMFCore.utils import getToolByName
 from emc.kb import  _
-from emc.kb.contents.topic import Itopic
+
 
 
 # Interface class; used to define content-type schema.
 
-class Itopicfolder(form.Schema):
+class Ifolder(form.Schema):
     """
-    topic folder
+    knowledge base folder
     """
     
     # If you want a schema-defined interface, delete the form.model
@@ -24,8 +24,8 @@ class Itopicfolder(form.Schema):
 
 
 
-class topicfolder(dexterity.Container):
-    grok.implements(Itopicfolder)
+class Folder(dexterity.Container):
+    grok.implements(Ifolder)
     
     # Add your class methods and properties here
 

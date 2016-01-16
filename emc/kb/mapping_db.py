@@ -1,45 +1,43 @@
 #-*- coding: UTF-8 -*-
 import sqlalchemy.types
 import sqlalchemy.schema
-
 from five import grok
-
 from zope import schema
 from zope.interface import Interface,implements
-
 from emc.kb import ORMBase
 from emc.kb import _
 
-class IMarket_number(Interface):
+class IModel(Interface):
     """编号number 记录表
     """
     id = schema.Int(
-            title=_(u"gift_number id"),
+            title=_(u"model table primary key"),
+        )   
+    # 型号代码
+    xtdm = schema.Int(
+            title=_(u"model code"),
         )    
-    
-    number = schema.Int(
-            title=_(u"gift number"),
+    #型号名称
+    xtmc = schema.TextLine(
+            title=_(u"model name"),
         )
-    
-    state = schema.Int(
-            title=_(u"gift state"),
-        )
-class Market_number(ORMBase):
-    """Database-backed implementation of IGift_number
+
+class Model(ORMBase):
+    """Database-backed implementation of IModel
     """
-    implements(IMarket_number)
+    implements(IModel)
     
-    __tablename__ = 'market_number'
+    __tablename__ = 'model'
     
     id = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
             primary_key=True,
             autoincrement=True,
         )
         
-    number = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
+    xhdm = sqlalchemy.schema.Column(sqlalchemy.types.String(8),
             nullable=False,
         )
-    state = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
+    xhmc = sqlalchemy.schema.Column(sqlalchemy.types.String(32),
             nullable=False,
         )
     

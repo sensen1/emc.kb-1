@@ -11,7 +11,8 @@
 	<metal:content-core define-macro="main">
 		<div id="zoneHead">
 			<div class="zoneHeadLeft">
-				<span class="zoneHeadLeftTitle"><span class="highlight" i18n:translate="hottopic">hottopic</span></span>...
+				<span class="zoneHeadLeftTitle">
+					<span class="highlight" i18n:translate="hottopic">hottopic</span></span>...
 			</div>
 		</div>
 		<div class="qbox hrtop">

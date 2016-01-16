@@ -30,7 +30,7 @@ from z3c.relationfield import RelationValue,RelationCatalog
     
 @grok.subscribe(Ianswer, IObjectAddedEvent)
 def feedquestionanswer(obj,event):
-    """首页关注问题有新答案"""
+    """关注问题有新答案"""
     catalog = getToolByName(obj, 'portal_catalog')
     questionobject = aq_parent(obj)
     questionlist = IFollowing(questionobject).followed
