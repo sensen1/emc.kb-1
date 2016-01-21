@@ -40,7 +40,8 @@ class IView(Interface):
         """最近的三个投票者的名字"""
             
 grok.templatedir('templates')
-class View(grok.View):
+from emc.kb.browser.question import View as baseview
+class View(baseview):
     grok.context(Ianswer)
     grok.template('answer_view')
     grok.require('zope2.View')

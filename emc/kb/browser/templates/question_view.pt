@@ -26,7 +26,8 @@
 						<button name="ok" i18n:translate="ok">确定</button>
 						<button name="cancel" i18n:translate="cancel">取消</button>
 				</form>
-				</div>								
+				</div>
+				<div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" />								
 				<div class="description">
 				<span class="pending-vaule"  tal:content="context/description"/>
 				<a class="triger-click" href="#" tal:condition="canEdit">

@@ -56,7 +56,9 @@ class Itopicview(Interface):
         
         """    
 grok.templatedir('templates')
-class View(grok.View):
+
+from emc.kb.browser.question import View as baseview
+class View(baseview):
     grok.context(Itopic)
     grok.require('zope2.View')
     grok.template('topic_view')
