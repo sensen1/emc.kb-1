@@ -5,7 +5,6 @@ from zope.interface import Interface
 from Products.CMFCore.utils import getToolByName
 
 from emc.kb.interfaces import IFollowing
-from emc.kb.interfaces import IFollowing
 
 from emc.kb.contents.topic import Itopic
 from emc.kb.contents.answer import Ianswer
@@ -154,7 +153,7 @@ class View(grok.View):
 #        return re
     
     def QuestionAnswerNum(self,questionid):
-        """获取话问题数量"""
+        """获取问题下答案数量"""
         catalog = getToolByName(self.context, 'portal_catalog')
         question = catalog({'object_provides':Iquestion.__identifier__,
                             'id': questionid
@@ -182,25 +181,12 @@ class View(grok.View):
         pm = getToolByName(self.context, 'portal_membership')
         userobject = pm.getAuthenticatedMember()
         userid = userobject.getId()
-        return aobj.available(userid)
-    
-# 接受表单数据
-#    def valided(self):
-#        if self.request["REQUEST_METHOD"] == "POST": 
-#            return True
-#        else:
-#            return False
-    
-#    def start(self):
-#        if not self.valided():
-#            return ""
-#        else:
-#            data = self.receive()
-#            return self.create(data)
+        return aobj.available(userid)  
+
         
     def receive(self):
         data = self.request.form
-        if len(data) == 0 or data['SearchableText'] == "":
+        if len(data) == 0 or data['form.SearchableText'] == "":
             return "请输入搜索词"
         else:
-            return data['SearchableText']
+            return data['form.SearchableText']

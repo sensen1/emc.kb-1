@@ -1,13 +1,9 @@
 #-*- coding: UTF-8 -*-
 from five import grok
-
 import json
-
 import time
 from time import mktime
-
 from datetime import datetime
-
 from zope.i18n import translate
 from zope.i18nmessageid import Message
 
@@ -30,8 +26,8 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from zope.interface import Interface
 from zope.component import getMultiAdapter
-
 from plone.app.discussion.interfaces import IConversation
+from plone.memoize.instance import memoize
 
 from emc.kb import  _
 
@@ -79,7 +75,8 @@ class Imyanswer(Interface):
         """返回答案创建时间距离今天的日期，一周前，几天前到格式"""    
         
 grok.templatedir('templates')
-class myquestion(grok.View):
+from emc.kb.browser.question import View as baseview
+class myquestion(baseview):
     grok.context(INavigationRoot)
     grok.template('question_view')
     grok.require('zope2.View')    
@@ -87,28 +84,31 @@ class myquestion(grok.View):
     
     def update(self):
         # Hide the editable-object border
-        self.request.set('disable_border', True)
-        self.catalog = getToolByName(self.context, 'portal_catalog')
-        
-        self.mp = getToolByName(self.context,'portal_membership')
-        userobject = self.mp.getAuthenticatedMember()
-        self.username = userobject.getId()
-        
+        self.request.set('disable_border', True)    
+        userobject = self.mp().getAuthenticatedMember()
+        self.username = userobject.getId()        
         self.haveMyQuestions = bool(self.myQuestionNum >0)
     
-    def myQuestionNum(self):
-        """获取我的问题数目"""
+    @memoize
+    def mp(self):
+        return getToolByName(self.context,'portal_membership')    
+    @memoize
+    def catalog(self):
         catalog = getToolByName(self.context, 'portal_catalog')
-        mp = getToolByName(self.context,'portal_membership')
+        return catalog    
+    
+    @memoize
+    def myQuestionNum(self):
+        """获取我的问题数目"""               
         userobject = mp.getAuthenticatedMember()
         username = userobject.getId()
-        myquestions =  catalog({'portal_type':  'emc.kb.question',
+        myquestions =  self.catalog()()({'portal_type':  'emc.kb.question',
                      'Creator':username})
         return len(myquestions)
     
     def myAnswerNum(self):
         """获取我的答案数目"""
-        myanswers =  self.catalog({'object_provides':  Ianswer.__identifier__,
+        myanswers =  self.catalog()({'object_provides':  Ianswer.__identifier__,
                              'Creator':self.username})
         return len(myanswers)
         
@@ -118,19 +118,19 @@ class myquestion(grok.View):
         aobj = IFollowing(obj)         
         return aobj.available(self.username)
     
+    @memoize
     def getuseranswer(self):
         """获取用户回答过到所有问题的答案"""
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
-        return self.catalog({'object_provides':  Ianswer.__identifier__,
+        
+        userobject = self.mp().getAuthenticatedMember()
+        return self.catalog()({'object_provides':  Ianswer.__identifier__,
                               'Creator': userobject.getId()
                               })
 
+    @memoize
     def affiliatedtopics(self,qbrain):
         """需要返回一个问题的相关话题""" 
-        topic = qbrain.getObject()
-
-        
+        topic = qbrain.getObject()        
         intids = getUtility(IIntIds)  
         intid = intids.getId(topic)
         catalog = component.getUtility(ICatalog)        
@@ -145,18 +145,17 @@ class myquestion(grok.View):
     def fetchAnswerNum(self,myquestion):
         """获取指定问题下的答案个数"""
 #        obj = myquestion.getObject()
-        catalog = getToolByName(self.context, 'portal_catalog')
-        answerNum = len(catalog({'object_provides':  Ianswer.__identifier__,
+        
+        answerNum = len(self.catalog()({'object_provides':  Ianswer.__identifier__,
                              'path': dict(query=myquestion.getPath(),
                                       depth=1)}))
         return answerNum
 
-    def fetchMyQuestions(self, start=0, size=3):
-        catalog = getToolByName(self.context, 'portal_catalog')
-        mp = getToolByName(self.context,'portal_membership')
-        userobject = mp.getAuthenticatedMember()
+    def fetchMyQuestions(self, start=0, size=3):       
+        
+        userobject = sefl.mp().getAuthenticatedMember()
         username = userobject.getId()
-        myquestions =  catalog({'portal_type':  'emc.kb.question',
+        myquestions =  self.catalog()({'portal_type':  'emc.kb.question',
                              'Creator':username,
                              'sort_on': 'created',
                              'sort_order': 'reverse',
@@ -168,13 +167,12 @@ class myquestion(grok.View):
         """给定问题qbrain,判断该该问题是否已被关注,返回boolean"""
         obj = qbrain.getObject()
         aobj = IFollowing(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        userobject = self.mp().getAuthenticatedMember()
         userid = userobject.getId()         
         return aobj.available(userid)
     
     def fetchMyAnswer(self, start=0, size=11): 
-        myanswers =  self.catalog({'object_provides':  Ianswer.__identifier__,
+        myanswers =  self.catalog()({'object_provides':  Ianswer.__identifier__,
                              'Creator':self.username,
                              'sort_on': 'sortable_title',
                              'b_start': start,
@@ -188,14 +186,10 @@ class myquestionmore(grok.View):
     
     grok.context(INavigationRoot)
     grok.name('myquestionmore')
-    grok.require('zope2.View')
-
-            
+    grok.require('zope2.View')            
     
-    def render(self):
-    
-        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
-        
+    def render(self):    
+       
         form = self.request.form
         formst = form['formstart']
         formstart = int(formst)*3 
@@ -209,10 +203,7 @@ class myquestionmore(grok.View):
         else :
             ifmore = 0
         
-        braindata = myquestion_view.fetchMyQuestions(formstart, 3)
-        
-        # Capture a status message and translate it
-        translation_service = getToolByName(self.context, 'translation_service')        
+        braindata = myquestion_view.fetchMyQuestions(formstart, 3)   
         
         outhtml = ""
         brainnum = len(braindata)
@@ -283,7 +274,7 @@ class myquestionmore(grok.View):
         return json.dumps(data)
 
      
-class myanswer(grok.View):
+class myanswer(myquestion):
     grok.context(INavigationRoot)
     grok.template('answer_view')     
     grok.require('zope2.View')    
@@ -292,14 +283,9 @@ class myanswer(grok.View):
     def update(self):
         # Hide the editable-object border
         self.request.set('disable_border', True)
-        self.catalog = getToolByName(self.context, 'portal_catalog')
-        
-        mp = getToolByName(self.context,'portal_membership')
-        userobject = mp.getAuthenticatedMember()
-        
+        userobject = self.mp().getAuthenticatedMember()        
         self.username = userobject.getId()
-        self.haveMyAnswer = bool(self.myAnswerNum>0)
-    
+        self.haveMyAnswer = bool(self.myAnswerNum>0)    
         
     def getcommentnum(self,brain = None):
         """获取问题直接评论"""
@@ -311,26 +297,26 @@ class myanswer(grok.View):
         
     def myQuestionNum(self):
         """获取我的问题数目"""
-        myquestions =  self.catalog({'portal_type':  'emc.kb.question',
+        myquestions =  self.catalog()({'portal_type':  'emc.kb.question',
                      'Creator':self.username,
                      'sort_on': 'modified'})
         return len(myquestions)
     
     def myAnswerNum(self):
         """获取我的答案数目"""
-        catalog = getToolByName(self.context, 'portal_catalog')
-        mp = getToolByName(self.context,'portal_membership')
-        userobject = mp.getAuthenticatedMember()        
+        
+        
+        userobject = self.mp().getAuthenticatedMember()        
         username = userobject.getId()
-        myanswers =  catalog({'object_provides':  Ianswer.__identifier__,
+        myanswers =  self.catalog()({'object_provides':  Ianswer.__identifier__,
                              'Creator':username,
                              'sort_on': 'sortable_title'})
         return len(myanswers)
     
     def isFollowed(self,brain):
         """判断当前问题是否已被当前用户关注,返回boolean"""
-        mp = getToolByName(self.context,'portal_membership')
-        userobject = mp.getAuthenticatedMember()        
+        
+        userobject = self.mp().getAuthenticatedMember()        
         username = userobject.getId()
         obj = brain.getObject().getParentNode()
         aobj = IFollowing(obj)       
@@ -388,11 +374,11 @@ class myanswer(grok.View):
         return parentQuestion    
 
     def fetchMyAnswer(self, start=0, size=10): 
-        catalog = getToolByName(self.context, 'portal_catalog')
-        mp = getToolByName(self.context,'portal_membership')
-        userobject = mp.getAuthenticatedMember()        
+        
+        
+        userobject = self.mp().getAuthenticatedMember()        
         username = userobject.getId()
-        myanswers =  catalog({'object_provides':  Ianswer.__identifier__,
+        myanswers =  self.catalog()({'object_provides':  Ianswer.__identifier__,
                              'Creator':username,
                             'sort_order': 'reverse',
                              'sort_on': 'modified',
@@ -401,7 +387,7 @@ class myanswer(grok.View):
         return myanswers
     
     def fetchMyQuestions(self, start=0, size=10):
-        myquestions =  self.catalog({'portal_type':  'emc.kb.question',
+        myquestions =  self.catalog()({'portal_type':  'emc.kb.question',
                              'Creator':self.username,
                              'sort_on': 'modified',
                              'b_start': start,
@@ -419,9 +405,7 @@ class myanswermore(grok.View):
             
     
     def render(self):
-    
-        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
-        
+       
         form = self.request.form
         formst = form['formstart']
         formstart = int(formst)*3 
@@ -435,9 +419,7 @@ class myanswermore(grok.View):
             ifmore = 0
         
         braindata = myanswer_view.fetchMyAnswer(formstart, 3)
-        
-        # Capture a status message and translate it
-        translation_service = getToolByName(self.context, 'translation_service')        
+      
         
         outhtml = ""
         brainnum = len(braindata)

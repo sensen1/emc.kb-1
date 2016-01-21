@@ -3,7 +3,7 @@ from five import grok
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.navigation.interfaces import INavigationRoot
-
+from emc.kb.contents.folder import Ifolder
 from emc.kb.contents.question import Iquestion
 from emc.kb.contents.topic import Itopic
 from emc.kb.contents.answer import Ianswer
@@ -46,39 +46,49 @@ A_MONTH_AGO = _(
     default=u"a month ago"
              )
 grok.templatedir('templates')
+
 class View(grok.View):
-    grok.context(INavigationRoot)
+    grok.context(Ifolder)
     grok.template('homepage_view')    
     grok.require('zope2.View')
-    grok.name('homepage')
+    grok.name('view')
     
     def update(self):
         """
         """
         self.request.set('disable_border', True)
-        self.pm = getToolByName(self.context, 'portal_membership')
-        if self.pm.isAnonymousUser():
+
+        if self.pm().isAnonymousUser():
             purl = self.context.absolute_url()
             tourl = purl + "/@@loginview?came_from=%s" % purl
             self.request.response.redirect(tourl)
             
-        userobject = self.pm.getAuthenticatedMember()
+        userobject = self.pm().getAuthenticatedMember()
         self.username = userobject.getId()
-
+        
+    @memoize
+    def pm(self):
+        context = aq_inner(self.context)
+        return getToolByName(context,'portal_membership')    
+    @memoize
+    def catalog(self):
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog 
         
     def fetchIfollowedTopics(self,size=10):
         """提取我关注的所有话题，返回话题brain list,并按修改时间排序
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        userobject = self.pm.getAuthenticatedMember()
+        
+        userobject = self.pm().getAuthenticatedMember()
         username = userobject.getId()
-        topiclist = list(userobject.getProperty('myfollow'))
+        topiclist = list(userobject.getProperty('myfollowtopic'))
         topiclist.reverse()
         topicGroup = topiclist[:size]
         qbrain = []
         for tpc in topicGroup:
-            qbrain.append(catalog({'object_provides': Itopic.__identifier__,
-                        'id':tpc})[0])
+            qbrain.append(self.catalog()({'object_provides': Itopic.__identifier__,
+                        'UID':tpc})[0])
         return qbrain
 
         
@@ -92,36 +102,36 @@ class View(grok.View):
     def IfollowedTopicNum(self):
         """我关注的话题数量
         """
-        userobject = self.pm.getAuthenticatedMember()
-        topiclist = userobject.getProperty('myfollow')
+        userobject = self.pm().getAuthenticatedMember()
+        topiclist = userobject.getProperty('myfollowtopic')
         return len(topiclist)
          
     def fetchIfollowedQuestions(self,size=5):
-        """提取我关注的所有问题，返回话题brain list,并按修改关注排序
+        """提取我关注的所有问题，返回问题brain list,并按修改关注排序
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        userobject = self.pm.getAuthenticatedMember()
-        questionlist = list(userobject.getProperty('myfollow'))
+        
+        userobject = self.pm().getAuthenticatedMember()
+        questionlist = list(userobject.getProperty('myfollowquestion'))
         questionlist.reverse()
         questionGroup = questionlist[:size]
         qbrain = []
         for qtn in questionGroup:
-            qbrain.append(catalog({'object_provides': Iquestion.__identifier__,
-                              'id':qtn})[0])
+            qbrain.append(self.catalog()({'object_provides': Iquestion.__identifier__,
+                              'UID':qtn})[0])
         return qbrain
         
     def IfollowedQuestionNum(self):
         """我关注的问题数量
         """
-        userobject = self.pm.getAuthenticatedMember()
-        questionlist = userobject.getProperty('myfollow')
+        userobject = self.pm().getAuthenticatedMember()
+        questionlist = userobject.getProperty('myfollowquestion')
         return len(questionlist)
         
     def fetchMyQustions(self,size=5):
         """提取所有我的问题
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        myquestions = catalog({'portal_type':  'emc.kb.question',
+        
+        myquestions = self.catalog()({'portal_type':  'emc.kb.question',
                              'Creator':self.username,
                              'sort_order': 'reverse',
                              'sort_on': 'created'})
@@ -135,8 +145,8 @@ class View(grok.View):
     def myQuestionNum(self):
         """我的问题数量
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        myquestions = catalog({'portal_type':  'emc.kb.question',
+        
+        myquestions = self.catalog()({'portal_type':  'emc.kb.question',
                              'Creator':self.username,
                              'sort_order': 'reverse',
                              'sort_on': 'modified'})
@@ -145,8 +155,8 @@ class View(grok.View):
     def fetchMyAnswers(self,size=3):
         """提取我的答案
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        myanswers = catalog({'object_provides':  Ianswer.__identifier__,
+        
+        myanswers = self.catalog()({'object_provides':  Ianswer.__identifier__,
                              'Creator':self.username,
                              'sort_order': 'reverse',                             
                              'sort_on': 'modified'})
@@ -170,16 +180,16 @@ class View(grok.View):
     def hotQandA(self,num=10):
         """返回前num个热点问答
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
+        
 
-        maxlen = len(catalog({'object_provides': Ianswer.__identifier__}))
+        maxlen = len(self.catalog()({'object_provides': Ianswer.__identifier__}))
         if maxlen > num:
-            aa = catalog({'object_provides': Ianswer.__identifier__,
+            aa = self.catalog()({'object_provides': Ianswer.__identifier__,
                              'sort_order': 'reverse',
                              'sort_on': 'voteNum',
                              'sort_limit': num})
         else:
-            aa = catalog({'object_provides': Ianswer.__identifier__,
+            aa = self.catalog()({'object_provides': Ianswer.__identifier__,
                              'sort_order': 'reverse',
                              'sort_on':'voteNum'})
 
@@ -188,16 +198,16 @@ class View(grok.View):
     def hotTopics(self,num=10):
         """返回前num个热点话题
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
         
-        maxlen = len(catalog({'object_provides': Itopic.__identifier__}))
+        
+        maxlen = len(self.catalog()({'object_provides': Itopic.__identifier__}))
         if maxlen > num:
-            return catalog({'object_provides': Itopic.__identifier__,
+            return self.catalog()({'object_provides': Itopic.__identifier__,
                              'sort_order': 'reverse',
                              'sort_on': 'topicscore',
                              'sort_limit': num})
         else:
-            return catalog({'object_provides': Itopic.__identifier__,
+            return self.catalog()({'object_provides': Itopic.__identifier__,
                              'sort_order': 'reverse',
                              'sort_on':'topicscore'})
     

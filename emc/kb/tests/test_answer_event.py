@@ -6,6 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.uuid.interfaces import IUUID
 
 class TestSetup(unittest.TestCase):
     
@@ -18,8 +19,9 @@ class TestSetup(unittest.TestCase):
         from emc.kb.interfaces import IVoting
         portal = self.layer['portal']
         setRoles(portal, TEST_USER_ID, ('Manager',))
-        portal.invokeFactory('emc.kb.questionfolder', 'questionfolder')
-        portal['questionfolder'].invokeFactory('emc.kb.question', 'question',
+        portal.invokeFactory('emc.kb.folder', 'folder')
+        portal['folder'].invokeFactory('emc.kb.questionfolder', 'questionfolder')
+        portal['folder']['questionfolder'].invokeFactory('emc.kb.question', 'question',
                              discription=u"discription",
                              additional=u"additional",
                              isfollowed=True,
@@ -29,14 +31,14 @@ class TestSetup(unittest.TestCase):
                              pageview=u"pageview",
                              date=u"date"
                              )
-        portal['questionfolder']['question'].invokeFactory('emc.kb.answer', 'answer',
+        portal['folder']['questionfolder']['question'].invokeFactory('emc.kb.answer', 'answer',
                              answerer=u"answerer",
                              voteNum=u"voteNum",
                              voters=u"voters",
                              content=u"content of the answer",
                              date=u"date of the answer",
                              )
-        file=portal['questionfolder']['question']['answer']
+        file=portal['folder']['questionfolder']['question']['answer']
             
         event.notify(LikeEvent(file))
         mp = getToolByName(portal,'portal_membership')
@@ -44,8 +46,8 @@ class TestSetup(unittest.TestCase):
         username = userobject.getId()
         agreelist = list(userobject.getProperty('mylike'))
         evlute = IVoting(file)
-        
-        self.assertTrue(file.id in agreelist)
+        uuid = IUUID(file,None)
+        self.assertTrue(uuid in agreelist)
         self.assertTrue(evlute.voteavailableapproved(username))
         self.assertEqual(1,evlute.voteNum) 
 
@@ -57,7 +59,7 @@ class TestSetup(unittest.TestCase):
         disagreelist = list(userobject.getProperty('myunlike'))
         evlute = IVoting(file)
         
-        self.assertTrue(file.id in disagreelist)
+        self.assertTrue(uuid in disagreelist)
         self.assertTrue(evlute.voteavailabledisapproved(username))
         
 #     def test_AddFavorite_event(self):
@@ -68,7 +70,7 @@ class TestSetup(unittest.TestCase):
 #         portal = self.layer['portal']
 #         setRoles(portal, TEST_USER_ID, ('Manager',))
 #         portal.invokeFactory('emc.kb.questionfolder', 'questionfolder')
-#         portal['questionfolder'].invokeFactory('emc.kb.question', 'question',
+#         portal['folder']['questionfolder'].invokeFactory('emc.kb.question', 'question',
 #                              discription=u"discription",
 #                              additional=u"additional",
 #                              isfollowed=True,
@@ -78,14 +80,14 @@ class TestSetup(unittest.TestCase):
 #                              pageview=u"pageview",
 #                              date=u"date"
 #                              )
-#         portal['questionfolder']['question'].invokeFactory('emc.kb.answer', 'answer',
+#         portal['folder']['questionfolder']['question'].invokeFactory('emc.kb.answer', 'answer',
 #                              answerer=u"answerer",
 #                              voteNum=u"voteNum",
 #                              voters=u"voters",
 #                              content=u"content of the answer",
 #                              date=u"date of the answer",
 #                              )
-#         file=portal['questionfolder']['question']['answer']  
+#         file=portal['folder']['questionfolder']['question']['answer']  
 #         event.notify(FavoriteAnswerEvent(file))
 #         mp = getToolByName(portal,'portal_membership')
 #         userobject = mp.getAuthenticatedMember()

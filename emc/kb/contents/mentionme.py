@@ -18,26 +18,22 @@ from emc.kb import _
 # Interface class; used to define content-type schema.
 
 class Imentionme(form.Schema):
+    """由subscribers 创建该类 对象，为便于索引，类型字段用默认的title字段代替,answer id用description来代替。
+    类型字段包括，一：我的提问有新答案；二：我关注的问题有新答案；
+        三：有人赞同我的答案；分别用：“1”，“2”，“3”来代替。"""
 
-
-    state = schema.Int(
-            title=_(u"state"),
-        )
-    questionid = schema.ASCII(
+    questionuid = schema.ASCII(
         title=_(u"mentionme question"),
     )
-    answerid = schema.ASCII(
-        title=_(u"mentionme answerid"),
-    )
+#     answerid = schema.ASCII(
+#         title=_(u"mentionme answerid"),
+#     )
     answeruser = schema.TextLine(
-        title=_(u"mentionme answeruser"),
-        description=_(u"content of answeruser"),
+        title=_(u"user Id"),
+        description=_(u"the user"),
     )
-    discription = schema.TextLine(
-        title=_(u"mentionme discription"),
-        description=_(u"content of discription"),
-    )
-    form.omitted('state','questionid','discription')
+
+    form.omitted('questionuid')
 #    form.model("models/mentionmefolder.xml")
 
     

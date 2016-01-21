@@ -1,0 +1,52 @@
+<tal:snippet omit-tag="">
+ <div id="ajaxreq" class="hiddenStructure" 
+			tal:attributes="data-ajax-target python:context.absolute_url()"></div>
+			<div class="voteresult row" tal:define="canagree python:view.voteavailableapproved();
+				candisagree python:view.voteavailabledisapproved()">				
+				<span class="col-md-3 col-offset-1">赞成：<span class="agree badge" tal:content="python:view.voteNum()"></span>票</span>
+				<span class="col-md-2 click_agree" tal:condition="python:canagree and candisagree">
+					<a class="btn btn-primary" href="#" >					
+          				<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+          				<span class="">点赞</span>               	
+					</a>
+				</span>				
+				<span class="col-md-3">反对：<span class="disagree badge" tal:content="python:view.voteNum() - context.totalNum"></span>票</span>
+				<span class="col-md-2 click_unagree" tal:condition="python:canagree and candisagree">
+					<a class="btn btn-primary" href="#">
+          				<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+          				<span class="">我踩</span>						
+					</a>					
+				</span>
+				<span class="col-md-1"></span>
+			</div>				
+  <script type="text/javascript">
+    // JQuery standard mechanism. Only execute the code after the page
+    // finished loading.
+    $(document).ready(function(){
+    $(".click_agree").on("click","a",function () {
+            $.post($("#ajaxreq").attr("data-ajax-target") + "/@@like", function (callback) {
+            if (callback == 1) {
+            $(".click_agree").hide();
+            $(".click_unagree").show();
+			var old = $('.agree').html();
+			var newnum = (Number(old) + 1).toString();
+			$('.agree').html(newnum);            
+            }
+            else{return false;};               
+                            });
+            });
+    $(".click_unagree").on("click","a",function () {
+            $.post($("#ajaxreq").attr("data-ajax-target") + "/@@unlike", function (callback) {
+            if (callback == 1) {
+            $(".click_agree").show();
+            $(".click_unagree").hide();
+			var old = $('.disagree').html();
+			var newnum = (Number(old) + 1).toString();
+			$('.disagree').html(newnum);             
+            }
+            else{return false;};               
+                            });
+            });
+    });
+  </script>
+</tal:snippet>

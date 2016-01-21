@@ -13,14 +13,17 @@ from emc.kb.interfaces import ICreatedMentionwoFolderEvent
 
 from Products.CMFCore.utils import getToolByName
 from plone.dexterity.utils import createContentInContainer
-from zope.lifecycleevent.interfaces import IObjectAddedEvent 
-
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from plone.uuid.interfaces import IUUID
+ 
+"""由subscribers 创建emc.kb.mentionme 对象，为便于索引，类型字段用默认的title字段代替。
+    类型字段包括，一：我的提问有新答案；二：我关注的问题有新答案；
+        三：有人赞同我的答案；分别用：“1”，“2”，“3”来代替。"""
 @grok.subscribe(Ianswer, IObjectAddedEvent)
 def mentionmeanswer(obj,event):
     """我的提问有新答案"""
     mp = getToolByName(obj,'portal_membership')
-    userobject = mp.getAuthenticatedMember()
-    
+    userobject = mp.getAuthenticatedMember()    
     questionobject = aq_parent(obj)
     votename = questionobject.Creator()
     
@@ -37,20 +40,19 @@ def mentionmeanswer(obj,event):
     date = datetime.now()
     id = str(date.year)+str(date.month)+str(date.day)+str(date.hour)+str(date.minute)+str(date.second)
     item = createContentInContainer(folder,"emc.kb.mentionme",checkConstraints=False,id=id)
-    item.title = ''
-    item.answerid = obj.getId()
+    item.title = '1'
+    # save answer uid
+    item.description = IUUID(obj,None)
+    # 回答问题的作者
     item.answeruser = userobject.getId()
-    item.discription = {"我的提问有新答案":1,"我关注的问题有新答案":2,"有人赞同我的答案":3}
-    item.state = 1
-    item.questionid = questionobject.id
+    item.questionuid = IUUID(questionobject,None)
     item.reindexObject()
         
 @grok.subscribe(Ianswer, IObjectAddedEvent)
 def followquestionanswer(obj,event):
     """我关注的问题有新答案"""
     mp = getToolByName(obj,'portal_membership')
-    userobject = mp.getAuthenticatedMember()
-    
+    userobject = mp.getAuthenticatedMember()    
     catalog = getToolByName(obj, 'portal_catalog')
     
     questionobject = aq_parent(obj)
@@ -63,7 +65,7 @@ def followquestionanswer(obj,event):
         """不想要给问题作者添加该关注记录"""
         if evlute == votename:
             break
-        brain = catalog({'object_provides':  Imentionwofolder.__identifier__,
+        brain = catalog({'object_provides':  Imentionmefolder.__identifier__,
                 'Creator': evlute,
              'sort_on': 'sortable_title'})
         if not brain:
@@ -74,16 +76,15 @@ def followquestionanswer(obj,event):
         date = datetime.now()
         id = str(date.year)+str(date.month)+str(date.day)+str(date.hour)+str(date.minute)+str(date.second)
         item = createContentInContainer(folder,"emc.kb.mentionme",checkConstraints=False,id=id)
-        item.title = ''
-        item.answerid = obj.getId()
+        item.title = '2'
+        item.description = IUUID(obj,None)
+        # 添加该答案的用户
         item.answeruser = userobject.getId()
-        item.discription = {"我的提问有新答案":1,"我关注的问题有新答案":2,"有人赞同我的答案":3}
-        item.state = 2
-        item.questionid = questionobject.id
+        item.questionuid = IUUID(questionobject,None)
         item.reindexObject()
         
 @grok.subscribe(Ianswer, ILikeEvent)
-def FavoriteAnswer(obj,event):
+def LikeAnswer(obj,event):
     """有人赞同我的答案"""
     questionobject = aq_parent(obj)
     mp = getToolByName(obj,'portal_membership')
@@ -104,10 +105,9 @@ def FavoriteAnswer(obj,event):
     date = datetime.now()
     id = str(date.year)+str(date.month)+str(date.day)+str(date.hour)+str(date.minute)+str(date.second)
     item = createContentInContainer(folder,"emc.kb.mentionme",checkConstraints=False,id=id)
-    item.title = ''
-    item.answerid = obj.getId()
+    item.title = '3'
+    item.description = IUUID(obj,None)
+    #赞同该答案的用户
     item.answeruser = userobject2.getId()
-    item.discription = {"我的提问有新答案":1,"我关注的问题有新答案":2,"有人赞同我的答案":3}
-    item.state = 3
-    item.questionid = questionobject.id
+    item.questionuid = IUUID(questionobject,None)
     item.reindexObject()

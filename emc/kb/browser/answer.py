@@ -9,9 +9,6 @@ from Products.CMFCore.utils import getToolByName
 #from plone.namedfile.field import NamedImage, NamedFile,NamedBlobImage, NamedBlobFile
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.app.discussion.interfaces import IConversation
-
-
-
 from zope import schema
 from zope.interface import invariant, Invalid,Interface
 from zope.schema.interfaces import IContextSourceBinder
@@ -54,9 +51,8 @@ class View(grok.View):
         """
         # Hide the editable-object border
         self.request.set('disable_border', True)
-        catalog = getToolByName(self.context, 'portal_catalog')
         questionobject = aq_parent(self.context)
-        answerlist = catalog({'object_provides': Ianswer.__identifier__,
+        answerlist = self.catalog()({'object_provides': Ianswer.__identifier__,
                               'path': dict(query='/'.join(questionobject.getPhysicalPath()),
                                       depth=1),
                              'sort_on': 'sortable_title'})
@@ -64,6 +60,16 @@ class View(grok.View):
         self.parentQuestion = questionobject
         self.parenturl = questionobject.absolute_url()
         self.answerdate = self.context.created().strftime('%Y-%m-%d')
+
+    @memoize
+    def pm(self):
+        context = aq_inner(self.context)
+        return getToolByName(context,'portal_membership')    
+    @memoize
+    def catalog(self):
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog 
     
     def isTopicpicAvalable(self,topic=None):
         """判断图片字段是否有效"""
@@ -90,7 +96,7 @@ class View(grok.View):
         obj = (self.context).getParentNode()
         aobj = IFollowing(obj)
         pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        userobject = self.pm().getAuthenticatedMember()
         userid = userobject.getId()        
         return aobj.available(userid)
 
@@ -105,51 +111,60 @@ class View(grok.View):
         """判断当前答案是否已被收藏,返回boolean"""
         obj = self.context
         aobj = IFavoriting(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        
+        userobject = self.pm().getAuthenticatedMember()
         userid = userobject.getId()          
         return aobj.favavailable(userid)
     
    
     @memoize
     def GetCreatorInfo(self,answerid):
-        """根据自己的相关信息，包括包含链接，描述，头像"""
-        catalog = getToolByName(self.context, 'portal_catalog') 
+        """根据答案id，提取该答案作者的相关信息，包括包含链接，描述，头像"""
+        
         query = dict(object_provides=Ianswer.__identifier__,id=answerid)
         # to do using index replace getObject
-        answerobject = catalog(query)[0].getObject()
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject=pm.getMemberById(answerobject.Creator())
+        answerobject = self.catalog()(query)[0].getObject()
+        
+        author = answerobject.Creator()
+        userobject=self.pm().getMemberById(author)
         username = userobject.getProperty('fullname')
+        if username =="":username= author
         authorinfo = {}
-        authorinfo['username'] = username
-        authorinfo['homepage'] = pm.getHomeUrl(userobject.getId())  + '/feedsfolder'
-        authorinfo['description'] = userobject.getProperty('description')
-        authorinfo['portrait'] = userobject.getPersonalPortrait(userobject.getId())
+        try:
+            authorinfo['username'] = username
+            authorinfo['homepage'] = userobject.getHomeUrl(userobject.getId()) + '/workspace/feedsfolder'
+            authorinfo['description'] = userobject.getProperty('description')
+            authorinfo['portrait'] = userobject.getPersonalPortrait(userobject.getId())
+        except:
+            authorinfo = {'username':'testuser','homepage':'http://test.com/',
+                          'description':'test','portrait':'defaultUser.png'}
         return authorinfo
     
     @memoize
     def fetchvotelist(self,size=3):
         """最近的三个投票者的名字"""
         evlute = IVoting(self.context)
-        pm = getToolByName(self.context, 'portal_membership')
+        
         votedict = [] 
         if size=='all':
             for ete in evlute.approved:
-                userobject=pm.getMemberById(ete)
+                userobject=self.pm().getMemberById(ete)
                 username = userobject.getProperty('fullname')
+                if username =="":username = ete
                 votedict.append(username)
         else:
             if evlute.voteNum < size:
                 for ete in evlute.approved:
-                    userobject=pm.getMemberById(ete)
+                    userobject=self.pm().getMemberById(ete)
                     username = userobject.getProperty('fullname')
+                    if username =="":username = ete
                     votedict.append(username)
             else:
                 i = 0
                 for ete in evlute.approved:
-                    userobject=pm.getMemberById(ete)
+                    userobject=self.pm().getMemberById(ete)
                     username = userobject.getProperty('fullname')
+                    if username =="":username = ete
                     votedict.append(username)
                     i = i + 1
                     if i >= size:

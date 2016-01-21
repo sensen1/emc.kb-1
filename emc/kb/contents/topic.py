@@ -55,17 +55,17 @@ class Itopic(form.Schema, IImageScaleTraversable):
     # and add directives here as necessary.
     
 #    form.model("models/topic.xml")
-    id = schema.ASCII(
-       title=_(u"topic id"),
-    )
-    name = schema.TextLine(
-        title=_(u"topic name"),
-        description=_(u"content of name"),
-    )
-    discription = schema.TextLine(
-        title=_(u"topic discription"),
-        description=_(u"content of discription"),
-    )
+#     id = schema.ASCII(
+#        title=_(u"topic id"),
+#     )
+#     name = schema.TextLine(
+#         title=_(u"topic name"),
+#         description=_(u"content of name"),
+#     )
+#     discription = schema.TextLine(
+#         title=_(u"topic discription"),
+#         description=_(u"content of discription"),
+#     )
     topicpic = NamedBlobImage(
         title=_(u"topic picture"),
         description=_(u"topic picture"),
@@ -92,7 +92,7 @@ class Itopic(form.Schema, IImageScaleTraversable):
         description=_(u"content of topicscore"),
         default=0.0,
     )
-    form.omitted('id','followernum','relatedquestion','topicscore')
+    form.omitted('followernum','relatedquestion','topicscore')
 
 # Custom content-type class; objects created for this content type will
 # be instances of this class. Use this class to add content-type specific

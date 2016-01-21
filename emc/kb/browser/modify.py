@@ -1,6 +1,7 @@
 import json
 from five import grok
 from Acquisition import aq_inner
+from zope.component import getMultiAdapter
 from emc.kb.contents.question import Iquestion
 from emc.kb.contents.topic import Itopic
 
@@ -14,6 +15,9 @@ class ModifyDescription(grok.View):
         
     def render(self):
         context = aq_inner(self.context)
+        authenticator=getMultiAdapter((context, request), name=u"authenticator")
+        if not authenticator.verify():
+            raise Unauthorized
         data = self.request.form
         description = {'description':context.setDescription(data['description'])}
         self.request.response.setHeader('Content-Type', 'application/json')
@@ -29,6 +33,9 @@ class ModifyTitle(grok.View):
         
     def render(self):
         context = aq_inner(self.context)
+        authenticator=getMultiAdapter((context, request), name=u"authenticator")
+        if not authenticator.verify():
+            raise Unauthorized        
         data = self.request.form
         title = {'title':context.setTitle(data['title'])}
         self.request.response.setHeader('Content-Type', 'application/json')
@@ -44,6 +51,9 @@ class ModifyDiscription(grok.View):
         
     def render(self):
         context = aq_inner(self.context)
+        authenticator=getMultiAdapter((context, request), name=u"authenticator")
+        if not authenticator.verify():
+            raise Unauthorized        
         data = self.request.form
         context.discription = data['discription']
         discription = {'discription':data['discription']}

@@ -26,14 +26,15 @@ class TestEvent(unittest.TestCase):
         from emc.kb.events import UnFollowedEvent
         portal = self.layer['portal']
         setRoles(portal, TEST_USER_ID, ('Manager',))
-        portal.invokeFactory('emc.kb.questionfolder', 'questionfolder')
-        portal['questionfolder'].invokeFactory('emc.kb.question', 'question',
+        portal.invokeFactory('emc.kb.folder', 'folder')
+        portal['folder'].invokeFactory('emc.kb.questionfolder', 'questionfolder')
+        portal['folder']['questionfolder'].invokeFactory('emc.kb.question', 'question',
                              description=u"discription",
                              additional=u"additional"
 
                              )
         
-        file=portal['questionfolder']['question']
+        file=portal['folder']['questionfolder']['question']
         
         event.notify(FollowedEvent(file))
         
@@ -68,14 +69,15 @@ class TestEvent(unittest.TestCase):
         from emc.kb.events import UnFollowedEvent
         portal = self.layer['portal']
         setRoles(portal, TEST_USER_ID, ('Manager',))
-        portal.invokeFactory('emc.kb.topicfolder', 'topicfolder')
-        portal['topicfolder'].invokeFactory('emc.kb.topic', 'topic',
+        portal.invokeFactory('emc.kb.folder', 'folder')
+        portal['folder'].invokeFactory('emc.kb.topicfolder', 'topicfolder')
+        portal['folder']['topicfolder'].invokeFactory('emc.kb.topic', 'topic',
                              name=u"topic",
                              description=u"discription"
 
                              )
         
-        file=portal['topicfolder']['topic']
+        file=portal['folder']['topicfolder']['topic']
         event.notify(FollowedEvent(file))
         
         mp = getToolByName(portal,'portal_membership')

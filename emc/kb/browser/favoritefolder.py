@@ -206,7 +206,7 @@ class favoritemore(grok.View):
                                 <div class="author">
                                     <a href="%s">%s</a><span>,</span>
                                     <span class="description">%s</span>
-                                    <span class="littleAvatar">%s</span>
+                                    <span class="img-responsive img-circle">%s</span>
                                 </div>
                                 <div class="content">%s</div>
                                 <div class="more">

@@ -3,13 +3,11 @@
 		 <span i18n:translate="">question status</span>	
     </div>   
 	<div class="relatedinformation">	
-<!--		<div>
-			 <p i18n:translate="">visitnum</p>
-			 <p tal:content="python:view.visitnum()"></p>
-		</div>-->
+
 		 <div>
 			 <p i18n:translate="n_follow_number">
-			 	<span tal:content="python:view.followednum()" id="relatedinformation" i18n:name="count">0</span>
+			 	<span class="badge" tal:content="python:view.followednum()" 
+			 		id="relatedinformation" i18n:name="count">0</span>
 				people followed the question</p>
 		 </div>
 		  

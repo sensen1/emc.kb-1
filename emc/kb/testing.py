@@ -22,9 +22,11 @@ class Topic(PloneSandboxLayer):
     
     def setUpZope(self, app, configurationContext):
         # Load ZCML
+        import plone.app.contenttypes
         import emc.memberArea
         import emc.kb
         import emc.theme
+        xmlconfig.file('configure.zcml', plone.app.contenttypes, context=configurationContext)
         xmlconfig.file('configure.zcml', emc.kb, context=configurationContext)
         xmlconfig.file('configure.zcml', emc.theme, context=configurationContext)
         xmlconfig.file('configure.zcml', emc.memberArea, context=configurationContext)        
@@ -48,7 +50,8 @@ class Topic(PloneSandboxLayer):
 #        os.unlink(self.dbFileName)
         
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'emc.theme:default')        
+        applyProfile(portal, 'emc.theme:default')
+        applyProfile(portal, 'plone.app.contenttypes:default')        
         applyProfile(portal, 'emc.kb:default')
         applyProfile(portal, 'emc.memberArea:default')
 #        applyProfile(portal, 'eisoo.policy:default')

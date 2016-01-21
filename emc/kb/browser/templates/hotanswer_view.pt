@@ -43,7 +43,7 @@
 								<span tal:condition="authorinfo/description">，
        							<span class="description" 
        								tal:content="authorinfo/description">description</span>
-       							<span class="littleAvatar" 
+       							<span class="img-responsive img-circle" 
        								tal:content=" structure authorinfo/portrait"></span>
 								</span>
        					</div>
@@ -70,4 +70,3 @@
 </metal:main>
 </body>
 </html>
-

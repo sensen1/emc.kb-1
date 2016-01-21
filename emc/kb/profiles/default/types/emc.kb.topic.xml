@@ -7,8 +7,8 @@
   <property name="title" i18n:translate="">topic</property>
   <property name="description"
     i18n:translate="">topic</property>
-  <property name="icon_expr">string:${portal_url}/document_icon.png</property>
-  <property name="factory">emc.kb.contents.topic</property>
+  <property name="content_icon">document_icon.png</property>
+  <property name="factory">emc.kb.topic</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">False</property>  
   <property name="allowed_content_types" />
@@ -22,7 +22,6 @@
      <element value="plone.app.content.interfaces.INameFromTitle" />
      <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>      
 	 <element value="emc.kb.interfaces.IFollowing"/>
-	 <element value="plone.app.relationfiled.behavior.IRelatedItems"/>
 	 <element value="emc.kb.behaviors.pageview.Ipageview"/>
    </property>
 

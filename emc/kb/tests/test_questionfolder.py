@@ -9,8 +9,8 @@ from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-from emc.kb.questionfolder import Iquestionfolder
-from emc.kb.questionfolder import questionfolder
+from emc.kb.contents.questionfolder import Iquestionfolder
+from emc.kb.contents.questionfolder import questionfolder
 class TestContent(unittest.TestCase):
     
     layer = INTEGRATION_TESTING

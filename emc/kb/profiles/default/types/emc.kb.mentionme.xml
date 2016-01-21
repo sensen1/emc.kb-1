@@ -1,24 +1,22 @@
 <?xml version="1.0"?>
-<object name="emc.kb.mentionmefolder"
+<object name="emc.kb.mentionme"
    meta_type="Dexterity FTI"
    i18n:domain="emc.kb" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <!-- Basic metadata -->
-  <property name="title" i18n:translate="">mentionmefolder</property>
+  <property name="title" i18n:translate="">mentionme</property>
   <property name="description"
-    i18n:translate="">mention me folder</property>
-  <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
-  <property name="factory">emc.kb.contents.mentionmefolder</property>
-  <property name="global_allow">True</property>
-  <property name="filter_content_types">True</property>  
-  <property name="allowed_content_types">	
-       <element value="emc.kb.mentionme" />
-  </property>
+    i18n:translate="">metion me infomation</property>
+  <property name="content_icon">document_icon.png</property>
+  <property name="factory">emc.kb.mentionme</property>
+  <property name="global_allow">False</property>
+  <property name="filter_content_types">False</property>  
+  <property name="allowed_content_types" />
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">emc.kb.contents.mentionmefolder.Imentionmefolder</property> 
-  <property name="klass">plone.dexterity.content.Container</property>
+  <property name="schema">emc.kb.contents.mentionme.Imentionme</property> 
+  <property name="klass">plone.dexterity.content.Item</property>
 
   <property name="behaviors">
      <element value="plone.app.content.interfaces.INameFromTitle" />

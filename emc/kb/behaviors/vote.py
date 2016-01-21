@@ -19,8 +19,8 @@ from emc.kb.contents.answer import Ianswer
 from emc.kb.contents.question import Iquestion
 from plone.dexterity.interfaces import IDexterityContent
 from emc.kb.events import LikeEvent,UnLikeEvent,FavoriteAnswerEvent,UnFavoriteAnswerEvent
-from emc.kb.interfaces import IVoting,ILikeEvent,IUnLikeEvent,IFavoriteAnswerEvent,IUnFavoriteAnswerEvent
-
+from emc.kb.interfaces import IVoting,IVotable,ILikeEvent,IUnLikeEvent,IFavoriteAnswerEvent,IUnFavoriteAnswerEvent
+from plone.uuid.interfaces import IUUID
 
 APPROVED_KEY = 'emc.kb.approved'
 DISAPPROVED_KEY = 'emc.kb.disapproved'
@@ -52,7 +52,7 @@ class Vote(object):
         return VoteNum
           
     def voteavailableapproved(self,userToken):
-        '指定的用户是否在赞成队列里'
+        '指定的用户是否在赞成队列里,true:已在队列中'
         return (userToken in self.approved )         
 #         return self.approved.has_key(userToken)
     
@@ -62,39 +62,27 @@ class Vote(object):
 #         return self.disapproved.has_key(userToken)
     
     def agree(self, userToken):
-        '投赞成票'
+        """投赞成票,如果原来没投个赞成票（不在赞成队列中），直接加到赞成队列；
+        并且看原来是否在反对队列中，从反对队列删除该用户"""
 
         if  not self.voteavailableapproved(userToken):
            self.approved.append(userToken)
-        elif  self.voteavailableapproved(userToken):
-            self.disapproved.remove(userToken)
+           if  self.voteavailabledisapproved(userToken):
+               self.disapproved.remove(userToken)
         else:
             raise KeyError("Ratings not available for %s" % userToken)
                   
     def disagree(self,userToken):
         if  not self.voteavailabledisapproved(userToken):
             self.disapproved.append(userToken)
-#         elif  self.voteavailabledisapproved(userToken):
-#             self.disapproved.remove(userToken)
+            if  self.voteavailableapproved(userToken):
+                self.approved.remove(userToken)
         else:
             raise KeyError("Ratings not available for %s" % userToken)
         
-#     def favavailable(self, userToken):
-#         return  self.favorite.has_key(userToken)  
-#     
-#     def addfavorite(self,userToken):
-#         if not self.favavailable(userToken):
-#             self.favorite.insert(userToken)
-#         else:
-#             raise KeyError("The %s is concerned about" % userToken)
-#     
-#     def delfavorite(self,userToken):
-#         if self.favavailable(userToken):
-#             self.favorite.remove(userToken)
-#         else:
-#            raise KeyError("The %s is not concerned about" % userToken)
+
         
-@grok.subscribe(Ianswer, ILikeEvent)
+@grok.subscribe(IVotable, ILikeEvent)
 def approve(obj, event):
     """approve the answer"""
 
@@ -102,9 +90,11 @@ def approve(obj, event):
     userobject= mp.getAuthenticatedMember()
     username = userobject.getId()
     agreelist = list(userobject.getProperty('mylike'))
-    
-    if not obj.id in agreelist:
-        agreelist.append(obj.id)
+
+    uuid = IUUID(obj,None)
+    if uuid == None:return    
+    if not uuid in agreelist:
+        agreelist.append(uuid)
         userobject.setProperties(mylike=agreelist)
 
     evlute = IVoting(obj)
@@ -114,7 +104,7 @@ def approve(obj, event):
         obj.totalNum = evlute.voteNum - len(evlute.disapproved)
         obj.reindexObject()
         
-@grok.subscribe(Ianswer, IUnLikeEvent)
+@grok.subscribe(IVotable, IUnLikeEvent)
 def disapprove(obj, event):
     """approve the answer"""
     
@@ -122,9 +112,11 @@ def disapprove(obj, event):
     userobject= mp.getAuthenticatedMember()
     username = userobject.getId()
     disagreelist = list(userobject.getProperty('myunlike'))
-    
-    if not obj.id in disagreelist:
-        disagreelist.append(obj.id)
+
+    uuid = IUUID(obj,None)
+    if uuid == None:return       
+    if not uuid in disagreelist:
+        disagreelist.append(uuid)
         userobject.setProperties(myunlike=disagreelist)
     
     evlute = IVoting(obj)
@@ -132,61 +124,39 @@ def disapprove(obj, event):
         evlute.disagree(username)
         obj.voteNum = evlute.voteNum
         obj.totalNum = evlute.voteNum - len(evlute.disapproved)
-        obj.reindexObject() 
-        
-# @grok.subscribe(Ianswer, IFavoriteAnswerEvent)
-# def FavoriteAnswer(obj,event):
-#     """add the answer to favorite"""
-#     
-#     mp = getToolByName(obj,'portal_membership')
-#     userobject = mp.getAuthenticatedMember()
-#     username = userobject.getId()
-#     favoritelist = list(userobject.getProperty('myfavorite'))
-#     
-#     if not obj.id in favoritelist:
-#         favoritelist.append(obj.id)
-#         userobject.setProperties(myfavorite=favoritelist)
-#         
-#     evlute = IVoting(obj)
-#     if not evlute.favavailable(username):
-#         evlute.addfavorite(username)
-# 
-# @grok.subscribe(Ianswer, IUnFavoriteAnswerEvent)
-# def UnFavoriteAnswer(obj,event):
-#     """del the answer from the favorite"""
-#     mp = getToolByName(obj,'portal_membership')
-#     userobject = mp.getAuthenticatedMember()
-#     username = userobject.getId()
-#     favoritelist = list(userobject.getProperty('myfavorite'))
-#     
-#     if  obj.id in favoritelist:
-#         favoritelist.remove(obj.id)
-#         userobject.setProperties(myfavorite=favoritelist)
-#         
-#     evlute = IVoting(obj)
-#     if evlute.favavailable(username):
-#         evlute.delfavorite(username)
-        
-# @grok.subscribe(Ianswer, IObjectRemovedEvent)
-# def delAnswer(obj,event):
-#     favoriteevlute = IVoting(obj)
-#     """判断当前答案是否被收藏"""
-#     answerlist = favoriteevlute.favorite
-#     if len(answerlist) == 0:
-#         return
-#     
-#     pm = getToolByName(obj, 'portal_membership')
-#     for answer in answerlist:
-#         userobject=pm.getMemberById(answer)
-#         """删除用户收藏到答案"""
-#         favoritelist = list(userobject.getProperty('myfavorite'))
-#         favoritelist.remove(obj.getId())
+        obj.reindexObject()      
+
+@grok.subscribe(IVotable, IObjectRemovedEvent)
+def delVotableObj(obj,event):
+    voteevlute = IVoting(obj)
+    alist = voteevlute.approved
+    dlist = voteevlute.disapproved
+    if len(alist) == 0 and len(dlist) == 0:
+        return
+    
+    pm = getToolByName(obj, 'portal_membership')
+    if len(alist) != 0:
+        for userid in alist:
+            userobject=pm.getMemberById(userid)
+            likelist = list(userobject.getProperty('mylike'))
+            uuid = IUUID(obj,None)
+            if uuid in likelist:
+                likelist.remove(uuid)
+                userobject.setProperties(mylike=likelist)
+
+    if len(dlist) != 0:
+        for userid in dlist:
+            userobject=pm.getMemberById(userid)
+            unlikelist = list(userobject.getProperty('myunlike'))
+            uuid = IUUID(obj,None)
+            if uuid in likelist:
+                unlikelist.remove(uuid)
+                userobject.setProperties(myunlike=unlikelist)
 
 @grok.subscribe(Ianswer, IObjectRemovedEvent)
 def delAnswertopicscore(obj,event):
     """计算关联回答的topic分数"""
-    questionobject = aq_parent(obj)
-    
+    questionobject = aq_parent(obj)    
     intids = getUtility(IIntIds)  
     intid = intids.getId(questionobject)
     catalog = component.getUtility(ICatalog) 

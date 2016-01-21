@@ -25,6 +25,7 @@ from zope.component import adapter
 from zope.interface import implementer
 
 from emc.kb.contents.topic import Itopic
+from emc.kb.contents.question import Iquestion
 from emc.kb.contents.topicfolder import Itopicfolder
 from emc.kb.interfaces import IFollowedEvent
 from emc.kb.interfaces import IUnFollowedEvent
@@ -84,15 +85,23 @@ def SubscriberFollowed(obj,event):
 #     pdb.set_trace()
     userobject = mp.getAuthenticatedMember()
     username = userobject.getId()
+    fwqlist = list(userobject.getProperty('myfollowquestion'))
+    fwtlist = list(userobject.getProperty('myfollowtopic'))
     fwlist = list(userobject.getProperty('myfollow'))
+
     
     uuid = IUUID(obj,None)
     if uuid == None:return
     if not (uuid in fwlist):
-        fwlist.append(uuid)    
-#     if not obj.id in fwlist:
-#         fwlist.append(obj.id)
+        fwlist.append(uuid)   
         userobject.setProperties(myfollow=fwlist)
+        
+    if Iquestion.providedBy(obj) and not(uuid in fwqlist):
+        fwqlist.append(uuid)   
+        userobject.setProperties(myfollowquestion=fwqlist)        
+    if Itopic.providedBy(obj) and not(uuid in fwtlist):
+        fwtlist.append(uuid)   
+        userobject.setProperties(myfollowtopic=fwtlist)         
         
     evlute = IFollowing(obj)    
     if  evlute.available(username):
@@ -105,16 +114,22 @@ def SubscriberUnFollowed(obj,event):
     mp = getToolByName(obj,'portal_membership')
     userobject = mp.getAuthenticatedMember()
     username = userobject.getId()
+    fwqlist = list(userobject.getProperty('myfollowquestion'))
+    fwtlist = list(userobject.getProperty('myfollowtopic'))    
     fwlist = list(userobject.getProperty('myfollow'))
 
     uuid = IUUID(obj,None)
     if uuid == None:return
     if  (uuid in fwlist):
-#         fwlist.append(uuid)    
-#     if obj.id in fwlist:
         fwlist.remove(uuid)
         userobject.setProperties(myfollow=fwlist)
-      
+    if Iquestion.providedBy(obj) and (uuid in fwqlist):
+        fwqlist.remove(uuid)   
+        userobject.setProperties(myfollowquestion=fwqlist)        
+    if Itopic.providedBy(obj) and (uuid in fwtlist):
+        fwtlist.remove(uuid)   
+        userobject.setProperties(myfollowtopic=fwtlist)       
+    
     evlute = IFollowing(obj)    
     if not evlute.available(username):
         evlute.delFollow(username)
@@ -131,12 +146,20 @@ def delFollow(obj,event):
     pm = getToolByName(obj, 'portal_membership')
     for userid in fwlist:
         userobject=pm.getMemberById(userid)
-        """删除用户关注话题"""
-        userfollow = list(userobject.getProperty('myfollow'))
+        fwqlist = list(userobject.getProperty('myfollowquestion'))
+        fwtlist = list(userobject.getProperty('myfollowtopic'))    
+        fwlist = list(userobject.getProperty('myfollow'))
+#         userfollow = list(userobject.getProperty('myfollow'))
         uuid = IUUID(obj,None)
-        if uuid in userfollow:
-            userfollow.remove(uuid)
-        userobject.setProperties(myfollow=userfollow)
+        if uuid in fwlist:
+            fwlist.remove(uuid)
+            userobject.setProperties(myfollow=fwlist)
+        if uuid in fwtlist:
+            fwtlist.remove(uuid)
+            userobject.setProperties(myfollowtopic=fwtlist)
+        if uuid in fwqlist:
+            fwqlist.remove(uuid)                                     
+            userobject.setProperties(myfollowquestion=fwqlist)                
 
 @grok.subscribe(Itopic,ICountNumEvent)
 def CountNum(obj,event):

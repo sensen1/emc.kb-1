@@ -8,6 +8,9 @@ from emc.kb import _
 
 PROMOTIONS_PORTLET_COLUMN = u"plone.rightcolumn"
 
+class IkbLayer (Interface):
+    "plugin browser layer"
+
 class IFollowedEvent(IObjectEvent):
     """pass"""
 

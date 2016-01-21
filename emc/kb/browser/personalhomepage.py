@@ -14,6 +14,7 @@ from zope.component import getUtility
 from zope.intid import IntIds
 from zope.intid.interfaces import IIntIds
 from zc.relation.interfaces import ICatalog
+from plone.memoize.instance import memoize
 
 grok.templatedir('templates')
 class View(grok.View):
@@ -27,6 +28,17 @@ class View(grok.View):
         self.feedsNum = len(self.fetchAllFollowedNewThings())
         self.havefeeds = self.feedsNum>0
         
+    @memoize
+    def catalog(self):
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog
+    @memoize
+    def pm(self):
+        context = aq_inner(self.context)
+        return getToolByName(context, 'portal_membership')
+         
+            
     def transfer2text(self,obj):
         try:
             res = obj.output
@@ -38,8 +50,8 @@ class View(grok.View):
         """提供一个问题的brain,判断当前问题是否已被关注,返回boolean"""
         obj = brain.getObject()
         aobj = IFollowing(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        
+        userobject = self.pm().getAuthenticatedMember()
         userid = userobject.getId()            
         return aobj.available(userid)
         
@@ -48,10 +60,9 @@ class View(grok.View):
         或新增答案的问题brains，
         返回一个brain list，每个brain为feed对象的brain
         """
-        context = aq_inner(self.context)
-        catalog = getToolByName(context, 'portal_catalog')
-        feedbrain = catalog({'portal_type':"emc.kb.feed",
-                             'path': '/'.join(context.getPhysicalPath())
+
+        feedbrain = self.catalog()({'portal_type':"emc.kb.feed",
+                             'path': '/'.join(self.context.getPhysicalPath())
                              })
         return feedbrain
     def fetchFeedType(self,brain):
@@ -70,21 +81,22 @@ class View(grok.View):
         作者头像，链接，名称等
         """
 
-        pm = getToolByName(self.context, 'portal_membership')
+        
 #        import pdb
 #        pdb.set_trace()        
-        userobject=pm.getMemberById(brain.Creator)
+        author = brain.Creator
+        userobject=self.pm().getMemberById(author)
         authorinfo = {}
         authorinfo['username'] = userobject.getId()
-        authorinfo['homepage'] = pm.getHomeUrl()
+        authorinfo['homepage'] = self.pm().getHomeUrl(author) + "/workspace/feedsfolder"
         authorinfo['description'] = userobject.getProperty('description')
         authorinfo['portrait'] = userobject.getPersonalPortrait()
         return authorinfo
     def fetchQobjByid(self,feedbrain):
         """根据feed对象的brain，返回问题对象的brain
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        qbrain = catalog({'object_provides':Iquestion.__identifier__,
+        
+        qbrain = self.catalog()({'object_provides':Iquestion.__identifier__,
                           'id':feedbrain.id})
         return qbrain[0]
         
@@ -101,8 +113,8 @@ class View(grok.View):
     def fetchAnswerNumByQuestion(self,qbrain):
         """根据问题brain返回该问题下的答案数
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        answerlist = catalog({'object_provides':Ianswer.__identifier__,
+        
+        answerlist = self.catalog()({'object_provides':Ianswer.__identifier__,
                               'path': '/'.join(qbrain.getPath())
                               })
         return len(answerlist)
@@ -112,17 +124,16 @@ class View(grok.View):
         """
         obj = (self.context).getParentNode()
         aobj = IFollowing(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
-        userid = userobject.getId()
         
+        userobject = self.pm().getAuthenticatedMember()
+        userid = userobject.getId()        
         return aobj.available(userid)
         
     def fetchnewestAnswerByQuestion(self,qbrain):  
         """根据问题brain获取该问题下最新的一个答案
         """
-        catalog = getToolByName(self.context, 'portal_catalog')
-        answerlist = catalog({'object_provides': Ianswer.__identifier__,
+        
+        answerlist = self.catalog()({'object_provides': Ianswer.__identifier__,
                              'sort_order': 'reverse',
                              'sort_on': 'modified',
                              'path': '/'.join(qbrain.getPath())

@@ -7,6 +7,7 @@ from zope.component import getUtility
 from plone.uuid.interfaces import IUUID
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.uuid.interfaces import IUUID
 
 class TestSetup(unittest.TestCase):
     
@@ -46,9 +47,8 @@ class TestSetup(unittest.TestCase):
         agreelist = list(userobject.getProperty('mylike'))
         evlute = IVoting(file)
         
-
-        
-        self.assertTrue(file.id in agreelist)
+        uid = IUUID(file,None)        
+        self.assertTrue(uid in agreelist)
         self.assertTrue(evlute.voteavailableapproved(username))
         self.assertEqual(1,evlute.voteNum)
 
@@ -66,7 +66,8 @@ class TestSetup(unittest.TestCase):
         disagreelist = list(userobject.getProperty('myunlike'))
         evlute = IVoting(file)
         
-        self.assertTrue(file.id in disagreelist)
+        uid = IUUID(file,None)
+        self.assertTrue(uid in disagreelist)
         self.assertTrue(evlute.voteavailabledisapproved(username))
         
     def test_AddFavorite_event(self):

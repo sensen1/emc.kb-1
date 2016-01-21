@@ -7,13 +7,15 @@
   <property name="title" i18n:translate="">knowledge folder</property>
   <property name="description"
     i18n:translate="">knowledge base root folder</property>
-  <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
-  <property name="factory">emc.kb.contents.folder</property>
+  <property name="content_icon">++resource++emc.project/folder.png</property>
+  <property name="factory">emc.kb.folder</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">True</property>  
   <property name="allowed_content_types">	
        <element value="emc.kb.questionfolder" />
        <element value="emc.kb.topicfolder" />
+       <element value="emc.kb.mentionmefolder" />
+       <element value="emc.kb.feedsfolder" />              
   </property>
   <property name="allow_discussion">False</property>
 

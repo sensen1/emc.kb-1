@@ -9,7 +9,7 @@
 <metal:main fill-slot="content-core">
 	<metal:content-core define-macro="content-core">
 		<form method="post" tal:attributes="action string:${context/absolute_url}/@@${view/__name__}">
-		    <input type="text" class="context" name="SearchableText" tal:attributes="value view/textbox"/>
+		    <input type="text" class="context" name="form.SearchableText" tal:attributes="value view/textbox"/>
 	        <input type="submit" class="button" name="form.search" value="search"/>
 	    </form>
 	<div tal:define="b_size   python:20;

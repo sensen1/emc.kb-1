@@ -10,6 +10,9 @@ sys.setdefaultencoding('utf-8')
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('emc.kb')
 
+DoFollow = "emc.kb:Do follow"
+DoVote = "emc.kb:Do vote"
+
 ORMBase = declarative.declarative_base()
 
 some_engine = create_engine('mysql://kbdba:K0mdba$!9@127.0.0.1:3306/parameters?charset=utf8', pool_recycle=3600)

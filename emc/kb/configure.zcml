@@ -7,15 +7,19 @@
     i18n_domain="emc.kb">
 
   <includeDependencies package="." />
-  
+  <permission
+      id="emc.kb.do_follow"
+      title="emc.kb:Do follow"
+      />
+  <permission
+      id="emc.kb.do_vote"
+      title="emc.kb:Do vote"
+      />        
   <include package=".behaviors" />  
 
   <include package=".portlets" />
 
   <include package=".browser" />
-  
-
-  
 
  
   <!-- Grok the package to initialise schema interfaces and content classes -->

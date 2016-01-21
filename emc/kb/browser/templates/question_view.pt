@@ -7,155 +7,232 @@
       i18n:domain="emc.kb">
 <body>
 
-<metal:main fill-slot="main">
-	<metal:content-core define-macro="main">
+<metal:content fill-slot="main">
+    <tal:content metal:define-macro="main">
 		<div class="questionBox" tal:define="topics python:view.fetchRelatedTopics(context);
 								tnum python:len(topics)">
-			<div class="relatetopic add_obj_button" tal:condition="tnum">
-				<ul class="floatTab">
-				 	<li tal:repeat="topic topics">
-				 		<div class="topicTabLeft"></div>
-				 		<div class="topicTabBody"><a tal:attributes="href python:topic.absolute_url();
-			                         title python:topic.title"
-			         tal:content="python:topic.title">title</a></div>
-				 		<div class="topicTabRight"></div>
-					</li>
-				</ul>
-				<a tal:attributes="href python:context.absolute_url() + '/edit'">
+			<div class="row" id="ajax-modify-target"
+				tal:define="canEdit python:view.canEdit()" 
+					tal:attributes="data-edit-target string:${context/absolute_url}/@@ajax_modify">
+				<div class="title">
+				<span class="pending-vaule" tal:content="context/Title">question title</span>
+				<a class="triger-click" href="#" tal:condition="canEdit">
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					<span  class="edit" i18n:translate="edit">edit</span>
+				</a>
+				<form class="ajax-edit" data-type="1"  style=" display:none;">
+						<textarea tal:content="context/title"/>
+						<span class="hidden" tal:replace="structure context/@@authenticator/authenticator"/>
+						<button name="ok" i18n:translate="ok">确定</button>
+						<button name="cancel" i18n:translate="cancel">取消</button>
+				</form>
+				</div>								
+				<div class="description">
+				<span class="pending-vaule"  tal:content="context/description"/>
+				<a class="triger-click" href="#" tal:condition="canEdit">
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					<span class="edit" i18n:translate="edit">edit</span>
 				</a>
+				<form class="ajax-edit" data-type="2"  style=" display:none;">
+						<textarea tal:content="context/description"/>
+						<span class="hidden" tal:replace="structure context/@@authenticator/authenticator"/>												
+						<button name="ok" i18n:translate="ok">确定</button>
+						<button name="cancel" i18n:translate="cancel">取消</button>
+				</form>
+				</div>
 			</div>
-		
-		<span id="showtitle" tal:content="context/title"/>
-		<a href="javascript:void(0)" onclick="outdisplaytitle()">
-			<span id="edittitle" class="edit" i18n:translate="edit">edit</span>
-		</a>
-		<div id="modifytitle" tal:attributes="modifytitle string:${context/absolute_url}/@@modify-title">
-			<form id="modifytitleform" style=" display:none;">
-				<textarea tal:content="context/title"/>
-				<button name="ok" i18n:translate="ok">确定</button>
-				<button name="cancel" i18n:translate="cancel">取消</button>
-			</form>
-		</div>
-
-		<span id="showdesc" tal:content="context/description"/>
-		<a href="javascript:void(0)" onclick="outdisplaydesc()">
-			<span id="editdesc" class="edit" i18n:translate="edit">edit</span>
-		</a>
-		<div id="modifydesc" tal:attributes="modifydesc string:${context/absolute_url}/@@modify-description">
-			<form id="modifydescform" style=" display:none;">
-				<textarea tal:content="context/description"/>
-				<button name="ok" i18n:translate="ok">确定</button>
-				<button name="cancel" i18n:translate="cancel">取消</button>
-			</form>
-		</div>	
-
-			<div class="questionOperate">
-				<tal:block tal:define="commnetnum python:view.getcommentnum()">
-					<a href="#" tal:condition="python:commnetnum > 0" tal:attributes="href python:context.absolute_url() +'#form-widgets-text' ">
-						<span  tal:content="commnetnum">1</span><span i18n:translate="num comment">num comment</span>
-					</a>
-					<a href="#" tal:condition="python:commnetnum < 1" tal:attributes="href python:context.absolute_url() +'#form-widgets-text' " i18n:translate="add comment">add comment</a>
-				</tal:block>
-				<span class="spp"><a href="" i18n:translate="update List">update List</a></span>
-				
-				<span id="question-follow-box" tal:define="follow python:view.isFollowed()">
-					<span id="fire-question-follow" tal:attributes="style python: follow and 'display:none;;' or 'display:inline;;'">
-						<img src="++resource++eisoo.topic/plus.png" />&nbsp;<a href="#" i18n:translate="follow question">follow question</a>
-					</span>
-					<span id="fire-question-unfollow" tal:attributes="style python: follow and 'display:inline;;' or 'display:none;;'">
-						<img src="++resource++eisoo.topic/subtract.png" />&nbsp;<a href="#" i18n:translate="unfollowed">unfollowed</a>
-					</span>
-				</span>			
-			</div>
-						
-		</div>	
-		<div>
-			<span i18n:translate="n_answer">
-				<span tal:content="python:view.answerNum" i18n:name="answernum">10</span>answer		
+			<div class="row relatetopic" tal:condition="tnum">
+				<span>相关话题：</span>
+				<div class="col-md-11 col-md-offset-1">
+				<ol class="breadcrumb">
+				 	<li tal:repeat="topic topics">
+				 		<a class="btn btn-default" tal:attributes="href python:topic.absolute_url();
+			                         title python:topic.title"
+			         tal:content="python:topic.title">title</a>
+					</li>
+				</ol>
+				</div>
+			</div>	
+		<div class="row">
+			<span class="col-md-2 col-md-offset-8" i18n:translate="n_answer">
+				<span class="badge" tal:content="python:view.answerNum" i18n:name="answernum">10</span>answer		
 			</span>
-			<span class="spp">
-				<a tal:attributes="href python:context.absolute_url() + '/++add++emc.kb.contents.answer'"
+			<span class="col-md-2">
+				<a class="btn btn-default" tal:attributes="href python:context.absolute_url() + '/++add++emc.kb.answer'"
 				  i18n:translate="add an answer">add an answer</a>
 			</span>
 		</div>
-		
-		<div class="qbox hrtop" tal:repeat="answer python:view.fetchAllAnswers()">
-			<div tal:omit-tag="" tal:define="answerid answer/id">
-			<div class="vote">
-			<div class="voteup" title="agree answer"  i18n:attributes="title">
-				<div class="click_answer-agree"> 
-					<a href="#" tal:attributes="class string:kssattr-answerid-${answerid}"></a>
+		<tal:block tal:repeat="answer python:view.fetchAllAnswers()"> 
+		<div class="row answerlist" tal:define="answerid answer/id;asurl python:answer.getURL()">
+			<div class="col-md-2 vote">
+			<div class="row voteup" title="agree answer"  i18n:attributes="title">        
+				<div class="col-md-4 click_like"> 
+					<a class="btn btn-default on" href="#" tal:attributes="data-target-url python:asurl + '/@@like'">
+						<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+					</a>
 				</div>
+				<div class="col-md-8 up"> 
+					<span class="badge" tal:content="python:answer.voteNum">12</span>					
+				</div>				
 			</div>
-			<div class="votedown" title="not agree answer"  i18n:attributes="title">
-				 <div class="click_answer-unagree">
-				 	  <a href="#" tal:attributes="class string:kssattr-answerid-${answerid}"></a>
-				</div>
+			<hr />
+			<div class="row votedown" title="not agree answer"  i18n:attributes="title">
+				 <div class="col-md-4 click_unlike">
+				 	  <a class="btn btn-default on" href="#" tal:attributes="data-target-url python:asurl + '/@@unlike'">
+				 	  	<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+				 	  </a>
+				 </div>
+				<div class="col-md-8 down"> 
+					<span class="badge" tal:content="python:answer.voteNum - answer.totalNum">12</span>					
+				</div>				 
 			</div>
 			</div>
-       	<div class="boxTitle" tal:define="authorinfo python:view.GetAuthorInfoAnswer(answerid)">
-       		<a tal:attributes="href authorinfo/homepage">
-       		<span class="username" tal:content="authorinfo/username">username</span>
-       		</a><span tal:condition="authorinfo/description">，</span>
-       		<span class="description" tal:content="authorinfo/description">description</span>
-       		<span class="littleAvatar" tal:content=" structure authorinfo/portrait"></span>
-       	</div>
-			 <div class="answervote">
+			
+       		<div class="col-md-10 answerbody"> 
+       			<div class="row" tal:define="authorinfo python:view.GetAuthorInfoAnswer(answerid)">
+       				<a tal:attributes="href authorinfo/homepage">
+       				<span class="username" tal:content="authorinfo/username">username</span>
+       				</a><span tal:condition="authorinfo/description">，</span>
+       				<span class="description" tal:content="authorinfo/description">description</span>
+       				<span class="img-responsive img-circle" tal:content=" structure authorinfo/portrait"></span>
+       			</div>
+			 <div class="row answervote" tal:define="vlt python:view.fetchvotelist(answerid,3)">
 			 	<span tal:attributes="id python:answerid" i18n:translate="n_votes_label">
-			 		<span tal:content="structure answer/voteNum" i18n:name="voteNum">voteNum</span>votes
+			 		<span class="badge" tal:content="structure answer/voteNum" i18n:name="voteNum">voteNum</span>votes
 				</span>
-				<span tal:condition="python:not view.fetchvotelist(answerid,3)">
+				<div tal:omit-tag="" tal:condition="python:not vlt">
 					<span tal:attributes="id python: 'votelist-'+answerid" />
-				</span>
-				<span tal:condition="python:view.fetchvotelist(answerid,3)">
+				</div>
+				<div tal:omit-tag="" tal:condition="vlt">
 					<span i18n:translate="vote from">vote from</span>
 				 	<span class="answervotershide" tal:attributes="id python: 'votelist-'+answerid">
-				 		<span tal:repeat="vs python:view.fetchvotelist(answerid,3)" tal:content="vs">votes</span>
-						<a href="javascript:void(0)" tal:condition="python:answer.voteNum>3" onclick="voteShowAll(this)" i18n:translate="more ...">more ...</a> 
+				 		<span tal:repeat="vs python:vlt" tal:content="vs">votes</span>
+						<a class="btn btn-default" href="javascript:void(0)" 
+							tal:condition="python:answer.voteNum > 3" 
+							onclick="voteShowAll(this)" 
+							i18n:translate="more ...">more ...</a> 
 				 	</span>
-					<span style="display:none;" class="answervotersall" tal:attributes="id python: 'morelist-'+answerid">
-						<span tal:repeat="vs python:view.fetchvotelist(answerid,'all')" tal:content="vs">votes</span>
-						<a href="javascript:void(0)" onclick="voteHide(this)" i18n:translate="Click Hide"> Click Hide</a> 
+					<span style="display:none;" class="answervotersall" 
+						tal:attributes="id python: 'morelist-'+answerid">
+						<span tal:repeat="vs python:view.fetchvotelist(answerid,'all')" 
+							tal:content="vs">votes</span>
+						<a class="btn btn-default" href="javascript:void(0)" 
+							onclick="voteHide(this)" 
+							i18n:translate="Click Hide">Click Hide</a> 
 					</span>
-				</span>
+				</div>
 			 </div>
-	        <div class="answercontent" tal:define="con python:answer.content" tal:content="structure python:con">content</div>
-	        <div class="answercreated" tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
-	        
-	        <a tal:attributes="href python:answer.getURL()"><span tal:content="python:toLocalizedTime(answer.created)">2010-12-12</span></a>
+	        <div class="row answercontent" 
+	        	tal:define="con python:answer.content" 
+	        	tal:content="structure python:con">content</div>
+	        <div class="row answercreated" 
+	        	tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;">	        
+	        	<a tal:attributes="href python:asurl">
+	        		<span tal:content="python:toLocalizedTime(answer.created)">2010-12-12</span></a>
 
-	        <tal:block tal:define="commnetnum python:view.getcommentnum(answer)">
-				<a href="#" tal:condition="python:commnetnum > 0" href="#">
-					<span  tal:content="commnetnum"></span><span i18n:translate="num comment">num comment</span>
-				</a>
-				<a href="#" tal:condition="python:commnetnum < 1" href="#" i18n:translate="add comment">add comment</a>
-			</tal:block>
-			
-	        <tal:block tal:define="answerid answer/id;favorite python:view.isfavorited(answer)">
-					<div class="favorite_answer-favorite" tal:attributes="style python: favorite and 'display:none;;' or 'display:inline;;';id python: 'favorite_answer-favorite-'+answerid">
-						<a tal:attributes="href string:${context/absolute_url}/${view/__name__};class string:kssattr-answerid-${answerid}" i18n:translate="like" >like</a>
-					</div>
-					<div class="favorite_answer-unfavorite" tal:attributes="style python: favorite and 'display:inline;;' or 'display:none;;';id python: 'favorite_answer-unfavorite-'+answerid">
-						<a tal:attributes="href string:${context/absolute_url}/${view/__name__};class string:kssattr-answerid-${answerid}" i18n:translate="unlike" >unlike</a>
-					</div>
-			</tal:block>
 	        </div>
-		</div>
-		</div>
-		<div class="qbox hrtop" tal:define="myinfo python:view.GetUserInfo()">
-			<div class="questionTitle"><span style="color:#555555; font-size:16px;" i18n:translate="add an answer">add an answer</span></div>
-			<div class="boxTitle">
-				 <span class="description" tal:content="myinfo/username">adam</span>
-				 <span tal:condition="myinfo/description">,</span>
-			  	 <span class="signature" tal:content="myinfo/description">adam's sign</span>
-			  	 <span class="littleAvatar" tal:content=" structure myinfo/portrait"></span>
-		    </div>	
-		</div>
-		<div tal:content="structure context/@@view/plone.addanswer" />
-		<div tal:content="structure context/@@view/plone.comments" />
-	</metal:content-core>
-</metal:main>
+		</div> <!--col-md-10 end-->		
+		</div> <!-- answerlist end-->
+		<hr></hr>
+		</tal:block>		
+		</div>	
 
+	</tal:content>
+</metal:content>
+<metal:js fill-slot="javascript_bottom_slot">
+<script type="text/javascript">
+$(document).ready(function(){
+//ajax edit
+$(".title").on("click",".triger-click",function(e) {
+e.preventDefault();
+	// set focus
+	$(this).hide();
+	$('.title form').show();
+	return false;
+});
+$(".description").on("click",".triger-click",function(e) {
+e.preventDefault();
+	// set focus
+	$(this).hide();
+	$('.description form').show();
+	return false;
+});
+$(".description").on("click","button[name='ok']",function(e) {
+	e.preventDefault();
+	var action = $("#ajax-modify-target").attr('data-edit-target');
+	var formval = $(".description textarea").val();
+	var type = $(this).parent().attr("data-type");
+
+	var data = {'type':type,'txtvalue':formval};
+	$.post(action,data,function(callback) {
+	if (callback==1) {
+		$(".description form").hide();
+		$(".description .pending-vaule").html(formval).show();
+		$(".description a").show();}
+		else {return false;}
+	},'json');
+	return false;
+});
+$(".description").on("click","button[name='cancel']",function(e) {
+		e.preventDefault();
+		$(".description form").hide();
+		$(".description a").show();
+	return false;
+});
+$(".title").on("click","button[name='ok']",function(e) {
+	e.preventDefault();
+	var action = $("#ajax-modify-target").attr('data-edit-target');
+	var formval = $(".title textarea").val();
+	var type = $(this).parent().attr("data-type");
+
+	var data = {'type':type,'txtvalue':formval};
+	$.post(action,data,function(callback) {
+	if (callback==1) {
+		$(".title form").hide();
+		$(".title .pending-vaule").html(formval).show();
+		$(".title a").show();}
+		else {return false}
+	},'json');
+	return false;
+});
+$(".title").on("click","button[name='cancel']",function(e) {
+		e.preventDefault();
+		$(".title form").hide();
+		$(".title a").show();
+	return false;
+});
+//end of ajax edit
+$('.click_like').on('click','a', function(e){
+e.preventDefault();
+		  var action = $(this).attr('data-target-url');		  
+			$(this).parent().parent().addClass('focus');			
+			$.post(action,function(result){
+				if (result) {
+				var old = $('.focus .up span').html();
+				var newnum = (Number(old) + 1).toString();
+				$('.focus .up span').html(newnum);
+				$('.focus').removeClass('focus');
+				}
+				else {return false;}
+			}, 'json');		
+	});
+
+$('.click_unlike').on('click','a', function(e){
+		e.preventDefault();
+		  var action = $(this).attr('data-target-url');		  
+			$(this).parent().parent().addClass('focus');			
+			$.post(action,function(result){
+				if (result) {
+				var old = $('.focus .down span').html();
+				var newnum = (Number(old) + 1).toString();
+				$('.focus .down span').html(newnum);
+				$('.focus').removeClass('focus');
+				}
+				else {return false;}
+			}, 'json');		
+	});	
+	})
+</script>		
+</metal:js>
 </body>
 </html>

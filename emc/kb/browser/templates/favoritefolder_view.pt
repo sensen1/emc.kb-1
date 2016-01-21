@@ -12,7 +12,7 @@
            tal:define="content  python:view.fetchAllFavorite(0, 3);">
 		<div id="zoneHead">
 			<div class="zoneHeadLeft" style=" margin-bottom:10px;">
-				<img src="++resource++eisoo.topic/consulting.png" />&nbsp;
+				<img src="++resource++emc.kb/consulting.png" />&nbsp;
 				<span class="highlight orange" i18n:translate="My Favorites">My Favorites</span>
 				<span class="titleTip" i18n:translate="n_favorite_label">(<span i18n:name="fnum" tal:content="python:view.favoriteNum">2</span>favorites in total)</span>
 			</div>
@@ -35,7 +35,7 @@
 							<div class="author" tal:define="userinfo python:view.GetSpecificUser(userid)">
 								<a tal:attributes="href userinfo/geturl"><span tal:content="userinfo/username">magasa</span></a><span>,</span>
 								<span class="description" tal:content="userinfo/description">description</span>
-								<span class="littleAvatar" tal:content="structure userinfo/image"></span>
+								<span class="img-responsive img-circle" tal:content="structure userinfo/image"></span>
 							</div>
 							<div class="content" 
 							tal:define="con python:answerbrain.content" tal:content="structure python:con">answer contents</div>

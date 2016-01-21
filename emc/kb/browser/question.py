@@ -19,17 +19,18 @@ from zope.intid import IntIds
 from zope.intid.interfaces import IIntIds
 from plone.app.discussion.interfaces import IConversation
 from plone.uuid.interfaces import IUUID
+from zope.security import checkPermission
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.memoize.instance import memoize
+
 
 from emc.kb.contents.topic import Itopic
 from emc.kb.contents.answer import Ianswer
 from emc.kb.interfaces import IVoting
 from emc.kb.interfaces import IFollowing
+from emc.memberArea.interfaces import IFavoriting
 from emc.kb.events import CountNumEvent
-
 from emc.kb.events import FollowedEvent,UnFollowedEvent
-from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.memoize.instance import memoize
-from Products.CMFCore.utils import getToolByName
 from emc.kb import  _
 from emc.kb.contents.topic import Itopic
 from emc.kb.contents.question import Iquestion
@@ -59,29 +60,30 @@ class View(grok.View):
         # Hide the editable-object border
         self.request.set('disable_border', True)
         self.answerNum = len(self.fetchAllAnswers())
-        self.getcommentnum()
-        if self.request["REQUEST_METHOD"] == "POST":
-            if 'form.textbox' in self.request.form:
-                authenticator = getMultiAdapter(
-                                                (self.context, self.request), name=u"authenticator")
-                if not authenticator.verify():
-                    raise Forbidden()
-            
-                data = self.receive()
-                self.create(data)
+
+    @memoize
+    def canEdit(self):
+        return checkPermission('cmf.ModifyPortalContent', self.context)
     
-#    def visitnum(self):
-#        """返回当前问题被访问的次数
-#        """
-#        event.notify(CountNumEvent(self.context))
-#        num = self.context.visitnum 
-#        return num
-    def fetchRelatedTopics(self,questionobj):
+    @memoize
+    def pm(self):
+        context = aq_inner(self.context)
+        return getToolByName(context,'portal_membership')    
+    @memoize
+    def catalog(self):
+        context = aq_inner(self.context)
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog 
+
+    def fetchRelatedTopics(self,questionobj=None):
         """获取问题questionobj的相关话题，返回一个话题对象列表"""
-        intids = getUtility(IIntIds)  
+        intids = getUtility(IIntIds)
+        if  questionobj == None:questionobj = self.context 
         intid = intids.getId(questionobj)
         catalog = component.getUtility(ICatalog)        
         qlist = sorted(catalog.findRelations({'from_id': intid}))
+#         import pdb
+#         pdb.set_trace()
         if len(qlist) ==0:return []
         qlists = []
         for q in qlist:
@@ -93,9 +95,8 @@ class View(grok.View):
     def isFollowed(self):
         """判断当前话题是否已被关注,返回boolean"""
         obj = self.context
-        aobj = IFollowing(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        aobj = IFollowing(obj)        
+        userobject = self.pm().getAuthenticatedMember()
         userid = userobject.getId()
         return aobj.available(userid)
 
@@ -107,14 +108,12 @@ class View(grok.View):
             return obj
                 
     def fetchAllAnswers(self):
-        """获取问题的所有答案，返回字典值，包含id, content，voteNum, date, answerer"""
-        context = aq_inner(self.context)
-        catalog = getToolByName(context, 'portal_catalog')
+        """获取问题的所有答案，返回字典值，包含id, content，voteNum, date, answerer"""      
         
-        answerlist = catalog({'object_provides': Ianswer.__identifier__,
+        answerlist = self.catalog()({'object_provides': Ianswer.__identifier__,
                              'sort_order': 'reverse',
                              'sort_on': 'totalNum',
-                             'path': '/'.join(context.getPhysicalPath())
+                             'path': '/'.join(self.context.getPhysicalPath())
                              })
         if len(answerlist) == 0:
             return []
@@ -132,31 +131,34 @@ class View(grok.View):
     
     def fetchvotelist(self,answerid,size=3):
         """获取当前赞同到用户"""
-        catalog = getToolByName(self.context, 'portal_catalog') 
-        obrain = catalog({'object_provides': Ianswer.__identifier__,
+         
+        obrain = self.catalog()({'object_provides': Ianswer.__identifier__,
                              'id': answerid
                              })
         if len(obrain)==0:return
         obj = obrain[0].getObject()
         evlute = IVoting(obj)
         votedict = []
-        pm = getToolByName(self.context, 'portal_membership')
+        
         if size == 'all':
             for ete in evlute.approved:
-                userobject=pm.getMemberById(ete)
+                userobject = self.pm().getMemberById(ete)
                 username = userobject.getProperty('fullname')
+                if username =="":username = ete
                 votedict.append(username)
         else:
             if evlute.voteNum < size:
                 for ete in evlute.approved:
-                    userobject=pm.getMemberById(ete)
+                    userobject = self.pm().getMemberById(ete)
                     username = userobject.getProperty('fullname')
+                    if username =="":username = ete
                     votedict.append(username)
             else:
                 i = 0
                 for ete in evlute.approved:
-                    userobject=pm.getMemberById(ete)
+                    userobject=self.pm().getMemberById(ete)
                     username = userobject.getProperty('fullname')
+                    if username =="":username = ete
                     votedict.append(username)
                     i = i + 1
                     if i >= size:
@@ -165,45 +167,58 @@ class View(grok.View):
 
     def GetUserInfo(self):
         """获取当前用户相关信息，包括包含用户名，描述，头像"""
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        
+        userobject = self.pm().getAuthenticatedMember()
         username = userobject.getProperty('fullname')
-        votedict = {}             
-        votedict['username'] = username
-        votedict['homepage'] = pm.getHomeUrl() + '/feedsfolder'
-        votedict['description'] = userobject.getProperty('description')
-        votedict['portrait'] = userobject.getPersonalPortrait()
-        return votedict
+        userid = userobject.getId()
+        if username =="":username = userid
+        authorinfo = {}             
+        try:
+            authorinfo['username'] = username
+            authorinfo['homepage'] = userobject.getHomeUrl(userid) + '/workspace/feedsfolder'
+            authorinfo['description'] = userobject.getProperty('description')
+            authorinfo['portrait'] = userobject.getPersonalPortrait(userid)
+        except:
+            authorinfo = {'username':'testuser','homepage':'http://test.com/',
+                          'description':'test','portrait':'defaultUser.png'}
+        return authorinfo
    
    
     def GetAuthorInfoAnswer(self,answerid):
         """根据答案id获取作者相关信息，包括包含链接，描述，头像"""
-        catalog = getToolByName(self.context, 'portal_catalog') 
+         
         query = dict(object_provides=Ianswer.__identifier__,id=answerid)
-        answerobject = catalog(query)[0].getObject()
+        answerobject = self.catalog()(query)[0].getObject()
         pm = getToolByName(answerobject, 'portal_membership')
-        userobject=pm.getMemberById(answerobject.Creator())
+        author = answerobject.Creator()
+        userobject = self.pm().getMemberById(author)
         username = userobject.getProperty('fullname')
+        if username == "": username = author
+        
         authorinfo = {}
-        authorinfo['username'] = username
-        authorinfo['homepage'] = userobject.getHomeUrl(userobject.getId()) + '/feedsfolder'
-        authorinfo['description'] = userobject.getProperty('description')
-        authorinfo['portrait'] = userobject.getPersonalPortrait(userobject.getId())
+        try:
+            authorinfo['username'] = username
+            authorinfo['homepage'] = userobject.getHomeUrl(author) + '/workspace/feedsfolder'
+            authorinfo['description'] = userobject.getProperty('description')
+            authorinfo['portrait'] = userobject.getPersonalPortrait(author)
+        except:
+            authorinfo = {'username':'testuser','homepage':'http://test.com/',
+                          'description':'test','portrait':'defaultUser.png'}
         return authorinfo
 
     def isfavorited(self,answer):
         """提供答案的brain,判断当前答案是否已被收藏,返回boolean"""
         obj = answer.getObject()
-        aobj = IVoting(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        aobj = IFavoriting(obj)
+        
+        userobject = self.pm().getAuthenticatedMember()
         userid = userobject.getId()
         return aobj.favavailable(userid)
     
     def QuestionfollowedNum(self,questionid):
         """获取问题关注人数"""
-        catalog = getToolByName(self.context, 'portal_catalog')
-        question = catalog({'object_provides':Iquestion.__identifier__,
+        
+        question = self.catalog()({'object_provides':Iquestion.__identifier__,
                       'id': questionid
                          })
         aobj = IFollowing(question[0].getObject())
@@ -213,18 +228,18 @@ class View(grok.View):
         """判断当前问题是否已被关注,返回boolean"""
         obj = question.getObject()
         aobj = IFollowing(obj)
-        pm = getToolByName(self.context, 'portal_membership')
-        userobject = pm.getAuthenticatedMember()
+        
+        userobject = self.pm().getAuthenticatedMember()
         userid = userobject.getId()
         return aobj.available(userid)
     
     def QuestionAnswerNum(self,questionid):
         """获取话问题数量"""
-        catalog = getToolByName(self.context, 'portal_catalog')
-        question = catalog({'object_provides':Iquestion.__identifier__,
+        
+        question = self.catalog()({'object_provides':Iquestion.__identifier__,
                             'id': questionid
                          })
-        answerlist = catalog({'object_provides':Ianswer.__identifier__,
+        answerlist = self.catalog()({'object_provides':Ianswer.__identifier__,
                           'sort_order': 'reverse',
                          'sort_on': 'voteNum',
                          'path': '/'.join(question[0].getObject().getPhysicalPath())

@@ -1,6 +1,7 @@
 #-*- coding: UTF-8 -*-
 from five import grok
 from zope.interface import Interface
+from Acquisition import aq_inner
 from z3c.relationfield import RelationCatalog
 from zc.relation.interfaces import ICatalog
 from zope import component
@@ -8,6 +9,7 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from zope.intid import IntIds
 from zope.intid.interfaces import IIntIds
+from plone.memoize.instance import memoize
 
 from emc.kb.interfaces import IFollowing
 from emc.kb.interfaces import IFollowing
@@ -64,7 +66,13 @@ class View(grok.View):
         """
         """
         # Hide the editable-object border
-        self.request.set('disable_border', True)  
+        self.request.set('disable_border', True)
+          
+    @memoize   
+    def catalog(self):
+        context = aq_inner(self.context)
+        return  getToolByName(context, 'portal_catalog')
+         
         
     def isTopicpicAvalable(self,topic=None):
         """判断图片字段是否有效"""
@@ -88,27 +96,34 @@ class View(grok.View):
         except:
             return obj  
               
+    def fetchAllAnswers(self,qbrain):
+        "get all answers in the qbrain question"
+        return self.catalog()({'object_provides': Ianswer.__identifier__,
+                                 'path': dict(query=qbrain.getPath(),depth=1),
+                                 'sort_order': 'reverse',
+                                 'sort_on': 'voteNum'})         
+        
+    @memoize    
     def fetchAllRelatedQuestion(self,start=0,size=10):
         topic = self.context
         intids = getUtility(IIntIds)  
         intid = intids.getId(topic)
         catalog = component.getUtility(ICatalog)
         qlist = sorted(catalog.findRelations({'to_id': intid}))
-        if len(qlist)==0:return []
-        
+        if len(qlist)==0:return []        
         startsize = start*size
         endsize = (start+1)*size
-        qlistGroup = qlist[startsize:endsize]
-        
+        qlistGroup = qlist[startsize:endsize]        
         qlists = []
-        for q in qlistGroup: 
-            catalog = getToolByName(self.context, 'portal_catalog')
-            questionobject = catalog({'portal_type': "emc.kb.question",
-                                            'id':q.from_object.id
+        for q in qlistGroup:            
+            questionobject = self.catalog()({'portal_type': "emc.kb.question",
+                                            'id':q.from_object.id,
+                                            'sort_order': 'reverse',
+                                            'sort_on':'modified'
                                             })
-            qlists.append(questionobject[0].getObject())          
-        re = self.sortByQuestionModified(qlists)
-        return re
+            qlists.append(questionobject[0])          
+#         re = self.sortByQuestionModified(qlists)
+        return qlists
     
     def sortByQuestionModified(self,brains):
         """
@@ -127,7 +142,7 @@ class View(grok.View):
         return aobj.available(userid)
     
     def questionIsFollowed(self,qobj):
-        """判断qbrain指定的问题是否已被关注,返回boolean"""
+        """判断指定的问题是否已被关注,返回boolean"""
 #        obj = qbrain.getObject()
         aobj = IFollowing(qobj)
         pm = getToolByName(self.context, 'portal_membership')
@@ -137,22 +152,26 @@ class View(grok.View):
     
     def TopicQuestionNum(self, topicid=None):
         """获取话题下问题数量"""
-        catalog = getToolByName(self.context, 'portal_catalog')
+              
+        intids = getUtility(IIntIds)
+        
         if topicid == None:
-            topicid = self.context.id
-        topic = catalog({'object_provides':Itopic.__identifier__,
+#             topic = self.context
+            intid = intids.getId(self.context)
+        else:
+            topic = self.catalog()({'object_provides':Itopic.__identifier__,
                          'id': topicid
                          })
-        intids = getUtility(IIntIds)
-        intid = intids.getId(topic[0].getObject())
+            intid = intids.getId(topic[0].getObject())
+
         catalog = component.getUtility(ICatalog)        
         qlist = sorted(catalog.findRelations({'to_id': intid}))
         return len(qlist)
     
     def TopicFollowNum(self, topicid):
         """获取话题关注人数"""
-        catalog = getToolByName(self.context, 'portal_catalog')
-        topic = catalog({'object_provides':Itopic.__identifier__,
+        
+        topic = self.catalog()({'object_provides':Itopic.__identifier__,
                       'id': topicid
                          })
         aobj = IFollowing(topic[0].getObject())
@@ -176,9 +195,7 @@ class topicmore(grok.View):
     grok.require('zope2.View')            
     
     def render(self):
-
-        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
-        
+     
         form = self.request.form
         formst = form['formstart']
         formstart = int(formst) 
@@ -193,32 +210,26 @@ class topicmore(grok.View):
             ifmore = 0
             
         braindata = topic_view.fetchAllRelatedQuestion(formstart, 3)
-
-        # Capture a status message and translate it
-        translation_service = getToolByName(self.context, 'translation_service')        
-        
+           
         outhtml = ""
         brainnum = len(braindata)
         for i in range(brainnum):
             questionobj = braindata[i]
-            question_view = getMultiAdapter((questionobj, self.request),name=u"view")
-            questionUrl = braindata[i].absolute_url()
-            questionTitle = braindata[i].title
+#             question_view = getMultiAdapter((questionobj, self.request),name=u"view")
+            questionUrl = braindata[i].getURL()
+            questionTitle = braindata[i].Title
             questionTitle = questionTitle.encode('utf-8')
-            questionid = braindata[i].id.replace('.','_')
-            answer = question_view.fetchAllAnswers()
+#             questionid = braindata[i].id.replace('.','_')
+            answer = topic_view.fetchAllAnswers(braindata[i])
             answernum = len(answer)
             
-            follow = topic_view.questionIsFollowed(braindata[i])
+            follow = topic_view.questionIsFollowed(braindata[i].getObject())
             if follow:
-                followstyle1 = "display:none;"
-                followstyle2 = "display:inline;"
+                followstyle = "display:none;"
+                unfollowstyle = "display:inline;"
             else:
-                followstyle1 = "display:inline;"
-                followstyle2 = "display:none;"
-
-            ajaxaction1 = self.context.absolute_url() + "/@@ajax-followtq"
-            ajaxaction2 = self.context.absolute_url() + "/@@ajax-unfollowtq"
+                followstyle = "display:inline;"
+                unfollowstyle = "display:none;"
             
             if answernum>0:
                 firstanswer = answer[0]
@@ -235,27 +246,32 @@ class topicmore(grok.View):
             
             out = """<div class="qbox hrtop">
                         <div class="boxTitle">
-                            <a href="%s">%s</a>
+                            <a href="%(qurl)s">%(qtitle)s</a>
                         </div>
                         <div class="answerbox">
                             <div class="boxFoot">
                                     这个问题被添加到
-                                <span class="linkcolor">%s</span>话题•
-                                <span>%s</span>个答案•
-                                <span class="linkcolor">
-                                    <span id="ajax-question-follow-%s" style="%s" question-follow="%s">
-                                        <a class="followtqjq" href="#">关注问题</a>
-                                        <input type="text" style="display:none" value="%s" />
-                                    </span>
-                                    <span id="ajax-question-unfollow-%s" style="%s" question-unfollow="%s">
-                                        <a class="unfollowtqjq" href="#">取消关注</a>
-                                          <input type="text" style="display:none" value="%s" />
-                                    </span>
+                                <span class="linkcolor">%(topicTitle)s</span>话题•
+                                <span>%(answernum)s</span>个答案•
+                                <div class="linkcolor">
+                                    <span class="follow" style="%(followstyle)s" data-target-url="%(targeturl)s/@@follow">
+                        <a class="btn btn-default" href="#">关注问题</a>
+                    </span>
+                    <span class="unfollow" style="%(unfollowstyle)s" data-target-url="%(targeturl)s/@@unfollow">
+                        <a class="btn btn-default" href="#">取消关注</a>                        
+                    </span> 
                                 </div>
                             </div>
-                            %s
+                            %(answerhtml)s
                         </div>
-                    </div>"""%(questionUrl,questionTitle,topicname,answernum,questionid,followstyle1,ajaxaction1,questionid,questionid,followstyle2,ajaxaction2,questionid,answerhtml)
+                    </div>""" % dic (
+                                     qurl=questionUrl,
+                                     qtitle=questionTitle,
+                                     topicTitle=topicname,
+                                     answernum=answernum,
+                                     followstyle=followstyle,
+                                     unfollowstyle=unfollowstyle,
+                                     answerhtml=answerhtml)
             
             outhtml =outhtml+out
             

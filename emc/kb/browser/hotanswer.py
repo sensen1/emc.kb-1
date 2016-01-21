@@ -1,10 +1,9 @@
 #-*- coding: UTF-8 -*-
 import time
 from five import grok
-from Acquisition import aq_parent
+from Acquisition import aq_parent,aq_inner
 from emc.kb.contents.answer import Ianswer
 from emc.kb.utility import topicdate
-
 from zope.interface import Interface
 
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -14,9 +13,7 @@ from Products.CMFCore.utils import getToolByName
 #from zope.component import queryUtility
 from zope.i18n import translate
 from zope.i18nmessageid import Message
-
 from zope.component import getMultiAdapter
-
 from emc.kb import _
 
 ALL_DAY = _(
@@ -189,14 +186,16 @@ class hotanswer(grok.View):
         query = dict(object_provides=Ianswer.__identifier__,id=hotanswer.id)
         answerobject = catalog(query)[0].getObject()
         pm = getToolByName(self.context, 'portal_membership')
+        author = answerobject.Creator()
         userobject=pm.getMemberById(answerobject.Creator())
         username = userobject.getProperty('fullname')
+        if username == "" : username = author
         authorinfo = {}
         try:
             authorinfo['username'] = username
-            authorinfo['homepage'] = pm.getHomeUrl(userobject.getId()) + '/feedsfolder'
+            authorinfo['homepage'] = pm.getHomeUrl(author) + '/workspace/feedsfolder'
             authorinfo['description'] = userobject.getProperty('description')
-            authorinfo['portrait'] = userobject.getPersonalPortrait(userobject.getId())
+            authorinfo['portrait'] = userobject.getPersonalPortrait(author)
         except:
             authorinfo = {"username":'testuser',"homepage":'http://test.com',"description":'testuser',
                           "portrait":'defaultUser.png'}
