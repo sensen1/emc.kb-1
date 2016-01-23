@@ -1,6 +1,7 @@
 #-*- coding: UTF-8 -*-
 from five import grok
 from Acquisition import aq_inner
+from plone import api
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from emc.kb.contents.folder import Ifolder
@@ -59,8 +60,10 @@ class View(grok.View):
         self.request.set('disable_border', True)
 
         if self.pm().isAnonymousUser():
+
+            url = api.portal.get().absolute_url()
             purl = self.context.absolute_url()
-            tourl = purl + "/@@loginview?came_from=%s" % purl
+            tourl = url + "/login?came_from=%s" % purl
             self.request.response.redirect(tourl)
             
         userobject = self.pm().getAuthenticatedMember()
