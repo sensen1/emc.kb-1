@@ -59,7 +59,7 @@
 				<span class="badge" tal:content="python:view.answerNum" i18n:name="answernum">10</span>answer		
 			</span>
 			<span class="col-md-2">
-				<a class="btn btn-default" tal:attributes="href python:context.absolute_url() + '/++add++emc.kb.answer'"
+				<a class="btn btn-primary" tal:attributes="href python:context.absolute_url() + '/++add++emc.kb.answer'"
 				  i18n:translate="add an answer">add an answer</a>
 			</span>
 		</div>
