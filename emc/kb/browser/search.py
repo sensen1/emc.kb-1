@@ -47,7 +47,7 @@ class View(grok.View):
     grok.context(INavigationRoot)
     grok.template('search_view') 
     grok.require('zope2.View')
-    grok.name('search')
+    grok.name('kbsearch')
     
     def update(self):
         self.textbox = self.receive()
