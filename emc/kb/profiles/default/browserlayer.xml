@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<layers>
-  <layer name="emc.kb"
-    interface="emc.kb.interfaces.IkbLayer" />
-</layers>

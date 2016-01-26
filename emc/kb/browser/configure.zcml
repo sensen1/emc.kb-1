@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:plone="http://namespaces.plone.org/plone"    
+    i18n_domain="emc.kb">
+
+<!--
+    <browser:page
+      for="*"
+      name="member_url"
+      class=".member_view.WorkspaceUrlView"
+ 		  layer="emc.theme.interfaces.IThemeSpecific"       
+      permission="zope.Public"
+      />
+-->
+   <browser:page
+      name="file_view"
+      for="plone.app.contenttypes.interfaces.IFile"
+      class="plone.app.contenttypes.browser.file.FileView"
+      template="templates/file.pt"
+      layer="emc.theme.interfaces.IThemeSpecific" 
+      permission="zope2.View"
+      menu="plone_displayviews"
+      title="View File"
+      />           
+</configure>

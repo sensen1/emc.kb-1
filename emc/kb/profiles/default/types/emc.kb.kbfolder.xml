@@ -12,7 +12,8 @@
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>  
   <property name="allowed_content_types">	
-       <element value="Folder" />             
+       <element value="Folder" />
+       <element value="File" />                    
   </property>
   <property name="allow_discussion">False</property>
 
@@ -27,8 +28,8 @@
 
   <!-- View information -->
   <property name="link_target"></property>
-  <property name="immediate_view">view</property>
-  <property name="default_view">view</property>
+  <property name="immediate_view">folder_contents</property>
+  <property name="default_view">folder_contents</property>
   <property name="view_methods">
    <element value="view"/>
   </property>
