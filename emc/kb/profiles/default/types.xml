@@ -17,5 +17,7 @@
   <object name="emc.kb.answer" meta_type="Dexterity FTI" />
   <object name="emc.kb.question" meta_type="Dexterity FTI" />
   <object name="emc.kb.topic" meta_type="Dexterity FTI" />
-  <object name="emc.kb.folder" meta_type="Dexterity FTI" />  
+  <object name="emc.kb.folder" meta_type="Dexterity FTI" />
+  <object name="emc.kb.kbfolder" meta_type="Dexterity FTI" />
+  <object name="emc.kb.ormfolder" meta_type="Dexterity FTI" />      
 </object>
