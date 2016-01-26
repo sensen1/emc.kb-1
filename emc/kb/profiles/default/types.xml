@@ -8,15 +8,6 @@
   -->
 <object name="portal_types" meta_type="Plone Types Tool">
   <!-- -*- extra stuff goes here -*- -->
-  <object name="emc.kb.feed" meta_type="Dexterity FTI" />
-  <object name="emc.kb.feedsfolder" meta_type="Dexterity FTI" />
-  <object name="emc.kb.mentionmefolder" meta_type="Dexterity FTI" />
-  <object name="emc.kb.mentionme" meta_type="Dexterity FTI" />
-  <object name="emc.kb.questionfolder" meta_type="Dexterity FTI" />
-  <object name="emc.kb.topicfolder" meta_type="Dexterity FTI" />
-  <object name="emc.kb.answer" meta_type="Dexterity FTI" />
-  <object name="emc.kb.question" meta_type="Dexterity FTI" />
-  <object name="emc.kb.topic" meta_type="Dexterity FTI" />
   <object name="emc.kb.folder" meta_type="Dexterity FTI" />
   <object name="emc.kb.kbfolder" meta_type="Dexterity FTI" />
   <object name="emc.kb.ormfolder" meta_type="Dexterity FTI" />      

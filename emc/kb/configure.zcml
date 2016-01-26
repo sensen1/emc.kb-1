@@ -15,9 +15,7 @@
       id="emc.kb.do_vote"
       title="emc.kb:Do vote"
       />        
-  <include package=".behaviors" />  
 
-  <include package=".portlets" />
 
   <include package=".browser" />
 
@@ -36,9 +34,5 @@
       description="Installs the emc.kb package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <!-- -*- extra stuff goes here -*-  -->
-   <adapter factory=".contents.answer.voteNum" name="voteNum" />
-   <adapter factory=".contents.answer.content" name="content" />              
-   <adapter factory=".contents.answer.totalNum" name="totalNum" /> 
-   <adapter factory=".contents.topic.followernum" name="followernum" /> 
+ 
 </configure>
