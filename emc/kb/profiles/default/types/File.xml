@@ -3,7 +3,7 @@
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
  <action title="View" action_id="view" category="object" condition_expr=""
-    icon_expr="" link_target="" url_expr="string:${object_url}/file_view"
+    icon_expr="" link_target="" url_expr="string:${object_url}/file_external_edit_view"
     visible="True" i18n:attributes="title">
   <permission value="View"/>
  </action>
