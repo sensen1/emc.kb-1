@@ -8,12 +8,12 @@
 
   <includeDependencies package="." />
   <permission
-      id="emc.kb.do_follow"
-      title="emc.kb:Do follow"
+      id="emc.kb.input_db"
+      title="emc.kb:Input db"
       />
   <permission
-      id="emc.kb.do_vote"
-      title="emc.kb:Do vote"
+      id="emc.kb.search_db"
+      title="emc.kb:Search db"
       />        
 
 

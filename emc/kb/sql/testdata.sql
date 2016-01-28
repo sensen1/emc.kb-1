@@ -6,7 +6,7 @@ use parameters;
 
 
 
-insert into model (xtdm, xtmc) 
+insert into model (xhdm, xhmc) 
 values 
        -- model 
        ('C1', '电信手机'),

@@ -62,5 +62,18 @@ class TestView(unittest.TestCase):
         
         self.assertTrue('class="pat-structure"' in browser.contents)
     
+    def testModelView(self):
+        app = self.layer['app']
+        portal = self.layer['portal']
 
+        browser = Browser(app)
+        browser.handleErrors = False             
+        browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+#         browser.addHeader('Authorization', 'Basic %s:%s' % ('user3', 'secret',))
+        import transaction
+        transaction.commit()
+        base = portal['folder']['ormfolder'].absolute_url()
+        browser.open(base + "/model_listings")
+        
+        self.assertTrue("row table table-striped table-bordered table-condensed listing" in browser.contents)
         

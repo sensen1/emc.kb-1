@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-#import sqlalchemy
+import sqlalchemy
 
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
@@ -13,8 +13,8 @@ from zope.configuration import xmlconfig
 
 from zope.component import provideUtility
 
-#from z3c.saconfig.utility import EngineFactory
-#from z3c.saconfig.utility import GloballyScopedSession
+from z3c.saconfig.utility import EngineFactory
+from z3c.saconfig.utility import GloballyScopedSession
 
 class Topic(PloneSandboxLayer):
 
@@ -31,18 +31,17 @@ class Topic(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', emc.theme, context=configurationContext)
         xmlconfig.file('configure.zcml', emc.memberArea, context=configurationContext)        
 #        xmlconfig.file('configure.zcml', eisoo.policy, context=configurationContext)
-        # Create database in a temporary file
-#        fileno, self.dbFileName = tempfile.mkstemp(suffix='.db')
-#        dbURI = 'sqlite:///%s' % self.dbFileName
-#        dbEngine = sqlalchemy.create_engine(dbURI)
-#        eisoo.forum.ORMBase.metadata.create_all(dbEngine)
-#        
-#        # Register z3c.saconfig utilities for testing
-#        engine = EngineFactory(dbURI, echo=False, convert_unicode=False)
-#        provideUtility(engine, name=u"ftesting")
-#        
-#        session = GloballyScopedSession(engine=u"ftesting", twophase=False)
-#        provideUtility(session)
+         #Create database in a temporary file
+        dbURI = 'mysql://kbdba:K0mdba$!9@127.0.0.1:3306/parameters?charset=utf8'
+        dbEngine = sqlalchemy.create_engine(dbURI)
+#         eisoo.forum.ORMBase.metadata.create_all(dbEngine)
+        
+        # Register z3c.saconfig utilities for testing
+        engine = EngineFactory(dbURI, echo=False, convert_unicode=False)
+        provideUtility(engine, name=u"ftesting")
+        
+        session = GloballyScopedSession(engine=u"ftesting", twophase=False)
+        provideUtility(session)
     
     def tearDownZope(self, app):
         pass

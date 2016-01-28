@@ -10,7 +10,7 @@ from emc.kb import _
 class IModel(Interface):
     """编号number 记录表
     """
-    id = schema.Int(
+    modelId = schema.Int(
             title=_(u"model table primary key"),
         )   
     # 型号代码
@@ -29,7 +29,7 @@ class Model(ORMBase):
     
     __tablename__ = 'model'
     
-    id = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
+    modelId = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
             primary_key=True,
             autoincrement=True,
         )
@@ -40,152 +40,58 @@ class Model(ORMBase):
     xhmc = sqlalchemy.schema.Column(sqlalchemy.types.String(32),
             nullable=False,
         )
-    
-class IDepartmentMarketlogs(Interface):
-    """部门报销记录
-    """
-    id = schema.Int(                
-        title = _(u"IDepartmentMarketlogs id"),
-        )
-    
-    applyuser = schema.TextLine(
-        title = _(u"IDepartmentMarketlogs applyuser")
-        )        
-    departmentid = schema.TextLine(
-            title = _(u"IDepartmentMarketlogs departmentid")
-            )
-    spent_fee = schema.Float(
-            title = _(u"IDepartmentMarketlogs spent_fee")
-            )
-    date = schema.Datetime(
-            title = _(u"IDepartmentMarketlogs date")
-            )    
-    type = schema.Int(
-            title=_(u"IDepartmentMarketlogs type"),
-        )
-class DepartmentMarketlogs(ORMBase):
-    """部门报销记录"""
-    implements(IDepartmentMarketlogs)
-    __tablename__ = 'departmentmarket_logs'
-    
-    id = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-                primary_key=True,
-                autoincrement=True,
-                )
-    applyuser = sqlalchemy.schema.Column(sqlalchemy.types.String(128),
-        nullable=False,
-        )
-    departmentid = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-            nullable=False,
-            )
-    spent_fee = sqlalchemy.schema.Column(sqlalchemy.types.Float(),
-            nullable=False,
-            )
-    date = sqlalchemy.schema.Column(sqlalchemy.types.DateTime(),
-            nullable=False,
-            )
-    type = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-            nullable=False,
-            )
-    
-class IAreaMarketlogs(Interface):
-    """区域申请报销记录
-    """
-    id = schema.Int(                
-        title = _(u"IAreaMarketlogs id"),
-        )
-    
-    applyuser = schema.TextLine(
-        title = _(u"IAreaMarketlogs applyuser")
-        )        
-    
-    areaid = schema.TextLine(
-            title = _(u"IAreaMarketlogs areaid")
-            )
-    spent_fee = schema.Float(
-            title = _(u"IAreaMarketlogs spent_fee")
-            )
-    date = schema.Datetime(
-            title = _(u"IAreaMarketlogs date")
-            )
-    state =   schema.Int(
-            title = _(u"IAreaMarketlogs state")
-            )
-    type = schema.Int(
-            title=_(u"IAreaMarketlogs type"),
-        )
-class AreaMarketlogs(ORMBase):
-    """区域申请报销记录
-    """
-    implements(IAreaMarketlogs)
-    __tablename__ = 'areamarket_logs'
-    
-    id = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-                primary_key=True,
-                autoincrement=True,
-                )
-    applyuser = sqlalchemy.schema.Column(sqlalchemy.types.String(128),
-                nullable=False,
-                )
-    areaid = sqlalchemy.schema.Column(sqlalchemy.types.String(15),
-                nullable=False,
-                )
-    spent_fee = sqlalchemy.schema.Column(sqlalchemy.types.Float(),
-                nullable=False,
-                )
-    date = sqlalchemy.schema.Column(sqlalchemy.types.DateTime(),
-                nullable=False,
-                )
-    state = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-                nullable=False,
-                )
-    type = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-            nullable=False,
-            )
 
-class IChannelMarketlogs(Interface):
-    """签约代理所记录
+class IBranch(Interface):
+    """分系统表 branch
     """
-    id = schema.Int(                
-        title = _(u"IChannellogs id"),
+    branchId = schema.Int(
+            title=_(u"branch table primary key"),
         )
+    model = schema.Object(
+            title=_(u"Model record"),
+            schema=IModel,
+        )      
+#     modelId = schema.Int(
+#             title=_(u"branch table foreign key"),
+#         )       
+    # 分系统代码
+    fxtdm = schema.TextLine(
+            title=_(u"branch code"),
+        )    
+    #分系统名称
+    fxtmc = schema.TextLine(
+            title=_(u"branch name"),
+        )
+    #分系统类别
+    fxtlb = schema.TextLine(
+            title=_(u"branch category"),
+        )
+class Branch(ORMBase):
+    """Database-backed implementation of IBranch
+    """
+    implements(IBranch)
     
-    applyuser = schema.TextLine(
-        title = _(u"IChannellogs applyuser")
+    __tablename__ = 'branch'
+    
+    branchId = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
+            primary_key=True,
+            autoincrement=True,
+        )
+   
+    modelId = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
+            sqlalchemy.schema.ForeignKey('model.modelId'),
+            nullable=False,
+        )
+    model = sqlalchemy.orm.relation(Model,
+            primaryjoin=Model.modelId==modelId,
+        )             
+    fxtdm = sqlalchemy.schema.Column(sqlalchemy.types.String(16),
+            nullable=False,
+        )
+    fxtmc = sqlalchemy.schema.Column(sqlalchemy.types.String(64),
+            nullable=False,
+        ) 
+    fxtlb = sqlalchemy.schema.Column(sqlalchemy.types.String(16),
+            nullable=False,
         )        
-    chanel = schema.TextLine(
-            title = _(u"IChannellogs channel")
-            )
-    spent_fee = schema.Float(
-            title = _(u"IChannellogs spent_fee")
-            )
-    date = schema.Datetime(
-            title = _(u"IChannellogs date")
-            )    
-    type = schema.Int(
-            title=_(u"IChannellogs type"),
-        )
-class ChannelMarketlogs(ORMBase):
-    """部门报销记录"""
-    implements(IChannelMarketlogs)
-    __tablename__ = 'channelmarket_logs'
-    
-    id = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-                primary_key=True,
-                autoincrement=True,
-                )
-    applyuser = sqlalchemy.schema.Column(sqlalchemy.types.String(128),
-        nullable=False,
-        )
-    channel = sqlalchemy.schema.Column(sqlalchemy.types.String(128),
-            nullable=False,
-            )
-    spent_fee = sqlalchemy.schema.Column(sqlalchemy.types.Float(),
-            nullable=False,
-            )
-    date = sqlalchemy.schema.Column(sqlalchemy.types.DateTime(),
-            nullable=False,
-            )
-    type = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
-            nullable=False,
-            )
+

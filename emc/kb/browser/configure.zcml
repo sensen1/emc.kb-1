@@ -5,7 +5,11 @@
     xmlns:plone="http://namespaces.plone.org/plone"    
     i18n_domain="emc.kb">
 
-
+  <!-- Register static resource directory -->
+	<browser:resourceDirectory
+  		name="emc.project"
+  		directory="static" />
+  		
    <browser:page
       name="file_view"
       for="plone.app.contenttypes.interfaces.IFile"
@@ -13,5 +17,13 @@
       template="templates/file.pt"
       layer="emc.theme.interfaces.IThemeSpecific" 
       permission="zope2.View"
-      />           
+      />
+      
+    <browser:page
+        name="model_listings"
+        template="templates/model_listings.pt"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        permission="emc.kb.search_db"
+        class=".ajax_listing.ModelView"/>
+                         
 </configure>
