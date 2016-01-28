@@ -7,7 +7,7 @@
 
   <!-- Register static resource directory -->
 	<browser:resourceDirectory
-  		name="emc.project"
+  		name="emc.kb"
   		directory="static" />
   		
    <browser:page
@@ -23,7 +23,18 @@
         name="model_listings"
         template="templates/model_listings.pt"
         for="emc.kb.contents.ormfolder.Iormfolder"
-        permission="emc.kb.search_db"
+        permission="emc.kb.input_db"
         class=".ajax_listing.ModelView"/>
-                         
+    <browser:page
+        name="input_model"
+        template="templates/input_model.pt"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        permission="emc.kb.search_db"
+        class=".ajax_listing.InputModel"/>
+    <browser:page
+        name="update_model"
+        template="templates/update_model.pt"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        permission="emc.kb.search_db"
+        class=".ajax_listing.UpdateModel"/>                                 
 </configure>

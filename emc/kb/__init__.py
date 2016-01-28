@@ -10,7 +10,7 @@ sys.setdefaultencoding('utf-8')
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('emc.kb')
 
-DoFollow = "emc.kb:Do follow"
+InputDb = "emc.kb:Input db"
 DoVote = "emc.kb:Do vote"
 
 ORMBase = declarative.declarative_base()

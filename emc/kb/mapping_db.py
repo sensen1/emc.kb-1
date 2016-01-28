@@ -14,11 +14,11 @@ class IModel(Interface):
             title=_(u"model table primary key"),
         )   
     # 型号代码
-    xtdm = schema.Int(
+    xhdm = schema.TextLine(
             title=_(u"model code"),
         )    
     #型号名称
-    xtmc = schema.TextLine(
+    xhmc = schema.TextLine(
             title=_(u"model name"),
         )
 

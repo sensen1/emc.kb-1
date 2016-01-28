@@ -25,7 +25,12 @@ from emc.kb.interfaces import InputError
 from emc.kb.interfaces import IModelLocator
 from emc.kb.mapping_db import Model,IModel
 from emc.kb.contents.ormfolder import Iormfolder
+# update data view
+from zope.interface import implements
+from zope.publisher.interfaces import IPublishTraverse
+from emc.kb import InputDb
 
+from zExceptions import NotFound
 
 grok.templatedir('templates')       
 
@@ -43,10 +48,7 @@ class ModelView(BrowserView):
     def pm(self):
         context = aq_inner(self.context)
         pm = getToolByName(context, "portal_membership")
-        return pm         
-
-    
-
+        return pm          
        
         
     def getPathQuery(self):
@@ -65,6 +67,8 @@ class ModelView(BrowserView):
         from emc.kb.interfaces import IModelLocator
         from zope.component import getUtility        
         locator = getUtility(IModelLocator)
+#         import pdb
+#         pdb.set_trace()
         models = locator.queryModel(start=query['start'],size=query['size'])
         return models
 
@@ -102,7 +106,7 @@ class ajaxsearch(grok.View):
           
     def render(self):    
 #        self.portal_state = getMultiAdapter((self.context, self.request), name=u"plone_portal_state")
-        searchview = getMultiAdapter((self.context, self.request),name=u"db_listing")        
+        searchview = getMultiAdapter((self.context, self.request),name=u"model_listings")        
  # datadic receive front ajax post data       
         datadic = self.request.form
 #         import pdb
@@ -125,17 +129,7 @@ class ajaxsearch(grok.View):
  #模糊搜索       
         if keyword != "":
             origquery['SearchableText'] = '%'+keyword+'%'        
-
-#         if securitykey != 0:
-#             origquery['security_level'] = searchview.getSecurityLevel(securitykey)
-        if datekey != 0:
-            origquery['created'] = self.Datecondition(datekey)           
-#         if tasktypekey != 0:
-#             origquery['task_type'] = searchview.getTaskType(tasktypekey)
-#         all = u"所有".encode("utf-8")
-#         import pdb
-#         pdb.set_trace()
-                     
+              
 
 #origquery provide  batch search        
         origquery['size'] = size 
@@ -160,7 +154,7 @@ class ajaxsearch(grok.View):
         self.request.response.setHeader('Content-Type', 'application/json')
         return json.dumps(data)       
        
-    def output(self,start,size,totalnum,resultdiclists):
+    def output(self,start,size,totalnum,resultDicLists):
         """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
         [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
         outhtml = ""      
@@ -170,17 +164,95 @@ class ajaxsearch(grok.View):
           
             out = """<tr class="text-left">
                                 <td class="col-md-1 text-center">%(num)s</td>
-                                <td class="col-md-3 text-left"><a href="%(objurl)s">%(title)s</a></td>
-                                <td class="col-md-8">%(description)s</td>
+                                <td class="col-md-2 text-left"><a href="%(objurl)s">%(title)s</a></td>
+                                <td class="col-md-7">%(description)s</td>                                
+                                <td class="col-md-1 text-center">
+                                <a href="%(edit_url)s" title="edit">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                                  </span>
+                                </a>        
+                                </td>
+                                <td class="col-md-1 text-center">
+                                <a href="%(delete_url)s" title="delete">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                  </span>
+                                </a>        
+                                </td>                                                               
                                 </tr> """% dict(objurl="%s/@@view" % contexturl,
                                             num=str(k + 1),
                                             title=i[0],
-                                            description= i[1])           
+                                            description= i[1],
+                                            edit_url="%s/@@update_model/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_model/%s" % (contexturl,i[0]))           
             outhtml = "%s%s" %(outhtml ,out)
             k = k + 1
            
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data        
+
+class DeleteModel(ModelView):
+    "delete the specify model recorder"
+    implements(IPublishTraverse)    
+    grok.context(Iormfolder)
+    grok.name('delete_model')
+    grok.require('emc.kb.input_db')
+    
+    label = _(u"delete model data")
+    fields = field.Fields(IModel).omit('modelId','xhdm','xhmc')
+    ignoreContext = True
+    
+    xhdm = None
+    #receive url parameters
+    def publishTraverse(self, request, name):
+        if self.xhdm is None:
+            self.xhdm = name
+            return self
+        else:
+            raise NotFound()
+    
+    def update(self):        
+        self.request.set('disable_border', True)
+        
+        # Get the model table query funcations
+        locator = getUtility(IModelLocator)
+        #to do 
+        #fetch the pending deleting  record 
+        self.model = locator.getModelByCode(self.xhdm)
+       
+        # Let z3c.form do its magic
+#         super(DeleteModel, self).update()
+
+    
+    @button.buttonAndHandler(_(u"Delete"))
+    def submit(self, action):
+        """Delete model recorder
+        """
+        
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        
+        funcations = getUtility(IModelLocator)
+        
+        try:
+            funcations.DeleteByCode(self.xhdm)
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/model_listings')
+        
+        confirm = _(u"Your data  has been deleted.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/model_listings')
+    
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data delete
+        """
+        confirm = _(u"Delete cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')        
+        self.request.response.redirect(self.context.absolute_url() + '/model_listings')    
+    
 
 class InputModel(form.Form):
     """input db model table data
@@ -195,28 +267,18 @@ class InputModel(form.Form):
     label = _(u"Input model data")
     fields = field.Fields(IModel).omit('modelId')
     ignoreContext = True
-    
-#     screeningId = None
-    # receive url parameters
-#     def publishTraverse(self, request, name):
-#         if self.screeningId is None:
-#             self.screeningId = int(name)
-#             return self
-#         else:
-#             raise NotFound()
+ 
     
     def update(self):
         
         self.request.set('disable_border', True)
         
         # Get the model table query funcations
-        locator = getUtility(IModelLocator)
+#         locator = getUtility(IModelLocator)
         # to do 
         # fetch first record as sample data
 #         self.screening = locator.screeningById(self.screeningId)
-
-
-        
+      
         # Let z3c.form do its magic
         super(InputModel, self).update()
 
@@ -232,25 +294,88 @@ class InputModel(form.Form):
             return
         
         funcations = getUtility(IModelLocator)
-        model = {}
-        model['xhdm'] = data['xhdm']
-        model['xhmc'] = data['xhmc']
         
         try:
-            funcations.Addmodel(MODEL)
+            funcations.addModel(xhdm=data['xhdm'],xhmc=data['xhmc'])
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
-        else:
-            confirm = _(u"Thank you! Your data  will be update in back end DB.")
-            IStatusMessage(self.request).add(confirm, type='info')
-            self.request.response.redirect(self.context.absolute_url())
+            self.request.response.redirect(self.context.absolute_url() + '/model_listings')
+        
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/model_listings')
     
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
         """Cancel the data input
         """
         confirm = _(u"Input cancelled.")
-        IStatusMessage(self.request).add(confirm, type='info')
-        
-        self.request.response.redirect(self.context.absolute_url())
+        IStatusMessage(self.request).add(confirm, type='info')        
+        self.request.response.redirect(self.context.absolute_url() + '/model_listings')
 
+class UpdateModel(form.Form):
+    """update model table row data
+    """
+    
+    implements(IPublishTraverse)    
+    grok.context(Iormfolder)
+    grok.name('update_model')
+    grok.require('emc.kb.input_db')
+    
+    label = _(u"update model data")
+    fields = field.Fields(IModel).omit('modelId','xhdm')
+    ignoreContext = True
+    
+    xhdm = None
+    #receive url parameters
+    def publishTraverse(self, request, name):
+        if self.xhdm is None:
+            self.xhdm = name
+            return self
+        else:
+            raise NotFound()
+    
+    def update(self):        
+        self.request.set('disable_border', True)
+        
+        # Get the model table query funcations
+#         locator = getUtility(IModelLocator)
+        # to do 
+        # fetch first record as sample data
+#         self.screening = locator.screeningById(self.screeningId)
+       
+        # Let z3c.form do its magic
+        super(UpdateModel, self).update()
+
+    
+    @button.buttonAndHandler(_(u"Submit"))
+    def submit(self, action):
+        """Update model recorder
+        """
+        
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        
+        funcations = getUtility(IModelLocator)
+#         import pdb
+#         pdb.set_trace()
+        
+        try:
+            funcations.updateByCode(xhdm=self.xhdm,xhmc=data['xhmc'])
+        except InputError, e:
+            IStatusMessage(self.request).add(str(e), type='error')
+            self.request.response.redirect(self.context.absolute_url() + '/model_listings')
+        
+        confirm = _(u"Thank you! Your data  will be update in back end DB.")
+        IStatusMessage(self.request).add(confirm, type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/model_listings')
+    
+    @button.buttonAndHandler(_(u"Cancel"))
+    def cancel(self, action):
+        """Cancel the data input
+        """
+        confirm = _(u"Input cancelled.")
+        IStatusMessage(self.request).add(confirm, type='info')        
+        self.request.response.redirect(self.context.absolute_url() + '/model_listings')

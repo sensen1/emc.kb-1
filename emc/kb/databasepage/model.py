@@ -6,7 +6,7 @@ from zope.interface import implements
 
 #sqlarchemy
 from sqlalchemy import text
-
+from sqlalchemy import func
 
 from emc.kb import kb_session
 from emc.kb.mapping_db import Model
@@ -45,8 +45,11 @@ class ModelLocator(grok.GlobalUtility):
             text("select * from model  order by modelId desc limit :start,:size").\
             params(start=start,size=size)).all()            
         else:
-            nums = kb_session.query("xhdm", "xhmc").from_statement(text("select * from model")).count()
-            return nums 
+#             import pdb
+#             pdb.set_trace()
+            nums = kb_session.query(func.count(Model.modelId)).scalar()
+#             nums = kb_session.query("xhdm", "xhmc").from_statement(text("select * from model")).count()
+            return int(nums) 
         try:
 
             kb_session.commit()            
@@ -83,13 +86,16 @@ text("SELECT * FROM users where name=:name")).params(name='ed').all()
         """
 
         xhdm = kwargs['xhdm']
+#         import pdb
+#         pdb.set_trace()
         if xhdm != "":
             try:
                 model = kb_session.query(Model).\
                 from_statement(text("SELECT * FROM model where xhdm=:xhdm")).\
                 params(xhdm=xhdm).one()
-                for kw in kwargs.keys():
-                    model.kw = kwargs[kw]                                                     
+#                 for kw in kwargs.keys():
+#                     model.kw = kwargs[kw]                                                     
+                model.xhmc = kwargs['xhmc']
                 kb_session.commit()           
             except:
                 kb_session.rollback()

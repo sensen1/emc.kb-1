@@ -21,10 +21,21 @@ $.extend({
   }
 });
 
-var searchEvent = function(jumpPage, rows, initKeyword) {   
+var searchEvent = function(jumpPage, rows, initKeyword) { 
+    var keyword;
+    if (initKeyword !== undefined && initKeyword !== "") {
+        keyword = initKeyword;
+    } else {
+        keyword = $("#searchKeyword").val();
+    }	  
     var sortColumn = $("#solrSortColumn").val();    
     var sortDirection = $("#solrSortDirection").val();        
     var data = {};
+    if (keyword === undefined || keyword === null || keyword === "") {
+           data['searchabletext'] = "";
+    } else {
+           data['searchabletext'] = keyword;
+    }    
     data['sortcolumn'] = sortColumn;
     data['sortdirection'] = sortDirection;      
 
@@ -36,7 +47,7 @@ var searchEvent = function(jumpPage, rows, initKeyword) {
         data['start'] = 0;
         data['size'] =10;
     }        
-       var action = $("#dbajaxsearch").attr('data-ajax-target');
+       var action = $("#ajaxsearch").attr('data-ajax-target');
        $.post(action, 
            data,
            function(resp) {
