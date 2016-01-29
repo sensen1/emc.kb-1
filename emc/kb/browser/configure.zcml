@@ -36,5 +36,11 @@
         template="templates/update_model.pt"
         for="emc.kb.contents.ormfolder.Iormfolder"
         permission="emc.kb.search_db"
-        class=".ajax_listing.UpdateModel"/>                                 
+        class=".ajax_listing.UpdateModel"/>
+    <browser:page
+        name="delete_model"
+        template="templates/delete_model.pt"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        permission="emc.kb.search_db"
+        class=".ajax_listing.DeleteModel"/>                                          
 </configure>

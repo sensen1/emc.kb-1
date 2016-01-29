@@ -12,12 +12,10 @@
         
         <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
         
-        <div id="content-core">
-            
-
+        <div id="content-core">           
               
-              <p i18n:translate="description_input_model_record">
-                  Please enter model recorder. 
+              <p class="text-warning" i18n:translate="description_input_model_record">
+                  Warning! This operation will remove database record. 
               </p>
               
               <div class="divider"><!-- --></div>

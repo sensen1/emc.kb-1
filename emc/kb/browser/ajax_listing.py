@@ -61,6 +61,7 @@ class ModelView(BrowserView):
 
              
     
+    
     def search_multicondition(self,query):
         "query is dic,like :{'start':0,'size':10,'':}"  
         from emc.kb.mapping_db import  Model

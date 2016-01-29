@@ -34,7 +34,9 @@ class ModelLocator(grok.GlobalUtility):
     def queryModel(self,**kwargs):
         """以分页方式提取model 记录，参数：start 游标起始位置；size:每次返回的记录条数;
         fields:field list
-        if size = 0,then不分页，返回所有记录集"""    
+        if size = 0,then不分页，返回所有记录集
+        order_by(text("id"))
+        """    
                             
         start = int(kwargs['start'])
         size = int(kwargs['size'])
