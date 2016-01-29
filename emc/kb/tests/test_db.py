@@ -15,8 +15,9 @@ class TestParametersDatabase(unittest.TestCase):
         from emc.kb.mapping_db import  Model
         from z3c.saconfig import Session
         
+
         model = Model()
-        model.xhdm = u"C5"
+        model.xhdm = u"C9"
         model.xhmc = u"我的手机"        
         Session.add(model)
         Session.flush()     
@@ -27,15 +28,18 @@ class TestParametersDatabase(unittest.TestCase):
         from emc.kb.mapping_db import  Model
         from z3c.saconfig import Session
 
+        import pdb
+        pdb.set_trace()        
         model = Model()
-        model.xhdm = u"C5"
+        model.xhdm = u"C9"
         model.xhmc = u"我的手机"        
         Session.add(model)
                  
         branch = Branch()
-        branch.fxtdm = u"C51"
+        branch.fxtdm = u"C91"
         branch.fxtmc = u"发射器"
         branch.fxtlb = u"fashe"
+
         branch.model = model                
         Session.add(branch)                
         Session.flush()
@@ -43,6 +47,7 @@ class TestParametersDatabase(unittest.TestCase):
         self.assertTrue(branch.branchId is not None)
         self.assertTrue(model.modelId is not None)
         self.assertEqual(branch.modelId, model.modelId)
+        self.assertEqual(branch.branchId, model.branches[0].branchId)
     
     def test_model_locator(self):
         from emc.kb.mapping_db import  Model

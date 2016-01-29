@@ -1,6 +1,8 @@
 #-*- coding: UTF-8 -*-
 import sqlalchemy.types
 import sqlalchemy.schema
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, backref
 from five import grok
 from zope import schema
 from zope.interface import Interface,implements
@@ -51,9 +53,9 @@ class IBranch(Interface):
             title=_(u"Model record"),
             schema=IModel,
         )      
-#     modelId = schema.Int(
-#             title=_(u"branch table foreign key"),
-#         )       
+    modelId = schema.Int(
+            title=_(u"branch table foreign key"),
+        )       
     # 分系统代码
     fxtdm = schema.TextLine(
             title=_(u"branch code"),
@@ -82,9 +84,8 @@ class Branch(ORMBase):
             sqlalchemy.schema.ForeignKey('model.modelId'),
             nullable=False,
         )
-    model = sqlalchemy.orm.relation(Model,
-            primaryjoin=Model.modelId==modelId,
-        )             
+    model = relationship("Model", backref=backref('branches', order_by=branchId))
+#     model = sqlalchemy.orm.relation(Model,primaryjoin=Model.modelId==modelId,)             
     fxtdm = sqlalchemy.schema.Column(sqlalchemy.types.String(16),
             nullable=False,
         )

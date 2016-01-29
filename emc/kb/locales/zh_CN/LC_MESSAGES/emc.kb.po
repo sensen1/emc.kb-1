@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eisoo.topic\n"
-"POT-Creation-Date: 2016-01-26 05:58+0000\n"
+"POT-Creation-Date: 2016-01-29 14:53+0000\n"
 "PO-Revision-Date: 2012-02-25 07:36+0800\n"
 "Last-Translator: panlei <pan.lei@eisoo.com>\n"
 "Language-Team: 315ok.org <LL@li.org>\n"
@@ -17,81 +17,41 @@ msgstr ""
 msgid "All"
 msgstr "全部"
 
-#: ./mapping_db.py:99
-msgid "IAreaMarketlogs applyuser"
-msgstr ""
+#: ./browser/ajax_listing.py:248
+msgid "Cancel"
+msgstr "取消"
 
-#: ./mapping_db.py:103
-msgid "IAreaMarketlogs areaid"
-msgstr ""
+#: ./browser/ajax_listing.py:226
+msgid "Delete"
+msgstr "删除"
 
-#: ./mapping_db.py:109
-msgid "IAreaMarketlogs date"
-msgstr ""
+#: ./browser/ajax_listing.py:252
+msgid "Delete cancelled."
+msgstr "删除操作已取消"
 
-#: ./mapping_db.py:95
-msgid "IAreaMarketlogs id"
-msgstr ""
+#: ./browser/ajax_listing.py:312
+msgid "Input cancelled."
+msgstr "录入操作已取消"
 
-#: ./mapping_db.py:106
-msgid "IAreaMarketlogs spent_fee"
-msgstr ""
+#: ./browser/ajax_listing.py:267
+msgid "Input model data"
+msgstr "录入型号表数据"
 
-#: ./mapping_db.py:112
-msgid "IAreaMarketlogs state"
-msgstr ""
+#: ./mapping_db.py:53
+msgid "Model record"
+msgstr "型号表记录"
 
-#: ./mapping_db.py:115
-msgid "IAreaMarketlogs type"
-msgstr ""
+#: ./browser/ajax_listing.py:286
+msgid "Submit"
+msgstr "提交"
 
-#: ./mapping_db.py:154
-msgid "IChannellogs applyuser"
-msgstr ""
+#: ./browser/ajax_listing.py:304
+msgid "Thank you! Your data  will be update in back end DB."
+msgstr "感谢您！你的数据将在后台数据库中更新。"
 
-#: ./mapping_db.py:157
-msgid "IChannellogs channel"
-msgstr ""
-
-#: ./mapping_db.py:163
-msgid "IChannellogs date"
-msgstr ""
-
-#: ./mapping_db.py:150
-msgid "IChannellogs id"
-msgstr ""
-
-#: ./mapping_db.py:160
-msgid "IChannellogs spent_fee"
-msgstr ""
-
-#: ./mapping_db.py:166
-msgid "IChannellogs type"
-msgstr ""
-
-#: ./mapping_db.py:52
-msgid "IDepartmentMarketlogs applyuser"
-msgstr ""
-
-#: ./mapping_db.py:61
-msgid "IDepartmentMarketlogs date"
-msgstr ""
-
-#: ./mapping_db.py:55
-msgid "IDepartmentMarketlogs departmentid"
-msgstr ""
-
-#: ./mapping_db.py:48
-msgid "IDepartmentMarketlogs id"
-msgstr ""
-
-#: ./mapping_db.py:58
-msgid "IDepartmentMarketlogs spent_fee"
-msgstr ""
-
-#: ./mapping_db.py:64
-msgid "IDepartmentMarketlogs type"
-msgstr ""
+#: ./browser/ajax_listing.py:244
+msgid "Your data  has been deleted."
+msgstr "你的数据已经被删除。"
 
 msgid "a_mounth_ago_date"
 msgstr "${year} 年 ${month} 月 ${day} 日"
@@ -106,9 +66,48 @@ msgstr "${year}年${month}月${day}日"
 msgid "all_day"
 msgstr "所有"
 
+#: ./mapping_db.py:69
+msgid "branch category"
+msgstr "分系统类别"
+
+#: ./mapping_db.py:61
+msgid "branch code"
+msgstr "分系统代码"
+
+#: ./mapping_db.py:65
+msgid "branch name"
+msgstr "分系统名称"
+
+#: ./mapping_db.py:57
+msgid "branch table foreign key"
+msgstr "分系统表外键"
+
+#: ./mapping_db.py:50
+msgid "branch table primary key"
+msgstr "分系统表主键"
+
 #: ./profiles/default/types/emc.kb.ormfolder.xml
 msgid "db map folder"
 msgstr "数据库映射容器"
+
+#: ./browser/ajax_listing.py:201
+msgid "delete model data"
+msgstr "删除型号数据"
+
+#. Default: "Warning! This operation will remove database record."
+#: ./browser/templates/delete_model.pt:14
+msgid "description_delete_model_record"
+msgstr "警告！此操作将删除数据库记录。"
+
+#. Default: "Please enter model recorder."
+#: ./browser/templates/input_model.pt:19
+msgid "description_input_model_record"
+msgstr "请录入型号数据"
+
+#. Default: "Please update model recorder."
+#: ./browser/templates/update_model.pt:18
+msgid "description_update_model_record"
+msgstr "请更新型号数据"
 
 #: ./profiles/default/types/emc.kb.folder.xml
 msgid "knowledge base root folder"
@@ -118,19 +117,23 @@ msgstr "知识库"
 msgid "knowledge folder"
 msgstr "知识库"
 
-#: ./mapping_db.py:18
+#: ./mapping_db.py:20
 msgid "model code"
 msgstr "型号代码"
 
-#: ./mapping_db.py:22
+#: ./mapping_db.py:24
 msgid "model name"
 msgstr "型号名称"
 
-#: ./mapping_db.py:14
+#: ./mapping_db.py:16
 msgid "model table primary key"
-msgstr ""
+msgstr "型号表主键"
 
 #: ./profiles/default/types/emc.kb.kbfolder.xml
 msgid "resource folder"
 msgstr "资源"
+
+#: ./browser/ajax_listing.py:325
+msgid "update model data"
+msgstr "更新型号数据"
 

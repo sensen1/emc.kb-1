@@ -11,15 +11,19 @@
     <tal:main-macro metal:define-macro="main">
         
         <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
-        
-        <div id="content-core">           
-              
-              <p class="text-warning" i18n:translate="description_input_model_record">
+              <p class="text-warning" i18n:translate="description_delete_model_record">
                   Warning! This operation will remove database record. 
               </p>
+              <div class="text-warning">the following recorder will be delete.</div>
+              <span class="label">型号名称：</span><span class="badge" tal:content="python:view.model.xhmc">78</span>
+              <span class="label">型号代码：</span><span class="badge" tal:content="python:view.model.xhdm">78</span>
+                         
+        <div id="content-core">     
+              
+
               
               <div class="divider"><!-- --></div>
-              
+           
               <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
         </div>
 

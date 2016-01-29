@@ -191,7 +191,7 @@ class ajaxsearch(grok.View):
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data        
 
-class DeleteModel(ModelView):
+class DeleteModel(form.Form):
     "delete the specify model recorder"
     implements(IPublishTraverse)    
     grok.context(Iormfolder)
@@ -218,10 +218,9 @@ class DeleteModel(ModelView):
         locator = getUtility(IModelLocator)
         #to do 
         #fetch the pending deleting  record 
-        self.model = locator.getModelByCode(self.xhdm)
-       
-        # Let z3c.form do its magic
-#         super(DeleteModel, self).update()
+        self.model = locator.getModelByCode(self.xhdm)       
+        #Let z3c.form do its magic
+        super(DeleteModel, self).update()
 
     
     @button.buttonAndHandler(_(u"Delete"))

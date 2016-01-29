@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-01-26 05:58+0000\n"
+"POT-Creation-Date: 2016-01-29 14:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,80 +20,40 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: ./mapping_db.py:99
-msgid "IAreaMarketlogs applyuser"
+#: ./browser/ajax_listing.py:248
+msgid "Cancel"
 msgstr ""
 
-#: ./mapping_db.py:103
-msgid "IAreaMarketlogs areaid"
+#: ./browser/ajax_listing.py:226
+msgid "Delete"
 msgstr ""
 
-#: ./mapping_db.py:109
-msgid "IAreaMarketlogs date"
+#: ./browser/ajax_listing.py:252
+msgid "Delete cancelled."
 msgstr ""
 
-#: ./mapping_db.py:95
-msgid "IAreaMarketlogs id"
+#: ./browser/ajax_listing.py:312
+msgid "Input cancelled."
 msgstr ""
 
-#: ./mapping_db.py:106
-msgid "IAreaMarketlogs spent_fee"
+#: ./browser/ajax_listing.py:267
+msgid "Input model data"
 msgstr ""
 
-#: ./mapping_db.py:112
-msgid "IAreaMarketlogs state"
+#: ./mapping_db.py:53
+msgid "Model record"
 msgstr ""
 
-#: ./mapping_db.py:115
-msgid "IAreaMarketlogs type"
+#: ./browser/ajax_listing.py:286
+msgid "Submit"
 msgstr ""
 
-#: ./mapping_db.py:154
-msgid "IChannellogs applyuser"
+#: ./browser/ajax_listing.py:304
+msgid "Thank you! Your data  will be update in back end DB."
 msgstr ""
 
-#: ./mapping_db.py:157
-msgid "IChannellogs channel"
-msgstr ""
-
-#: ./mapping_db.py:163
-msgid "IChannellogs date"
-msgstr ""
-
-#: ./mapping_db.py:150
-msgid "IChannellogs id"
-msgstr ""
-
-#: ./mapping_db.py:160
-msgid "IChannellogs spent_fee"
-msgstr ""
-
-#: ./mapping_db.py:166
-msgid "IChannellogs type"
-msgstr ""
-
-#: ./mapping_db.py:52
-msgid "IDepartmentMarketlogs applyuser"
-msgstr ""
-
-#: ./mapping_db.py:61
-msgid "IDepartmentMarketlogs date"
-msgstr ""
-
-#: ./mapping_db.py:55
-msgid "IDepartmentMarketlogs departmentid"
-msgstr ""
-
-#: ./mapping_db.py:48
-msgid "IDepartmentMarketlogs id"
-msgstr ""
-
-#: ./mapping_db.py:58
-msgid "IDepartmentMarketlogs spent_fee"
-msgstr ""
-
-#: ./mapping_db.py:64
-msgid "IDepartmentMarketlogs type"
+#: ./browser/ajax_listing.py:244
+msgid "Your data  has been deleted."
 msgstr ""
 
 msgid "a_mounth_ago_date"
@@ -109,8 +69,47 @@ msgstr ""
 msgid "all_day"
 msgstr ""
 
+#: ./mapping_db.py:69
+msgid "branch category"
+msgstr ""
+
+#: ./mapping_db.py:61
+msgid "branch code"
+msgstr ""
+
+#: ./mapping_db.py:65
+msgid "branch name"
+msgstr ""
+
+#: ./mapping_db.py:57
+msgid "branch table foreign key"
+msgstr ""
+
+#: ./mapping_db.py:50
+msgid "branch table primary key"
+msgstr ""
+
 #: ./profiles/default/types/emc.kb.ormfolder.xml
 msgid "db map folder"
+msgstr ""
+
+#: ./browser/ajax_listing.py:201
+msgid "delete model data"
+msgstr ""
+
+#. Default: "Warning! This operation will remove database record."
+#: ./browser/templates/delete_model.pt:14
+msgid "description_delete_model_record"
+msgstr ""
+
+#. Default: "Please enter model recorder."
+#: ./browser/templates/input_model.pt:19
+msgid "description_input_model_record"
+msgstr ""
+
+#. Default: "Please update model recorder."
+#: ./browser/templates/update_model.pt:18
+msgid "description_update_model_record"
 msgstr ""
 
 #: ./profiles/default/types/emc.kb.folder.xml
@@ -121,19 +120,23 @@ msgstr ""
 msgid "knowledge folder"
 msgstr ""
 
-#: ./mapping_db.py:18
+#: ./mapping_db.py:20
 msgid "model code"
 msgstr ""
 
-#: ./mapping_db.py:22
+#: ./mapping_db.py:24
 msgid "model name"
 msgstr ""
 
-#: ./mapping_db.py:14
+#: ./mapping_db.py:16
 msgid "model table primary key"
 msgstr ""
 
 #: ./profiles/default/types/emc.kb.kbfolder.xml
 msgid "resource folder"
+msgstr ""
+
+#: ./browser/ajax_listing.py:325
+msgid "update model data"
 msgstr ""
 
