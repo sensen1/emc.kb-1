@@ -10,14 +10,7 @@
   		name="emc.kb"
   		directory="static" />
   		
-   <browser:page
-      name="file_view"
-      for="plone.app.contenttypes.interfaces.IFile"
-      class="plone.app.contenttypes.browser.file.FileView"
-      template="templates/file.pt"
-      layer="emc.theme.interfaces.IThemeSpecific" 
-      permission="zope2.View"
-      />
+
       
     <browser:page
         name="model_listings"
