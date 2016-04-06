@@ -6,6 +6,33 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
 
 from emc.kb.testing import INTEGRATION_TESTING
+#sqlarchemy
+from sqlalchemy import text
+from sqlalchemy import func
+
+class TestOracleDemoDatabase(unittest.TestCase):
+
+    layer = INTEGRATION_TESTING
+    
+    def test_oracledb_model(self):
+        from emc.kb.mapping_db import  Modeltest
+        from emc.kb import pas_session as Session
+        
+
+        model = Modeltest()
+        import pdb
+        pdb.set_trace()
+        nums = Session.query(func.count(Model.ID)).scalar()
+        if nums != 1:
+                    
+            model.ID = 100
+            model.XHDM = u"C9"
+            model.XHMC = u"my phone"        
+            Session.add(model)
+            Session.commit()     
+            self.assertTrue(model.ID is not None)
+        
+        self.assertTrue(nums is not None)
 
 class TestParametersDatabase(unittest.TestCase):
 

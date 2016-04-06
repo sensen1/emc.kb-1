@@ -43,6 +43,18 @@ class Model(ORMBase):
             nullable=False,
         )
 
+class Modeltest(ORMBase):
+    """Database-backed implementation of IModel
+    """
+#     implements(IModel)
+    
+    __tablename__ = 'modeltest2'
+    
+    ID = sqlalchemy.schema.Column(sqlalchemy.types.Integer(),
+                                       primary_key=True,)
+    XHDM = sqlalchemy.schema.Column(sqlalchemy.types.String(8))
+    XHMC = sqlalchemy.schema.Column(sqlalchemy.types.String(32))    
+
 class IBranch(Interface):
     """分系统表 branch
     """

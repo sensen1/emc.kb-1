@@ -18,3 +18,7 @@ ORMBase = declarative.declarative_base()
 some_engine = create_engine('mysql://kbdba:K0mdba$!9@127.0.0.1:3306/parameters?charset=utf8', pool_recycle=3600)
 Session = sessionmaker(bind=some_engine)
 kb_session = Session()
+# pas sqlarchemy session:
+#some_engine = create_engine('oracle+cx_oracle://HR:tome5857@192.168.2.10:1521/test', pool_recycle=3600)
+#Session = sessionmaker(bind=some_engine)
+pas_session = Session()

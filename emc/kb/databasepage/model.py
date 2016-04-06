@@ -14,6 +14,13 @@ from emc.kb.interfaces import IModelLocator
 
 from emc.kb import  _
 
+# set sqlarchemy db sources
+# from z3c.saconfig.utility import EngineFactory
+# from z3c.saconfig.utility import GloballyScopedSession
+# from zope.component.hooks import getSite
+# from collective.saconnect.interfaces import ISQLAlchemyConnectionStrings
+# from zope.component import provideUtility,queryUtility
+
 class ModelLocator(grok.GlobalUtility):
     implements(IModelLocator)
     
@@ -23,7 +30,18 @@ class ModelLocator(grok.GlobalUtility):
 #         model.modelId = kwargs['modelId']
         model.xhdm = kwargs['xhdm']
         model.xhmc = kwargs['xhmc']
-
+# # registry db sources
+#         import pdb
+#         pdb.set_trace()
+# 
+#         saconnect = ISQLAlchemyConnectionStrings(getSite())
+# # Register z3c.saconfig utilities for mysql parameters db
+#         dbURI = saconnect['mysql']
+# # Register z3c.saconfig utilities for pas.plugins.sqlarchemy
+#         engine = EngineFactory(dbURI, echo=False, convert_unicode=False)
+#         provideUtility(engine, name=u"mysql.parameters")        
+#         session = GloballyScopedSession(engine=u"mysql.parameters", twophase=False)
+#         provideUtility(session,name=u"mysql.parameters") 
         kb_session.add(model)
         try:
             kb_session.commit()
