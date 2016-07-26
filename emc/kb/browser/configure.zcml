@@ -8,8 +8,7 @@
   <!-- Register static resource directory -->
 	<browser:resourceDirectory
   		name="emc.kb"
-  		directory="static" />
-  		
+  		directory="static" /> 		
 
       
     <browser:page
