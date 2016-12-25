@@ -18,9 +18,7 @@
               <span class="label">型号名称：</span><span class="badge" tal:content="python:view.model.xhmc">78</span>
               <span class="label">型号代码：</span><span class="badge" tal:content="python:view.model.xhdm">78</span>
                          
-        <div id="content-core">     
-              
-
+        <div id="content-core">                
               
               <div class="divider"><!-- --></div>
            

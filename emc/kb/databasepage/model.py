@@ -31,8 +31,7 @@ class ModelLocator(grok.GlobalUtility):
         model.xhdm = kwargs['xhdm']
         model.xhmc = kwargs['xhmc']
 # # registry db sources
-#         import pdb
-#         pdb.set_trace()
+
 # 
 #         saconnect = ISQLAlchemyConnectionStrings(getSite())
 # # Register z3c.saconfig utilities for mysql parameters db
@@ -113,9 +112,12 @@ text("SELECT * FROM users where name=:name")).params(name='ed').all()
                 model = kb_session.query(Model).\
                 from_statement(text("SELECT * FROM model where xhdm=:xhdm")).\
                 params(xhdm=xhdm).one()
-#                 for kw in kwargs.keys():
-#                     model.kw = kwargs[kw]                                                     
-                model.xhmc = kwargs['xhmc']
+#                 import pdb
+#                 pdb.set_trace()
+                updatedattrs = [kw for kw in kwargs.keys() if kw != 'xhdm']
+                for kw in updatedattrs:
+                    setattr(model,kw,kwargs[kw])                                                     
+#                 model.xhmc = kwargs['xhmc']
                 kb_session.commit()           
             except:
                 kb_session.rollback()

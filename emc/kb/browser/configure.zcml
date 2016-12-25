@@ -9,30 +9,95 @@
 	<browser:resourceDirectory
   		name="emc.kb"
   		directory="static" /> 		
-
-      
+    
+    <browser:page
+        name="emc-kb-macros"
+        for="*"
+        permission="zope2.View"
+        class=".macros.Macros"/>
+     
     <browser:page
         name="model_listings"
         template="templates/model_listings.pt"
         for="emc.kb.contents.ormfolder.Iormfolder"
-        permission="emc.kb.input_db"
+        permission="emc.kb.input_db"        
         class=".ajax_listing.ModelView"/>
     <browser:page
-        name="input_model"
-        template="templates/input_model.pt"
+        name="fashej_listings"
+        template="templates/fashej_listings.pt"
         for="emc.kb.contents.ormfolder.Iormfolder"
-        permission="emc.kb.search_db"
+        permission="emc.kb.input_db"        
+        class=".ajax_listing.FashejView"/>
+    <!--
+    <browser:page
+        name="jieshouj_listings"
+        template="templates/jieshouj_listings.pt"        
+        class=".ajax_listing.JieshoujView"/>        
+    <browser:page
+        name="fashetx_listings"
+        template="templates/fashetx_listings.pt"        
+        class=".ajax_listing.FashetxView"/>
+    <browser:page
+        name="jieshoutx_listings"
+        template="templates/jieshoutx_listings.pt"        
+        class=".ajax_listing.JieshoutxView"/>
+    <browser:page
+        name="lvboq_listings"
+        template="templates/lvboq_listings.pt"        
+        class=".ajax_listing.LvboqView"/>
+    <browser:page
+        name="dianxingtxzyzk_listings"
+        template="templates/dianxingtxzyzk_listings.pt"        
+        class=".ajax_listing.DianxingtxzyzkView"/>
+    <browser:page
+        name="tianxianzyzk_listings"
+        template="templates/tianxianzyzk_listings.pt"        
+        class=".ajax_listing.TianxianzyzkView"/>
+    <browser:page
+        name="jieshoujzk_listings"
+        template="templates/jieshoujzk_listings.pt"        
+        class=".ajax_listing.JieshoujzkView"/>
+    <browser:page
+        name="fashejzk_listings"
+        template="templates/fashejzk_listings.pt"        
+        class=".ajax_listing.FashejzkView"/>
+        -->                               
+    <browser:page
+        name="input_model"
+        permission="emc.kb.input_db"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        template="templates/input_model.pt"
         class=".ajax_listing.InputModel"/>
     <browser:page
         name="update_model"
-        template="templates/update_model.pt"
+        permission="emc.kb.input_db"
         for="emc.kb.contents.ormfolder.Iormfolder"
-        permission="emc.kb.search_db"
+        template="templates/update_model.pt"
         class=".ajax_listing.UpdateModel"/>
     <browser:page
         name="delete_model"
-        template="templates/delete_model.pt"
+        permission="emc.kb.input_db"
         for="emc.kb.contents.ormfolder.Iormfolder"
-        permission="emc.kb.search_db"
-        class=".ajax_listing.DeleteModel"/>                                          
+        template="templates/delete_model.pt"
+        class=".ajax_listing.DeleteModel"/>
+        
+    <browser:page
+        name="input_fashej"
+        permission="emc.kb.input_db"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        template="templates/input_model.pt"
+        class=".ajax_listing.InputModel"/>
+    <browser:page
+        name="update_fashej"
+        permission="emc.kb.input_db"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        template="templates/update_model.pt"
+        class=".ajax_listing.UpdateModel"/>
+    <browser:page
+        name="delete_fashej"
+        permission="emc.kb.input_db"
+        for="emc.kb.contents.ormfolder.Iormfolder"
+        template="templates/delete_model.pt"
+        class=".ajax_listing.DeleteModel"/>        
+                                                   
 </configure>

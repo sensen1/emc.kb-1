@@ -8,15 +8,11 @@
 <body>
     
 <metal:main fill-slot="main">
-    <tal:main-macro metal:define-macro="main">
-        
+    <tal:main-macro metal:define-macro="main">        
         <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
         
         <div id="content-core">
-            
-
-              
-              <p i18n:translate="description_input_model_record">
+        	<p i18n:translate="description_input_model_record">
                   Please enter model recorder. 
               </p>
               

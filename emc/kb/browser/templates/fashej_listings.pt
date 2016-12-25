@@ -4,7 +4,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="context/main_template/macros/master"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"      
-      i18n:domain="emc.project">        
+      i18n:domain="emc.kb">        
 <head>
       <metal:block fill-slot="top_slot">
         <tal:insert tal:replace="nothing"
@@ -16,7 +16,7 @@
 	<div metal:fill-slot="main">
 		<metal:block   use-macro="context/@@emc-kb-macros/macros/navbar"/>
 		<div id="ajaxsearch" style="display: none" 
-			tal:attributes="data-ajax-target python:context.absolute_url() + '/@@dbajaxsearch'"></div>
+			tal:attributes="data-ajax-target python:context.absolute_url() + '/@@fashej_ajaxsearch'"></div>
 		<div class="container-fluid">
 			<div class="row ajaxsearch hidden">
 				<div class="form-group col-xs-9 col-sm-6 col-sm-offset-3">
@@ -34,11 +34,11 @@
 				</div>
 			</div>
 			<div class="row">
-                <h1 class="documentFirstHeading">电磁特性参数库-型号表信息</h1>				
+                <h1 class="documentFirstHeading">电磁兼容型号参数库-发射机表信息</h1>				
 			</div>			
 			<input type="hidden" value="0" id="dateSearch">
-			<!-- search model table ,so index name define as "xhdm" -->
-			<input type="hidden" value="xhdm" id="solrSortColumn">
+			<!-- search fashej table ,so index name define as "sbdm" -->
+			<input type="hidden" value="sbdm" id="solrSortColumn">
 			<input type="hidden" value="desc" id="solrSortDirection">
 
             <!--搜索选择结果排序-->
@@ -49,7 +49,7 @@
                     <li><span>排序：</span></li>                    
                     <li><a class="a" id="startTimestamp" href="javascript:void(0)">
 
-                    	<span data-name="xhdm" class="glyphicon glyphicon-arrow-up">代码</span>
+                    	<span data-name="sbdm" class="glyphicon glyphicon-arrow-up">代码</span>
                     	</a></li>
                     <li><a class="a" id="modelId" href="javascript:void(0)">
                     	<span data-name="created" class="glyphicon glyphicon-arrow-up">时间</span>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-4">
                 	<a class="btn btn-primary" 
-                		tal:attributes="href python:context.absolute_url() + '/input_model'" alt="添加型号">添加型号</a>
+                		tal:attributes="href python:context.absolute_url() + '/@@input_fashej'" alt="添加发射机">添加发射机</a>
                 </div>
                 <!--快速翻页-->
                 <div class="col-xs-12 col-sm-4">
@@ -74,20 +74,34 @@
             <table class="row table table-striped table-bordered table-condensed listing">
             	<thead>
             		<tr data-toggle="tooltip" title="点击排序">
-            			<th class="col-md-1 text-center">序号</th>
-            			<th class="col-md-2 text-left">型号代码</th>
-            			<th class="col-md-7 text-left">型号名称</th>
+            			<th class="col-md-1 text-center">设备代码</th>
+            			<th class="col-md-1 text-left">发射机名称</th>
+            			<th class="col-md-1 text-left">状态批次代码</th>
+            			<th class="col-md-1 text-center">位置</th>
+            			<th class="col-md-1 text-left">工作频率</th>
+            			<th class="col-md-1 text-left">上边频</th>
+            			<th class="col-md-1 text-left">下边频</th>
+            			<th class="col-md-1 text-left">频率点数</th>
+            			<th class="col-md-1 text-left">频率上限</th>
+            			<th class="col-md-1 text-left">频率下限</th>            			            			            			
             			<th class="col-md-1 text-center">编辑</th>
             			<th class="col-md-1 text-center">删除</th>
             		</tr>
             	</thead>
             	<tbody id="searchResultDiv">
             		<tr>
-            			<td class="col-md-1">1</td>
-            			<td class="col-md-2">市宝庆商会</td>
-            			<td class="col-md-7">建设北路55号</td>
-            			<td class="col-md-1">编辑</td>
-            			<td class="col-md-1">删除</td>
+            			<td class="col-md-1 text-center">设备代码</td>
+            			<td class="col-md-1 text-left">发射机名称</td>
+            			<td class="col-md-1 text-left">状态批次代码</td>
+            			<td class="col-md-1 text-center">位置</td>
+            			<td class="col-md-1 text-left">工作频率</td>
+            			<td class="col-md-1 text-left">频率点数</td>
+            			<td class="col-md-1 text-left">发射带宽</td>
+            			<td class="col-md-1 text-left">基频功率</td>
+            			<td class="col-md-1 text-left">调整类型</td>
+            			<td class="col-md-1 text-left">本振频率</td>            			            			            			
+            			<td class="col-md-1 text-center">编辑</td>
+            			<td class="col-md-1 text-center">删除</td>
             		</tr>
             	</tbody>
             </table>            
