@@ -18,7 +18,7 @@ from plone.directives import form
 from z3c.form import field, button
 from Products.statusmessages.interfaces import IStatusMessage
 from emc.kb.interfaces import InputError
-from emc.kb.interfaces import IModelLocator
+from emc.kb.interfaces import IModelLocator,IFashejLocator
 from emc.kb.mapping_db import IModel,Model
 from emc.kb.mapping_db import Fashej,IFashej
 from emc.kb.mapping_db import Jieshouj
@@ -509,9 +509,18 @@ class UpdateModel(form.Form):
     
     label = _(u"update model data")
     fields = field.Fields(IModel).omit('modelId','xhdm')
-    ignoreContext = True    
+    ignoreContext = False    
     xhdm = None
     #receive url parameters
+    # reset content
+    def getContent(self):
+        # Get the model table query funcations
+        locator = getUtility(IModelLocator)
+        # to do 
+        # fetch first record as sample data
+        return locator.getModelByCode(self.xhdm)
+       
+            
     def publishTraverse(self, request, name):
         if self.xhdm is None:
             self.xhdm = name
@@ -679,9 +688,15 @@ class UpdateFashej(UpdateModel):
         else:
             raise NotFound()
     
+    def getContent(self):
+        # Get the model table query funcations
+        locator = getUtility(IFashejLocator)
+        # to do 
+        # fetch first record as sample data
+        return locator.getByCode(self.sbdm)    
+    
     def update(self):        
-        self.request.set('disable_border', True)
-      
+        self.request.set('disable_border', True)     
         # Let z3c.form do its magic
         super(UpdateFashej, self).update()
     
