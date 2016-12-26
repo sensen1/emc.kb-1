@@ -288,7 +288,7 @@ class IFashetx(Interface):
     gain = schema.Float(
             title=_(u"zeng yi"),
         )    
-    polarization = schema.Float(
+    polarization = schema.TextLine(
             title=_(u"ji hua"),
         )
     fwbskd = schema.Float(
@@ -329,7 +329,7 @@ class Fashetx(ORMBase):
     gain = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
             nullable=False,
         )        
-    polarization = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
+    polarization = sqlalchemy.schema.Column(sqlalchemy.types.String(16),
             nullable=False,
         )    
     fwbskd = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
@@ -362,7 +362,7 @@ class IJieshoutx(Interface):
     gain = schema.Float(
             title=_(u"zeng yi"),
         )    
-    polarization = schema.Float(
+    polarization = schema.TextLine(
             title=_(u"ji hua"),
         )
     fwbskd = schema.Float(
@@ -403,7 +403,7 @@ class Jieshoutx(ORMBase):
     gain = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
             nullable=False,
         )        
-    polarization = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
+    polarization = sqlalchemy.schema.Column(sqlalchemy.types.String(16),
             nullable=False,
         )    
     fwbskd = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
@@ -433,15 +433,15 @@ class ILvboq(Interface):
     location = schema.TextLine(
             title=_(u"wei zhi"),
         )
-    fb_upper = schema.Float(
-            title=_(u"shang bian pin"),
-        )    
-    fb_lower = schema.Float(
-            title=_(u"xia bian pin"),
-        )
     freq = schema.Float(
             title=_(u"gong zuo pin lv"),
+        )
+    f_upper = schema.Float(
+            title=_(u"shang bian pin"),
         )    
+    f_lower = schema.Float(
+            title=_(u"xia bian pin"),
+        )        
     order1 = schema.Float(
             title=_(u"lv bo qi ji shu"),
         )
@@ -472,13 +472,7 @@ class Lvboq(ORMBase):
         )
     location = sqlalchemy.schema.Column(sqlalchemy.types.String(32),
             nullable=False,
-        )
-    fb_upper = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
-            nullable=False,
-        )        
-    fb_lower = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
-            nullable=False,
-        )    
+        )   
     freq = sqlalchemy.schema.Column(sqlalchemy.types.Float(precision='16,4'),
             nullable=False,
         ) 
