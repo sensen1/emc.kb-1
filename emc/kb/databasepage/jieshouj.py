@@ -48,7 +48,7 @@ class JieshoujLocator(grok.GlobalUtility):
 #         fields = kwargs['fields']
         if size != 0:
             recorders = kb_session.query("sbdm", "sbmc","pcdm","location","fb_upper","fb_lower",
-                                      "freq","bw_receiver","sen_receiver","mf_freq_sign",
+                                      "freq","f_upper","f_lower","bw_receiver","sen_receiver","mf_freq_sign",
                                       "mf_freq","lo_freq").\
             from_statement(
             text("select * from jieshouj  order by jieshoujId desc limit :start,:size").\

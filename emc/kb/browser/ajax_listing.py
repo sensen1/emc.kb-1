@@ -389,6 +389,67 @@ class Fashejajaxsearch(ajaxsearch):
         data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
         return data
 
+
+class Jieshoujajaxsearch(ajaxsearch):
+    """AJAX action for search DB.
+    receive front end ajax transform parameters 
+    """    
+
+    grok.name('jieshouj_ajaxsearch')
+         
+    def searchview(self,viewname="fashej_listings"):
+        searchview = getMultiAdapter((self.context, self.request),name=viewname)
+        return searchview    
+           
+    def output(self,start,size,totalnum,resultDicLists):
+        """根据参数total,resultDicLists,返回json 输出,resultDicLists like this:
+        [(u'C7', u'\u4ed6\u7684\u624b\u673a')]"""
+        outhtml = ""      
+        k = 0
+        contexturl = self.context.absolute_url()
+        for i in resultDicLists:          
+            out = """<tr class="text-left">
+                                <td class="col-md-1 text-center">%(sbdm)s</td>
+                                <td class="col-md-1 text-left"><a href="%(objurl)s">%(sbmc)s</a></td>
+                                <td class="col-md-1">%(pcdm)s</td>
+                                <td class="col-md-1">%(location)s</td>
+                                <td class="col-md-1">%(fb_upper)s</td>
+                                <td class="col-md-1">%(fb_lower)s</td>
+                                <td class="col-md-1">%(freq)s</td>
+                                <td class="col-md-1">%(f_upper)s</td>
+                                <td class="col-md-1">%(f_lower)s</td>
+                                <td class="col-md-1">%(bw_receiver)s</td>                                                                
+                                <td class="col-md-1 text-center">
+                                <a href="%(edit_url)s" title="edit">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                                  </span>
+                                </a>        
+                                </td>
+                                <td class="col-md-1 text-center">
+                                <a href="%(delete_url)s" title="delete">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                  </span>
+                                </a>        
+                                </td>                                                               
+                                </tr> """% dict(objurl="%s/@@view" % contexturl,
+                                            sbdm=i[0],
+                                            sbmc= i[1],
+                                            pcdm= i[2],
+                                            location= i[3],
+                                            fb_upper= i[4],
+                                            fb_lower= i[5],
+                                            freq= i[6],
+                                            f_upper= i[7],
+                                            f_lower= i[8],
+                                            bw_receiver= i[9],
+                                            edit_url="%s/@@update_jieshouj/%s" % (contexturl,i[0]),
+                                            delete_url="%s/@@delete_jieshouj/%s" % (contexturl,i[0]))           
+            outhtml = "%s%s" %(outhtml ,out)
+            k = k + 1           
+        data = {'searchresult': outhtml,'start':start,'size':size,'total':totalnum}
+        return data
+
+
 class DeleteModel(form.Form):
     "delete the specify model recorder"
     implements(IPublishTraverse)    
@@ -629,15 +690,17 @@ class DeleteFashej(DeleteModel):
         IStatusMessage(self.request).add(confirm, type='info')        
         self.request.response.redirect(self.context.absolute_url() + '/fashej_listings')       
 
-##发射机 数据库操作
-class InputFashej(InputModel):
-    """input db fashej table data
+
+
+##接收机 数据库操作
+class InputJieshouj(InputModel):
+    """input db jieshouj table data
     """
 
-    grok.name('input_fashej')
+    grok.name('input_jieshouj')
    
-    label = _(u"Input fa she ji data")
-    fields = field.Fields(IFashej).omit('fashejId')
+    label = _(u"Input jie shou ji data")
+    fields = field.Fields(IJieshouj).omit('jieshoujId')
     
     def update(self):        
         self.request.set('disable_border', True)
@@ -649,7 +712,7 @@ class InputFashej(InputModel):
 #         self.screening = locator.screeningById(self.screeningId)
       
         # Let z3c.form do its magic
-        super(InputFashej, self).update()
+        super(InputJieshouj, self).update()
             
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -659,16 +722,16 @@ class InputFashej(InputModel):
         if errors:
             self.status = self.formErrorsMessage
             return        
-        funcations = getUtility(IFashejLocator)        
+        funcations = getUtility(IJieshoujLocator)        
         try:
             funcations.add(data)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
-            self.request.response.redirect(self.context.absolute_url() + '/@@fashej_listings')
+            self.request.response.redirect(self.context.absolute_url() + '/@@jieshouj_listings')
         
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@fashej_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@jieshouj_listings')
     
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -676,14 +739,14 @@ class InputFashej(InputModel):
         """
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')        
-        self.request.response.redirect(self.context.absolute_url() + '/@@fashej_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@jieshouj_listings')
 
-class UpdateFashej(UpdateModel):
+class UpdateJieshouj(UpdateModel):
     """update model table row data
     """   
-    grok.name('update_fashej')    
+    grok.name('update_jieshouj')    
     label = _(u"update fa she ji data")
-    fields = field.Fields(IFashej).omit('fashejId')
+    fields = field.Fields(IJieshouj).omit('jieshoujId')
    
     sbdm = None
     #receive url parameters
@@ -696,7 +759,7 @@ class UpdateFashej(UpdateModel):
     
     def getContent(self):
         # Get the model table query funcations
-        locator = getUtility(IFashejLocator)
+        locator = getUtility(IJieshoujLocator)
         # to do 
         # fetch first record as sample data
         return locator.getByCode(self.sbdm)    
@@ -704,7 +767,7 @@ class UpdateFashej(UpdateModel):
     def update(self):        
         self.request.set('disable_border', True)     
         # Let z3c.form do its magic
-        super(UpdateFashej, self).update()
+        super(UpdateJieshouj, self).update()
     
     @button.buttonAndHandler(_(u"Submit"))
     def submit(self, action):
@@ -715,16 +778,16 @@ class UpdateFashej(UpdateModel):
         if errors:
             self.status = self.formErrorsMessage
             return        
-        funcations = getUtility(IFashejLocator)
+        funcations = getUtility(IJieshoujLocator)
         
         try:
             funcations.updateByCode(data)
         except InputError, e:
             IStatusMessage(self.request).add(str(e), type='error')
-            self.request.response.redirect(self.context.absolute_url() + '/@@fashej_listings')        
+            self.request.response.redirect(self.context.absolute_url() + '/@@jieshouj_listings')        
         confirm = _(u"Thank you! Your data  will be update in back end DB.")
         IStatusMessage(self.request).add(confirm, type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@fashej_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@jieshouj_listings')
     
     @button.buttonAndHandler(_(u"Cancel"))
     def cancel(self, action):
@@ -732,4 +795,4 @@ class UpdateFashej(UpdateModel):
         """
         confirm = _(u"Input cancelled.")
         IStatusMessage(self.request).add(confirm, type='info')        
-        self.request.response.redirect(self.context.absolute_url() + '/@@fashej_listings')
+        self.request.response.redirect(self.context.absolute_url() + '/@@jieshouj_listings')
