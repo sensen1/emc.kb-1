@@ -24,7 +24,7 @@ from emc.kb import  _
 class LvboqLocator(grok.GlobalUtility):
     implements(ILvboqLocator)
     
-    def add(self,**kwargs):
+    def add(self,kwargs):
         """parameters db lvboq table"""
         recorder = Lvboq()
         for kw in kwargs.keys():
@@ -80,7 +80,7 @@ class LvboqLocator(grok.GlobalUtility):
         else:
             return None
     
-    def updateByCode(self,**kwargs):
+    def updateByCode(self,kwargs):
         "update the speicy cssbdm lvboq recorder"
         
         """

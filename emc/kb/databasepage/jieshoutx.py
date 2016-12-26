@@ -24,7 +24,7 @@ from emc.kb import  _
 class JieshoutxLocator(grok.GlobalUtility):
     implements(IJieshoutxLocator)
     
-    def add(self,**kwargs):
+    def add(self,kwargs):
         """parameters db jieshoutx table"""
         recorder = Jieshoutx()
         for kw in kwargs.keys():
@@ -80,7 +80,7 @@ class JieshoutxLocator(grok.GlobalUtility):
         else:
             return None
     
-    def updateByCode(self,**kwargs):
+    def updateByCode(self,kwargs):
         "update the speicy cssbdm jieshoutx recorder"
         
         """
