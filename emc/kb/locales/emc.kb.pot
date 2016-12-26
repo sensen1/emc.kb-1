@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-01-29 14:53+0000\n"
+"POT-Creation-Date: 2016-12-26 04:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,44 +15,44 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: eisoo.topic\n"
+"Domain: emc.kb\n"
 
 msgid "All"
 msgstr ""
 
-#: ./browser/ajax_listing.py:248
+#: ./browser/ajax_listing.py:443
 msgid "Cancel"
 msgstr ""
 
-#: ./browser/ajax_listing.py:226
+#: ./browser/ajax_listing.py:424
 msgid "Delete"
 msgstr ""
 
-#: ./browser/ajax_listing.py:252
+#: ./browser/ajax_listing.py:447
 msgid "Delete cancelled."
 msgstr ""
 
-#: ./browser/ajax_listing.py:312
+#: ./browser/ajax_listing.py:497
 msgid "Input cancelled."
 msgstr ""
 
-#: ./browser/ajax_listing.py:267
+#: ./browser/ajax_listing.py:624
+msgid "Input fa she ji data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:458
 msgid "Input model data"
 msgstr ""
 
-#: ./mapping_db.py:53
-msgid "Model record"
-msgstr ""
-
-#: ./browser/ajax_listing.py:286
+#: ./browser/ajax_listing.py:474
 msgid "Submit"
 msgstr ""
 
-#: ./browser/ajax_listing.py:304
+#: ./browser/ajax_listing.py:489
 msgid "Thank you! Your data  will be update in back end DB."
 msgstr ""
 
-#: ./browser/ajax_listing.py:244
+#: ./browser/ajax_listing.py:439
 msgid "Your data  has been deleted."
 msgstr ""
 
@@ -69,31 +69,31 @@ msgstr ""
 msgid "all_day"
 msgstr ""
 
-#: ./mapping_db.py:69
-msgid "branch category"
+#: ./mapping_db.py:113
+msgid "bei zhu"
 msgstr ""
 
-#: ./mapping_db.py:61
-msgid "branch code"
+#: ./mapping_db.py:107
+msgid "ben zhen pin lv"
 msgstr ""
 
-#: ./mapping_db.py:65
-msgid "branch name"
+#: ./mapping_db.py:277
+msgid "cong shu she bei dai ma"
 msgstr ""
 
-#: ./mapping_db.py:57
-msgid "branch table foreign key"
-msgstr ""
-
-#: ./mapping_db.py:50
-msgid "branch table primary key"
+#: ./mapping_db.py:280
+msgid "cong shu she bei ming cheng"
 msgstr ""
 
 #: ./profiles/default/types/emc.kb.ormfolder.xml
 msgid "db map folder"
 msgstr ""
 
-#: ./browser/ajax_listing.py:201
+#: ./browser/ajax_listing.py:565
+msgid "delete fa she ji data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:399
 msgid "delete model data"
 msgstr ""
 
@@ -103,13 +103,61 @@ msgid "description_delete_model_record"
 msgstr ""
 
 #. Default: "Please enter model recorder."
-#: ./browser/templates/input_model.pt:19
+#: ./browser/templates/input_model.pt:15
 msgid "description_input_model_record"
 msgstr ""
 
 #. Default: "Please update model recorder."
-#: ./browser/templates/update_model.pt:18
+#: ./browser/templates/update_model.pt:16
 msgid "description_update_model_record"
+msgstr ""
+
+#: ./mapping_db.py:68
+msgid "fa she ji ming cheng"
+msgstr ""
+
+#: ./mapping_db.py:295
+msgid "fang wei bo su dai kuan"
+msgstr ""
+
+#: ./mapping_db.py:98
+msgid "fashe dai kuan"
+msgstr ""
+
+#: ./mapping_db.py:298
+msgid "fu yang bo su dai kuan"
+msgstr ""
+
+#: ./mapping_db.py:443
+msgid "gong zuo pin lv"
+msgstr ""
+
+#: ./mapping_db.py:80
+msgid "gongzuo pinlv"
+msgstr ""
+
+#: ./mapping_db.py:292
+msgid "ji hua"
+msgstr ""
+
+#: ./mapping_db.py:101
+msgid "ji pin gong lv"
+msgstr ""
+
+#: ./mapping_db.py:201
+msgid "jie shou ji dai kuan"
+msgstr ""
+
+#: ./mapping_db.py:204
+msgid "jie shou ji lin ming du"
+msgstr ""
+
+#: ./mapping_db.py:177
+msgid "jie shou ji ming cheng"
+msgstr ""
+
+#: ./mapping_db.py:354
+msgid "jie shou tian xian ming cheng"
 msgstr ""
 
 #: ./profiles/default/types/emc.kb.folder.xml
@@ -118,6 +166,18 @@ msgstr ""
 
 #: ./profiles/default/types/emc.kb.folder.xml
 msgid "knowledge folder"
+msgstr ""
+
+#: ./mapping_db.py:449
+msgid "lv bo qi cha sun"
+msgstr ""
+
+#: ./mapping_db.py:446
+msgid "lv bo qi ji shu"
+msgstr ""
+
+#: ./mapping_db.py:428
+msgid "lv bo qi ming cheng"
 msgstr ""
 
 #: ./mapping_db.py:20
@@ -132,11 +192,95 @@ msgstr ""
 msgid "model table primary key"
 msgstr ""
 
+#: ./mapping_db.py:186
+msgid "pin duan shang xian"
+msgstr ""
+
+#: ./mapping_db.py:189
+msgid "pin duan xia xian"
+msgstr ""
+
+#: ./mapping_db.py:89
+msgid "pinlv dian shu"
+msgstr ""
+
+#: ./mapping_db.py:92
+msgid "pinlv shang xian"
+msgstr ""
+
+#: ./mapping_db.py:95
+msgid "pinlv xia xian"
+msgstr ""
+
 #: ./profiles/default/types/emc.kb.kbfolder.xml
 msgid "resource folder"
 msgstr ""
 
-#: ./browser/ajax_listing.py:325
+#: ./mapping_db.py:83
+msgid "shang bian pin"
+msgstr ""
+
+#: ./mapping_db.py:65
+msgid "she bei dai ma"
+msgstr ""
+
+#: ./mapping_db.py:62
+msgid "table primary key"
+msgstr ""
+
+#: ./mapping_db.py:506
+msgid "tian xian lei xing"
+msgstr ""
+
+#: ./mapping_db.py:301
+msgid "tian xian zhi xiang jiao"
+msgstr ""
+
+#: ./mapping_db.py:104
+msgid "tiao zhi lei xing"
+msgstr ""
+
+#: ./browser/ajax_listing.py:670
+msgid "update fa she ji data"
+msgstr ""
+
+#: ./browser/ajax_listing.py:510
 msgid "update model data"
+msgstr ""
+
+#: ./mapping_db.py:76
+msgid "wei zhi"
+msgstr ""
+
+#: ./mapping_db.py:86
+msgid "xia bian pin"
+msgstr ""
+
+#: ./mapping_db.py:289
+msgid "zeng yi"
+msgstr ""
+
+#: ./mapping_db.py:110
+msgid "zhong pin"
+msgstr ""
+
+#: ./mapping_db.py:207
+msgid "zhong pin fu hao"
+msgstr ""
+
+#: ./mapping_db.py:210
+msgid "zhong pin pin lv"
+msgstr ""
+
+#: ./mapping_db.py:72
+msgid "zhuang tai pi ci dai ma"
+msgstr ""
+
+#: ./mapping_db.py:540
+msgid "zi ku dai ma"
+msgstr ""
+
+#: ./mapping_db.py:543
+msgid "zi ku ming cheng"
 msgstr ""
 

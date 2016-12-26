@@ -1,57 +1,57 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eisoo.topic\n"
-"POT-Creation-Date: 2016-01-29 14:53+0000\n"
-"PO-Revision-Date: 2012-02-25 07:36+0800\n"
+"POT-Creation-Date: 2016-12-26 04:00+0000\n"
+"PO-Revision-Date: 2016-12-26 19:38+0800\n"
 "Last-Translator: panlei <pan.lei@eisoo.com>\n"
 "Language-Team: 315ok.org <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Language-Code: zh_CN\n"
 "Language-Name: Chinese\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
-
-
+"Language: zh\n"
+"X-Generator: Poedit 1.8.7\n"
 
 msgid "All"
 msgstr "全部"
 
-#: ./browser/ajax_listing.py:248
+#: browser/ajax_listing.py:443
 msgid "Cancel"
 msgstr "取消"
 
-#: ./browser/ajax_listing.py:226
+#: browser/ajax_listing.py:424
 msgid "Delete"
 msgstr "删除"
 
-#: ./browser/ajax_listing.py:252
+#: browser/ajax_listing.py:447
 msgid "Delete cancelled."
 msgstr "删除操作已取消"
 
-#: ./browser/ajax_listing.py:312
+#: browser/ajax_listing.py:497
 msgid "Input cancelled."
 msgstr "录入操作已取消"
 
-#: ./browser/ajax_listing.py:267
+#: browser/ajax_listing.py:624
+msgid "Input fa she ji data"
+msgstr "输入发射机数据"
+
+#: browser/ajax_listing.py:458
 msgid "Input model data"
 msgstr "录入型号表数据"
 
-#: ./mapping_db.py:53
-msgid "Model record"
-msgstr "型号表记录"
-
-#: ./browser/ajax_listing.py:286
+#: browser/ajax_listing.py:474
 msgid "Submit"
 msgstr "提交"
 
-#: ./browser/ajax_listing.py:304
+#: browser/ajax_listing.py:489
 msgid "Thank you! Your data  will be update in back end DB."
 msgstr "感谢您！你的数据将在后台数据库中更新。"
 
-#: ./browser/ajax_listing.py:244
+#: browser/ajax_listing.py:439
 msgid "Your data  has been deleted."
 msgstr "你的数据已经被删除。"
 
@@ -68,74 +68,217 @@ msgstr "${year}年${month}月${day}日"
 msgid "all_day"
 msgstr "所有"
 
-#: ./mapping_db.py:69
-msgid "branch category"
-msgstr "分系统类别"
+#: mapping_db.py:113
+msgid "bei zhu"
+msgstr "备注"
 
-#: ./mapping_db.py:61
-msgid "branch code"
-msgstr "分系统代码"
+#: mapping_db.py:107
+msgid "ben zhen pin lv"
+msgstr "本振频率"
 
-#: ./mapping_db.py:65
-msgid "branch name"
-msgstr "分系统名称"
+#: mapping_db.py:277
+msgid "cong shu she bei dai ma"
+msgstr "从属设备代码"
 
-#: ./mapping_db.py:57
-msgid "branch table foreign key"
-msgstr "分系统表外键"
+#: mapping_db.py:280
+msgid "cong shu she bei ming cheng"
+msgstr "从属设备名称"
 
-#: ./mapping_db.py:50
-msgid "branch table primary key"
-msgstr "分系统表主键"
-
-#: ./profiles/default/types/emc.kb.ormfolder.xml
+#: profiles/default/types/emc.kb.ormfolder.xml
 msgid "db map folder"
 msgstr "数据库映射容器"
 
-#: ./browser/ajax_listing.py:201
+#: browser/ajax_listing.py:565
+msgid "delete fa she ji data"
+msgstr "删除发射机数据"
+
+#: browser/ajax_listing.py:399
 msgid "delete model data"
 msgstr "删除型号数据"
 
 #. Default: "Warning! This operation will remove database record."
-#: ./browser/templates/delete_model.pt:14
+#: browser/templates/delete_model.pt:14
 msgid "description_delete_model_record"
 msgstr "警告！此操作将删除数据库记录。"
 
 #. Default: "Please enter model recorder."
-#: ./browser/templates/input_model.pt:19
+#: browser/templates/input_model.pt:15
 msgid "description_input_model_record"
 msgstr "请录入型号数据"
 
 #. Default: "Please update model recorder."
-#: ./browser/templates/update_model.pt:18
+#: browser/templates/update_model.pt:16
 msgid "description_update_model_record"
 msgstr "请更新型号数据"
 
-#: ./profiles/default/types/emc.kb.folder.xml
+#: mapping_db.py:68
+msgid "fa she ji ming cheng"
+msgstr "发射机名称"
+
+#: mapping_db.py:295
+msgid "fang wei bo su dai kuan"
+msgstr "方位波束带宽"
+
+#: mapping_db.py:98
+msgid "fashe dai kuan"
+msgstr "发射机带宽"
+
+#: mapping_db.py:298
+msgid "fu yang bo su dai kuan"
+msgstr "俯仰波束带宽"
+
+#: mapping_db.py:443
+msgid "gong zuo pin lv"
+msgstr "工作频率"
+
+#: mapping_db.py:80
+msgid "gongzuo pinlv"
+msgstr "工作频率"
+
+#: mapping_db.py:292
+msgid "ji hua"
+msgstr "极化"
+
+#: mapping_db.py:101
+msgid "ji pin gong lv"
+msgstr "基频功率"
+
+#: mapping_db.py:201
+msgid "jie shou ji dai kuan"
+msgstr "接收机带宽"
+
+#: mapping_db.py:204
+msgid "jie shou ji lin ming du"
+msgstr "接收机灵敏度"
+
+#: mapping_db.py:177
+msgid "jie shou ji ming cheng"
+msgstr "接收机名称"
+
+#: mapping_db.py:354
+msgid "jie shou tian xian ming cheng"
+msgstr "接收机天线名称"
+
+#: profiles/default/types/emc.kb.folder.xml
 msgid "knowledge base root folder"
 msgstr "知识库"
 
-#: ./profiles/default/types/emc.kb.folder.xml
+#: profiles/default/types/emc.kb.folder.xml
 msgid "knowledge folder"
 msgstr "知识库"
 
-#: ./mapping_db.py:20
+#: mapping_db.py:449
+msgid "lv bo qi cha sun"
+msgstr "滤波器参数"
+
+#: mapping_db.py:446
+msgid "lv bo qi ji shu"
+msgstr "滤波器技术"
+
+#: mapping_db.py:428
+msgid "lv bo qi ming cheng"
+msgstr "滤波器名称"
+
+#: mapping_db.py:20
 msgid "model code"
 msgstr "型号代码"
 
-#: ./mapping_db.py:24
+#: mapping_db.py:24
 msgid "model name"
 msgstr "型号名称"
 
-#: ./mapping_db.py:16
+#: mapping_db.py:16
 msgid "model table primary key"
 msgstr "型号表主键"
 
-#: ./profiles/default/types/emc.kb.kbfolder.xml
+#: mapping_db.py:186
+msgid "pin duan shang xian"
+msgstr "频段上限"
+
+#: mapping_db.py:189
+msgid "pin duan xia xian"
+msgstr "频段下限"
+
+#: mapping_db.py:89
+msgid "pinlv dian shu"
+msgstr "频率点数"
+
+#: mapping_db.py:92
+msgid "pinlv shang xian"
+msgstr "频率上限"
+
+#: mapping_db.py:95
+msgid "pinlv xia xian"
+msgstr "频率下限"
+
+#: profiles/default/types/emc.kb.kbfolder.xml
 msgid "resource folder"
 msgstr "资源"
 
-#: ./browser/ajax_listing.py:325
+#: mapping_db.py:83
+msgid "shang bian pin"
+msgstr "上边频"
+
+#: mapping_db.py:65
+msgid "she bei dai ma"
+msgstr "设备代码"
+
+#: mapping_db.py:62
+msgid "table primary key"
+msgstr "数据表主关键字"
+
+#: mapping_db.py:506
+msgid "tian xian lei xing"
+msgstr "天线类型"
+
+#: mapping_db.py:301
+msgid "tian xian zhi xiang jiao"
+msgstr "天线指向角"
+
+#: mapping_db.py:104
+msgid "tiao zhi lei xing"
+msgstr "调制类型"
+
+#: browser/ajax_listing.py:670
+msgid "update fa she ji data"
+msgstr "更新发射机数据"
+
+#: browser/ajax_listing.py:510
 msgid "update model data"
 msgstr "更新型号数据"
 
+#: mapping_db.py:76
+msgid "wei zhi"
+msgstr "位置"
+
+#: mapping_db.py:86
+msgid "xia bian pin"
+msgstr "下边频"
+
+#: mapping_db.py:289
+msgid "zeng yi"
+msgstr "增益"
+
+#: mapping_db.py:110
+msgid "zhong pin"
+msgstr "中频"
+
+#: mapping_db.py:207
+msgid "zhong pin fu hao"
+msgstr "中频符号"
+
+#: mapping_db.py:210
+msgid "zhong pin pin lv"
+msgstr "中频频率"
+
+#: mapping_db.py:72
+msgid "zhuang tai pi ci dai ma"
+msgstr "状态批次代码"
+
+#: mapping_db.py:540
+msgid "zi ku dai ma"
+msgstr "子库代码"
+
+#: mapping_db.py:543
+msgid "zi ku ming cheng"
+msgstr "子库名称"
