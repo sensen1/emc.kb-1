@@ -1,5 +1,12 @@
 create database if not exists parameters;
 use parameters;
+-- Model型号信息(型号代码，型号名称)
+create table if not exists model (
+    modelId integer unsigned not null auto_increment primary key,
+    xhdm char(8) not null unique key,
+    xhmc varchar(32) not null,
+    index model_xhdm(xhdm)
+) engine=InnoDB DEFAULT CHARSET=utf8;
 -- fashej 发射机(设备代码，发射机名称，状态批次代码，位置，工作频率，上边频,下边频，频率点数,频率上限，频率下限，发射带宽，基频功率，调制类型，本振频率，中频，备注)
 create table if not exists fashej (
     fashejId integer unsigned not null auto_increment primary key,
