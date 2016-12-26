@@ -36,7 +36,7 @@ create table if not exists fashetx (
     polarization float(16,4) not null,
     fwbskd float(16,4) not null,
     fybskd float(16,4) not null,
-    txzxj float(16,4) not null
+    txzxj float(16,4) not null,
     index fashetx_cssbdm(cssbdm)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 
@@ -71,7 +71,7 @@ create table if not exists jieshoutx (
     polarization float(16,4) not null,
     fwbskd float(9,4) not null,
     fybskd float(9,4) not null,
-    txzxj float(9,4) not null
+    txzxj float(9,4) not null,
     index jieshoutx_cssbdm(cssbdm)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 
@@ -149,12 +149,12 @@ create table if not exists ceshiff (
     ceshiffId integer unsigned not null auto_increment primary key,
     m_id char(16) not null unique key,
     m_title char(32) not null,
-    range varchar(16) not null,
+    range1 varchar(16) not null,
     device varchar(16) not null,
     diagram char(16) not null,
     step varchar(16) not null,
     annotation varchar(32) not null,
-    index ceshiff(m_id,m_title)
+    index ceshiff(m_id)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 -- ceshibg测试报告(测试证书编号，委托方，委托方地址，被测件，EUT编号，EUT型号，制造商，测试日期，
 -- 测试地点，测试设备，测试设备型号，测试设备编号，测试依据，温度，湿度，测试人员，签发人，审核人，测试结果)
@@ -192,7 +192,7 @@ create table if not exists ceshixm (
     t_strument varchar(16) not null,
     t_value  varchar(16) not null,
     t_result varchar(16) not null,
-    index ceshixm_device(device)
+    index (project_id)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 -- cixingcljbcsh 磁性材料基本参数（工作频率，初始磁导率，居里温度，比重，损耗因子，初始磁导率的温度系数）
 create table if not exists cixingcljbcsh (
@@ -204,7 +204,7 @@ create table if not exists cixingcljbcsh (
     bizhong float(10,2)  not null,
     sunhaoyz float(10,2) not null,
     chushicdlwdxsh float(10,2) not null,
-    index cixingcljbcsh(cailiao_id)
+    index (cailiao_id)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 -- emixishouch EMI吸收磁环 （外径，内经，长度）
 create table if not exists emixishouch (
