@@ -24,7 +24,7 @@ from emc.kb import  _
 class FashejLocator(grok.GlobalUtility):
     implements(IFashejLocator)
     
-    def add(self,**kwargs):
+    def add(self,kwargs):
         """parameters db fashej table"""
         recorder = Fashej()
         for kw in kwargs.keys():
@@ -81,7 +81,7 @@ class FashejLocator(grok.GlobalUtility):
         else:
             return None
     
-    def updateByCode(self,**kwargs):
+    def updateByCode(self,kwargs):
         "update the speicy sbdm fashej recorder"
         
         """

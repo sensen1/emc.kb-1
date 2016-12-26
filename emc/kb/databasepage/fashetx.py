@@ -24,7 +24,7 @@ from emc.kb import  _
 class FashetxLocator(grok.GlobalUtility):
     implements(IFashetxLocator)
     
-    def add(self,**kwargs):
+    def add(self,kwargs):
         """parameters db fashej table"""
         recorder = Fashetx()
         for kw in kwargs.keys():
@@ -80,7 +80,7 @@ class FashetxLocator(grok.GlobalUtility):
         else:
             return None
     
-    def updateByCode(self,**kwargs):
+    def updateByCode(self,kwargs):
         "update the speicy cssbdm fashetx recorder"
         
         """

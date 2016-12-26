@@ -24,7 +24,7 @@ from emc.kb import  _
 class JieshoujLocator(grok.GlobalUtility):
     implements(IJieshoujLocator)
     
-    def add(self,**kwargs):
+    def add(self,kwargs):
         """parameters db jieshouj table"""
         recorder = Jieshouj()
         for kw in kwargs.keys():
@@ -80,7 +80,7 @@ class JieshoujLocator(grok.GlobalUtility):
         else:
             return None
     
-    def updateByCode(self,**kwargs):
+    def updateByCode(self,kwargs):
         "update the speicy sbdm jieshouj recorder"
         
         """
