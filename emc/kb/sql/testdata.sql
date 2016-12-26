@@ -23,10 +23,10 @@ values
        ('111103009','手机','asd2w23sds218816975','m',1,0,2,60,0,2,70,1.6,'AM-C',1,0.5,'中频'),
        ('333333001','发射机1','asd2w23sds212458175','m',0,0,0,70,0,0,80,1.7,'FM',0,0,'基带');
 
-insert into fashetx (cssbdm,cssdmc,pcdm,location,gain,polarization,
+insert into fashetx (cssbdm,cssbmc,pcdm,location,gain,polarization,
   fwbskd,fybskd,txzxj)
 values
-      --fashetx
+      -- fashetx
       ('sb-1234','发射天线1','pc-1-pass','m',10.2,'Ver',30,20,10),
       ('sb-1235','发射天线2','pc-2-pass','m',10.7,'Hor',31,10,20),
       ('sb-1236','发射天线3','pc-3-pass','m',11.2,'Cir',32,0,30),
@@ -56,7 +56,7 @@ values
 insert into jieshoutx (cssbdm,cssbmc,pcdm,location,gain,polarization,fwbskd,
 fybskd,txzxj)
 values
-      --jieshoutx
+      -- jieshoutx
       ('sb-1234','接收天线1','pc-1-pass','m',10.2,'Ver',30,20,10),
       ('sb-1235','接收天线2','pc-2-pass','m',10.7,'Hor',31,10,20),
       ('sb-1236','接收天线3','pc-3-pass','m',11.2,'Cir',32,0,30),
@@ -70,7 +70,7 @@ values
 
 insert into lvboq (cssbdm,cssbmc,pcdm,location,fb_upper,fb_lower,freq,f_upper,f_lower,order1,s21)
 values
-      --lvboq
+      -- lvboq
       ('sb-1234','滤波器1','pc-1-pass','m',1500,1600,1400,5,1.5),
       ('sb-1235','滤波器2','pc-1-pass','m',1550,1650,1450,5,2),
       ('sb-1236','滤波器3','pc-1-pass','m',1600,1700,1500,5,2.5),
