@@ -194,7 +194,7 @@ create table if not exists ceshixm (
     diagram varchar(32)  not null,
     t_remark varchar(16) not null,
     t_strument varchar(16) not null,
-    t_value  varchar(16) not null,
+    t_value  varchar(64) not null,
     t_result varchar(16) not null,
     index (project_id)
 ) engine=InnoDB DEFAULT CHARSET=utf8;
